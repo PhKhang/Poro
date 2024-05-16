@@ -1,1 +1,0 @@
-import{n as o,o as s,w as a,a as t,I as n}from"./CTak-ZH6.js";import{_ as c}from"./DlAUqK2U.js";const r={},_=t("h1",null,"hello",-1),i=t("img",{src:"https://pbs.twimg.com/media/GNFnSaIWkAAusi2?format=jpg&name=4096x4096",alt:"",srcset:""},null,-1);function l(m,f){const e=n;return s(),o(e,null,{default:a(()=>[_,i]),_:1})}const u=c(r,[["render",l]]);export{u as default};
