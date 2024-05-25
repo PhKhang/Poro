@@ -5,7 +5,7 @@
   <img src="https://pbs.twimg.com/media/GNFnSaIWkAAusi2?format=jpg&name=4096x4096" alt="" srcset="">
 </template>
 
-<script lang="ts" setup>
+<script setup>
 
 </script>
 
