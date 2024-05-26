@@ -1,16 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
 
+  nitro: {
+    plugins: ["~/server/index.ts"]
+  },
+  
   // css: ['~/assets/base.css'],
   runtimeConfig: {
-    // MONGODB_PWD: process.env.MONGODB_PWD
+    mongoURI: process.env.MONGODB_URI
   },
 
   modules: [
     // "@sidebase/nuxt-auth",
     // "nuxt-server-utils",
-    "nuxt-mongoose"
+    // "nuxt-mongoose"
   ],
 
   // auth: {
