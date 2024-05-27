@@ -10,6 +10,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     mongoURI: process.env.MONGODB_URI
   },
+  
+  routeRules: {
+    '/room-test': {ssr: false}
+  },
 
   modules: [
     // "@sidebase/nuxt-auth",
