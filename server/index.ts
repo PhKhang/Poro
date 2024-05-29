@@ -7,11 +7,16 @@ export default async (nitro: Nitro) => {
     console.log("Nitro plugin")
     console.log(`Connecting ${config.mongoURI}`)
     try {
+        // Connect to mongodb atlas
         await mongoose.connect(config.mongoURI)
+        
+        // Display connection status
         const connectionStateIndex = mongoose.connection.readyState
-        console.log(`Connection status: ${mongoose.ConnectionStates[connectionStateIndex]}`)
+        console.log(`Connection status: ${mongoose.ConnectionStates[connectionStateIndex]} ${connectionStateIndex == 1 ?"✅" : "💀"}`)
     }
     catch (err) {
+        const connectionStateIndex = mongoose.connection.readyState
+        console.log(`Connection status: ${mongoose.ConnectionStates[connectionStateIndex]} ${connectionStateIndex == 1 ?"✅" : "💀"}`)
         console.error(err)
     }
 };

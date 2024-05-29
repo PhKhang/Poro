@@ -8,12 +8,17 @@
     <button>Press me</button> <br>
     
     <NuxtLink to="/firs">Go to the next page, the more preferable way</NuxtLink> <br>
+    <NuxtLink to="/room-test">Go to the room testing</NuxtLink> <br>
+    <NuxtLink to="/testing">Go to the background vid</NuxtLink> <br>
+    <hr>
     <a href="firs">Go to the next page, the old way</a>
     <!-- <NuxtWelcome /> -->
 </template>
 
 <script setup>
     const { data, pending, error, refresh } = await useFetch('/api/45')
+    
+    
 </script>
 
 <style scoped>

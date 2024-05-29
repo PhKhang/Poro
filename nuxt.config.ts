@@ -12,7 +12,13 @@ export default defineNuxtConfig({
   },
   
   routeRules: {
-    '/room-test': {ssr: false}
+    '/testing': {ssr: false}
+  },
+  
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => ['widgetbot'].includes(tag),
+    }
   },
 
   modules: [
