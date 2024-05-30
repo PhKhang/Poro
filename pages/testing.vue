@@ -3,11 +3,12 @@
         <h1>Hello, h1 heading</h1>
 
         <!-- <div data-vbg="https://youtu.be/mfi36koK-xk?si=kLnsjZjfIuybCEhR"></div> -->
-        <div id="video-background" :class="{ before: notPlay }" data-vbg-muted="true" data-vbg-play-button="true"
+        <textarea name="" v-model="youtubeURL" id=""></textarea>
+        <div id="video-background" :class="{ before: notPlay }" data-vbg-play-button="true"
             data-vbg="https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI"></div>
 
 
-        <button @click="playVid" class="play" ref="myCoolDiv" >Play/Pause</button>
+        <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button>
 
 
         <button @click="toggleBook">Toggle book</button>
@@ -25,6 +26,9 @@
 </template>
 
 <script setup>
+const youtubeURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
+const oldURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
+
 let { name } = defineProps(['name'])
 
 // import VideoBackgrounds from 'youtube-background';
@@ -39,7 +43,7 @@ const doWhenMounted = onMounted(() => {
 
     const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {
         'play-button': true,
-        'autoplay': false,
+        // 'autoplay': false,
         'mute-button': true
     });
 
@@ -50,9 +54,19 @@ const doWhenMounted = onMounted(() => {
     // const myCoolDiv = ref(null)
     // console.log(myCoolDiv)
     // myCoolDiv.value.clic
-    document.querySelectorAll(".play").forEach(el=>el.click())
+    document.querySelectorAll(".play").forEach(el => el.click())
+
+    // if (oldURL.value !== youtubeURL.value) {
+    //     oldURL.value = youtubeURL.value
+    //     firstInstance.setSource(youtubeURL.value);
+    // }
 
     firstInstance.setVolume(1);
+
+    if (oldURL.value !== youtubeURL.value) {
+        oldURL.value = youtubeURL.value
+        firstInstance.setSource(youtubeURL.value);
+    }
 
     document.querySelector('#video-background').addEventListener('video-background-play', function (event) {
         console.log('video-background-play'); // the video instance object
@@ -60,9 +74,26 @@ const doWhenMounted = onMounted(() => {
 
         notPlay.value = false;
 
+        document.querySelector("iframe").setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");
+        // const promise = document.querySelector("video").play();
+        // if (promise !== undefined) {
+        //     promise.then(() => {
+        //         // Autoplay started
+        //     }).catch(error => {
+        //         // Autoplay was prevented.
+        //         video.muted = true;
+        //         video.play();
+        //     });
+        // }
+
         const myTimeout = setTimeout(() => {
-            console.log("After 1s")
-            firstInstance.unmute();
+            console.log("After 2s")
+            try {
+                firstInstance.unmute();
+            }
+            catch (err) {
+                console.log(err)
+            }
 
         }, 4000);
     });
@@ -79,7 +110,14 @@ const doWhenMounted = onMounted(() => {
 
 function playVid() {
     console.log("Play the vid")
+    if (oldURL.value !== youtubeURL.value) {
+        oldURL.value = youtubeURL.value
+        firstInstance.setSource(youtubeURL.value);
+    }
     firstInstance.play()
+    console.log("Unmuting")
+    firstInstance.unmute()
+    notPlay.value = false;
 }
 
 function updateBook(book) {
@@ -130,5 +168,11 @@ let showBook = ref(true)
     position: unset !important;
 
     border-radius: 8px;
+}
+
+
+#video-background {
+    z-index: -99 !important;
+
 }
 </style>
