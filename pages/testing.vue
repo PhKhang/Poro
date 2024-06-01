@@ -1,7 +1,5 @@
 <template>
     <div>
-        <h1>Hello, h1 heading</h1>
-
         <!-- <div data-vbg="https://youtu.be/mfi36koK-xk?si=kLnsjZjfIuybCEhR"></div> -->
         <textarea name="" v-model="youtubeURL" id=""></textarea>
         <div id="video-background" :class="{ before: notPlay }" data-vbg-play-button="true"
@@ -11,7 +9,7 @@
         <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button>
 
 
-        <button @click="toggleBook">Toggle book</button>
+        <!-- <button @click="toggleBook">Toggle book</button>
 
 
         <div v-for="bok in books" v-if="showBook">
@@ -20,8 +18,8 @@
 
         <hr>
 
-        {{ books }}
-
+        {{ books }} -->
+        <hoverMove/> 
     </div>
 </template>
 
@@ -34,9 +32,17 @@ let { name } = defineProps(['name'])
 // import VideoBackgrounds from 'youtube-background';
 import 'youtube-background';
 
+// import DraggableComponent from '.components/hoverMove.vue';
+
+// export default {
+//   components: {
+//     DraggableComponent
+//   }
+// };
 
 let firstInstance = 1;
 let notPlay = ref(true);
+
 
 
 const doWhenMounted = onMounted(() => {
