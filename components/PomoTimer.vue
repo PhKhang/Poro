@@ -24,7 +24,7 @@
   
   <script>
   import { ref, computed } from 'vue';
-  
+
   export default {
     setup() {
       const workDuration = ref(25);

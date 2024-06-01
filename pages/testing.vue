@@ -19,7 +19,7 @@
         <hr>
 
         {{ books }} -->
-        <hoverMove/> 
+        <DraggablePomodoro />
     </div>
 </template>
 
