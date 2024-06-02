@@ -20,6 +20,7 @@
 
         {{ books }} -->
         <DraggablePomodoro />
+        <DraggableNote />
     </div>
 </template>
 
@@ -29,24 +30,40 @@ const oldURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
 
 let { name } = defineProps(['name'])
 
-// import VideoBackgrounds from 'youtube-background';
 import 'youtube-background';
 
-// import DraggableComponent from '.components/hoverMove.vue';
-
-// export default {
-//   components: {
-//     DraggableComponent
-//   }
-// };
 
 let firstInstance = 1;
 let notPlay = ref(true);
 
 
+onBeforeRouteLeave((to, from) => {
+    console.log("Asked")
+    const answer = window.alert('Are you sure you want to leave this page?');
+    if (answer) {
+        next();
+    } else {
+        next(false);
+    }
+})
+
+
+
+window.addEventListener('beforeunload', () => {
+    alert("AAAAAAAAAAAaaaaaaaaa")
+    
+    return "AHoihogho"
+})
+
+window.addEventListener("beforeunload", function (e) {
+
+var confirmationMessage = "\o/";     
+e.returnValue = confirmationMessage;           
+return confirmationMessage;       
+
+});
 
 const doWhenMounted = onMounted(() => {
-
     const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {
         'play-button': true,
         // 'autoplay': false,
@@ -57,15 +74,9 @@ const doWhenMounted = onMounted(() => {
 
     firstInstance = videoBackgrounds.get(firstElement);
 
-    // const myCoolDiv = ref(null)
-    // console.log(myCoolDiv)
-    // myCoolDiv.value.clic
     document.querySelectorAll(".play").forEach(el => el.click())
 
-    // if (oldURL.value !== youtubeURL.value) {
-    //     oldURL.value = youtubeURL.value
-    //     firstInstance.setSource(youtubeURL.value);
-    // }
+    console.log(firstInstance)
 
     firstInstance.setVolume(1);
 
@@ -81,16 +92,6 @@ const doWhenMounted = onMounted(() => {
         notPlay.value = false;
 
         document.querySelector("iframe").setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");
-        // const promise = document.querySelector("video").play();
-        // if (promise !== undefined) {
-        //     promise.then(() => {
-        //         // Autoplay started
-        //     }).catch(error => {
-        //         // Autoplay was prevented.
-        //         video.muted = true;
-        //         video.play();
-        //     });
-        // }
 
         const myTimeout = setTimeout(() => {
             console.log("After 2s")
@@ -126,42 +127,7 @@ function playVid() {
     notPlay.value = false;
 }
 
-function updateBook(book) {
-    book.isLiked = !book.isLiked
-    console.log("Update book")
-}
 
-function toggleBook() {
-    showBook.value = !showBook.value
-    console.log(showBook)
-}
-
-let books = reactive([
-    {
-        title: "The lord of the rings",
-        author: "Me",
-        isLiked: true
-    },
-    {
-        title: "Book 2",
-        author: "Me",
-        isLiked: false
-    },
-    {
-        title: "1984",
-        author: "Me",
-        isLiked: false
-    }
-])
-
-// const state = reactive({
-//   showBook: true
-// })
-
-
-let showBook = ref(true)
-
-// return { books, showBook , toggleBook, updateBook}
 </script>
 
 <style scoped>
@@ -179,6 +145,5 @@ let showBook = ref(true)
 
 #video-background {
     z-index: -99 !important;
-
 }
 </style>

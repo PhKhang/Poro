@@ -64,7 +64,8 @@ export default {
 .draggable {
   position: absolute;
   width: 300px;
-  height: 400px;
+  height: max-content;
+  min-height: 400px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/path/to/your/background-image.jpg');
   background-size: cover;
   background-position: center;
@@ -77,6 +78,9 @@ export default {
   padding: 10px;
   box-sizing: border-box;
   transition: filter 0.2s;
+  
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
 }
 
 </style>

@@ -10,6 +10,7 @@
     <NuxtLink to="/firs">Go to the next page, the more preferable way</NuxtLink> <br>
     <NuxtLink to="/room-test">Go to the room testing</NuxtLink> <br>
     <NuxtLink to="/testing">Go to the background vid</NuxtLink> <br>
+    <NuxtLink to="/note">Go to the note taking test</NuxtLink> <br>
     <hr>
     <a href="firs">Go to the next page, the old way</a>
     <!-- <NuxtWelcome /> -->
