@@ -6,18 +6,18 @@
       <button @click="selectElement(4)">Element 4</button>
       <button @click="selectElement(5)">Element 5</button>
   
-      <PomodoroTimer v-if="selectedElement === 2" />
+      <PoroTimer v-if="selectedElement === 2" />
     </div>
   </template>
   
   <script>
   import { ref } from 'vue';
-  import PomodoroTimer from './PomodoroTimer.vue';
+  // import PoroTimer from './PoroTimer.vue';
   
   export default {
-    components: {
-      PomodoroTimer
-    },
+    // components: {
+    //   PoroTimer
+    // },
     setup() {
       const selectedElement = ref(null);
   
