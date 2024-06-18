@@ -10,7 +10,7 @@
 
 <script setup>
 import { Editor } from "novel-vue";
-import "novel-vue/dist/style.css";
+// import "novel-vue/dist/style.css";
 </script>
 
 <style scoped>

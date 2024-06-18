@@ -47,31 +47,13 @@ let firstInstance = 1;
 let notPlay = ref(true);
 
 
-onBeforeRouteLeave((to, from) => {
-  console.log("Asked")
-  const answer = window.alert('Are you sure you want to leave this page?');
-  if (answer) {
-    next();
-  } else {
-    next(false);
-  }
-})
+// window.addEventListener("beforeunload", function (e) {
 
+//   var confirmationMessage = "\o/";
+//   e.returnValue = confirmationMessage;
+//   return confirmationMessage;
 
-
-window.addEventListener('beforeunload', () => {
-  alert("AAAAAAAAAAAaaaaaaaaa")
-
-  return "AHoihogho"
-})
-
-window.addEventListener("beforeunload", function (e) {
-
-  var confirmationMessage = "\o/";
-  e.returnValue = confirmationMessage;
-  return confirmationMessage;
-
-});
+// });
 console.log("abcd");
 const doWhenMounted = onMounted(() => {
   const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {

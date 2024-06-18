@@ -2,7 +2,7 @@ import { UserModel } from "~/server/models/user"
 
 export default defineEventHandler(async (event) => {
   const newUser = new UserModel({
-    email: "tnpkhang22@clc.fitus.edu.vn",
+    email: "vvlong22@clc.fitus.edu.vn",
     password: "1234"
   })
   

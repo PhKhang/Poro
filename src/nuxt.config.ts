@@ -5,33 +5,31 @@ export default defineNuxtConfig({
   nitro: {
     plugins: ["~/server/index.ts"]
   },
-  
+
   // css: ['~/assets/base.css'],
   runtimeConfig: {
-    mongoURI: process.env.MONGODB_URI
+    mongoURI: process.env.MONGODB_URI,
+    authSecret: process.env.AUTH_SECRET,
   },
-  
+
   routeRules: {
-    '/testing': {ssr: false}
+    '/testing': { ssr: false }
   },
-  
+
   vue: {
     compilerOptions: {
       isCustomElement: (tag) => ['widgetbot'].includes(tag),
     }
   },
 
-  modules: [
-    // "@sidebase/nuxt-auth",
-    // "nuxt-server-utils",
-    // "nuxt-mongoose"
-  ],
+  modules: ["@sidebase/nuxt-auth"],
 
-  // auth: {
-  //   provider: {
-  //     type: 'authjs'
-  //   }
-  // },
+  auth: {
+    baseURL: process.env.AUTH_ORIGIN,
+    provider: {
+      type: 'authjs'
+    }
+  },
 
   // nuxtServerUtils: {
   //   mongodbUri: process.env.MONGODB_URI,

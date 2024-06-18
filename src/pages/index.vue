@@ -1,13 +1,20 @@
 <template>
     <h1>Hello, this is the Home page because its file name is <code>index.*</code></h1>
-    
+
     <h2>The line bellow is data taken from its server API (Nitro)</h2>
-    <p>{{data}}</p>
+    <p>{{ data }}</p>
+
+    <h2>User data:</h2>
+    <p>{{ userData }}</p>
+
     <p>You can change what it returns in <code>/server/api/[id].ts</code></p>
-    
+
     <button>Press me</button> <br>
-    
+
     <NuxtLink to="/firs">Go to the next page, the more preferable way</NuxtLink> <br>
+    <NuxtLink to="/protected">Go to login testing</NuxtLink> <br>
+    <NuxtLink to="/login">LOGIN</NuxtLink> <br>
+    <NuxtLink to="/register">REGISTER</NuxtLink> <br>
     <NuxtLink to="/room-test">Go to the room testing</NuxtLink> <br>
     <NuxtLink to="/testing">Go to the background vid</NuxtLink> <br>
     <NuxtLink to="/note">Go to the note taking test</NuxtLink> <br>
@@ -17,9 +24,11 @@
 </template>
 
 <script setup>
-    const { data, pending, error, refresh } = await useFetch('/api/45')
-    
-    
+// definePageMeta({middleware: 'auth'})
+
+const { data, pending, error, refresh } = await useFetch('/api/45')
+
+const { data: userData } = useAuth()
 </script>
 
 <style scoped>

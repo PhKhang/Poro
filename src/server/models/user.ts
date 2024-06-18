@@ -1,12 +1,20 @@
 import {Schema, model} from 'mongoose'
 
+export interface UserDocument extends Document {
+    email: string,
+    password: string,
+}
+
 const UserSchema = new Schema({
     email: {
-        type: String
+        type: String,
+        require: true,
+        unique: true,
     },
     password: {
-        type: String
+        type: String,
+        require: true,
     }
 });
 
-export const UserModel = model<any>('User', UserSchema);
+export const UserModel = model<UserDocument>('User', UserSchema);
