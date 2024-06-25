@@ -9,22 +9,15 @@
     </div>
     <hr>
     <div class="song-info">
-      <p class="song-title">竹内まりや - Plastic Love (Official Audio)</p>
-      <p class="song-artist">竹内まりや</p>
-      <div class="controls">
-        <button @click="toggleFavorite">
-          <span v-if="isFavorite">⭐</span>
-          <span v-else>☆</span>
-        </button>
-      </div>
+      <p class="song-title">{{ vidtitle }}</p>
     </div>
     <hr>
     <div class="youtube-input">
       <label for="youtube-url">Youtube Video:</label>
       <textarea name="" v-model="youtubeURL" id=""></textarea>
-      <div id="video-background" :class="{ before: notPlay }" data-vbg-play-button="true"
+      <div id="video-background" :class="{ before: notPlay }"
         data-vbg="https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI"></div>
-        <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button> 
+      <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button>
     </div>
     <div class="volume-control">
       <label for="volume">Background Video volume:</label>
@@ -36,7 +29,7 @@
 
 <script setup>
 const youtubeURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
-const oldURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
+const oldURL = ref("")
 
 let { name } = defineProps(['name'])
 
@@ -45,96 +38,121 @@ import 'youtube-background';
 
 let firstInstance = 1;
 let notPlay = ref(true);
+let vidtitle = ref("");
+let volume = ref(0);
 
 
-// window.addEventListener("beforeunload", function (e) {
-
-//   var confirmationMessage = "\o/";
-//   e.returnValue = confirmationMessage;
-//   return confirmationMessage;
-
-// });
-console.log("abcd");
 const doWhenMounted = onMounted(() => {
   const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {
-    'play-button': true,
-    // 'autoplay': false,
-    'mute-button': true
+    'play-button': false,
+    'muted': false,
+    'mute-button': false,
+    'loop': true,
+    'volume': 0.25,
   });
-
   const firstElement = document.querySelector('[data-vbg]');
-
   firstInstance = videoBackgrounds.get(firstElement);
-
   document.querySelectorAll(".play").forEach(el => el.click())
-
-  console.log(firstInstance)
-
-  firstInstance.setVolume(0,5);
 
   if (oldURL.value !== youtubeURL.value) {
     oldURL.value = youtubeURL.value
     firstInstance.setSource(youtubeURL.value);
   }
-
+  volume.value = firstInstance.volume * 100;
   document.querySelector('#video-background').addEventListener('video-background-play', function (event) {
-    console.log('video-background-play'); // the video instance object
-    console.log(event.detail); // the video instance object
-
     notPlay.value = false;
-
     document.querySelector("iframe").setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");
-
-    const myTimeout = setTimeout(() => {
-      console.log("After 2s")
-      try {
-        firstInstance.unmute();
-      }
-      catch (err) {
-        console.log(err)
-      }
-
-    }, 4000);
+    vidtitle.value = firstInstance.player.videoTitle;
   });
 
   document.querySelector('#video-background').addEventListener('video-background-pause', function (event) {
-    console.log('video-background-play'); // the video instance object
-    console.log(event.detail); // the video instance object
-
     notPlay.value = true;
-
   });
 
 })
 
 function playVid() {
-  console.log("Play the vid")
   if (oldURL.value !== youtubeURL.value) {
-    oldURL.value = youtubeURL.value
+    oldURL.value = youtubeURL.value;
+    let oldInstance = firstInstance;
     firstInstance.setSource(youtubeURL.value);
+
+    // Sử dụng setInterval để kiểm tra liên tục
+    const checkInstance = setInterval(() => {
+      if (firstInstance !== null) {
+        clearInterval(checkInstance); // Dừng setInterval khi firstInstance khác null
+
+        firstInstance.volume = 0.25;
+        volume.value = firstInstance.volume * 100;
+        firstInstance.play();
+        firstInstance.unmute();
+        notPlay.value = false;
+        vidtitle.value = firstInstance.player.videoTitle;
+        console.log(firstInstance.player.videoTitle);
+        console.log(firstInstance)
+        console.log(firstInstance.player.videoTitle);
+      }
+    }, 100); // Kiểm tra mỗi 100ms
   }
-  firstInstance.play()
-  console.log("Unmuting")
-  firstInstance.unmute()
-  notPlay.value = false;
 }
 
-const themes = ['🌸', '🏙️', '☕', '🐱', '🎄', '🌊', '🔮', '⛩️'];
-const isFavorite = ref(false);
-const youtubeUrl = ref('');
-const volume = ref(50);
 
-const selectTheme = (theme) => {
-  console.log(`Theme selected: ${theme}`);
-  // Add logic to change background
+
+const themesJs = [
+  {
+    "id": '1',
+    "icon": '🌸',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '2',
+    "icon": '🌃',
+    "link": 'https://www.youtube.com/watch?v=N-vLYY9dsIk'
+  },
+  {
+    "id": '3',
+    "icon": '☕',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '4',
+    "icon": '🐱',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '5',
+    "icon": '🎄',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '6',
+    "icon": '🌊',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '7',
+    "icon": '🔮',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  },
+  {
+    "id": '8',
+    "icon": '⛩️',
+    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
+  }
+];
+const themes = themesJs.map(theme => theme.icon);
+
+const selectTheme = (selectedTheme) => {
+  for (const theme of themesJs) {
+    if (selectedTheme === theme.icon) {
+      youtubeURL.value = theme.link;
+      break;
+    }
+  }
 };
 
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value;
-};
 const setVolume = () => {
-  console.log(`Volume: ${volume.value}`);
-  firstInstance.setVolume(volume.value/100);
+  firstInstance.setVolume(volume.value / 100);
 };
 </script>
 
