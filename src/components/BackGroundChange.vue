@@ -15,8 +15,8 @@
     <div class="youtube-input">
       <label for="youtube-url">Youtube Video:</label>
       <textarea name="" v-model="youtubeURL" id=""></textarea>
-      <div id="video-background" :class="{ before: notPlay }"
-        data-vbg="https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI"></div>
+      <div id="video-background" :class="{ before: notPlay }" data-vbg="https://www.youtube.com/watch?v=yoY81oAiwD0">
+      </div>
       <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button>
     </div>
     <div class="volume-control">
@@ -28,8 +28,8 @@
 
 
 <script setup>
-const youtubeURL = ref("https://youtu.be/T_lC2O1oIew?si=Sh2nWSAaOr6EgrLI")
-const oldURL = ref("")
+
+let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0")
 
 let { name } = defineProps(['name'])
 
@@ -42,6 +42,9 @@ let vidtitle = ref("");
 let volume = ref(0);
 
 
+// Ví dụ sử dụng hàm:
+
+
 const doWhenMounted = onMounted(() => {
   const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {
     'play-button': false,
@@ -52,48 +55,50 @@ const doWhenMounted = onMounted(() => {
   });
   const firstElement = document.querySelector('[data-vbg]');
   firstInstance = videoBackgrounds.get(firstElement);
-  document.querySelectorAll(".play").forEach(el => el.click())
+  firstInstance.setSource(youtubeURL.value);
 
-  if (oldURL.value !== youtubeURL.value) {
-    oldURL.value = youtubeURL.value
-    firstInstance.setSource(youtubeURL.value);
-  }
   volume.value = firstInstance.volume * 100;
   document.querySelector('#video-background').addEventListener('video-background-play', function (event) {
     notPlay.value = false;
     document.querySelector("iframe").setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");
     vidtitle.value = firstInstance.player.videoTitle;
   });
-
-  document.querySelector('#video-background').addEventListener('video-background-pause', function (event) {
-    notPlay.value = true;
-  });
+  console.log(firstInstance);
 
 })
 
-function playVid() {
-  if (oldURL.value !== youtubeURL.value) {
-    oldURL.value = youtubeURL.value;
-    let oldInstance = firstInstance;
-    firstInstance.setSource(youtubeURL.value);
+async function getTitleVid(videoId) {
+  const apiKey = 'AIzaSyAq98m57L7e7jFwHpFP1dlgzC_L6TgT9vs';
+  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
-    // Sử dụng setInterval để kiểm tra liên tục
-    const checkInstance = setInterval(() => {
-      if (firstInstance !== null) {
-        clearInterval(checkInstance); // Dừng setInterval khi firstInstance khác null
-
-        firstInstance.volume = 0.25;
-        volume.value = firstInstance.volume * 100;
-        firstInstance.play();
-        firstInstance.unmute();
-        notPlay.value = false;
-        vidtitle.value = firstInstance.player.videoTitle;
-        console.log(firstInstance.player.videoTitle);
-        console.log(firstInstance)
-        console.log(firstInstance.player.videoTitle);
-      }
-    }, 100); // Kiểm tra mỗi 100ms
+  try {
+    const response = await fetch(url);
+    const vidInfo = await response.json();
+    let titleYtbvid = vidInfo.items[0].snippet.title;
+    return titleYtbvid;
+  } catch (error) {
+    console.error('Error fetching video title:', error);
+    return '';
   }
+}
+function playVid() {
+  firstInstance.setSource(youtubeURL.value);
+
+  // Sử dụng setInterval để kiểm tra liên tục
+  const checkInstance = setInterval(() => {
+    if (firstInstance !== null) {
+      clearInterval(checkInstance); // Dừng setInterval khi firstInstance khác null
+      firstInstance.volume = 0.25;
+      volume.value = firstInstance.volume * 100;
+      firstInstance.play();
+      firstInstance.unmute();
+      notPlay.value = false;
+      console.log(getTitleVid(firstInstance.id));
+      getTitleVid(firstInstance.id).then(titleResult => {
+        vidtitle.value = titleResult;
+      });
+    }
+  }, 500); // Kiểm tra mỗi 100ms
 }
 
 
