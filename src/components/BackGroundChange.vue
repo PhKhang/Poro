@@ -2,9 +2,13 @@
   <div class="background-settings">
     <h2>Background</h2>
     <p>Click themes below to change background</p>
+    <div class="navigation-buttons">
+      <button @click="prevThemeSet" :disabled="currentThemeIndex === 0">Previous</button>
+      <button @click="nextThemeSet" :disabled="currentThemeIndex + themesPerPage >= themes.length">Next</button>
+    </div>
     <div class="theme-icons">
-      <div v-for="theme in themes" :key="theme" class="theme-icon" @click="selectTheme(theme)">
-        <span>{{ theme }}</span>
+      <div v-for="theme in currentThemes" :key="theme.id" class="theme-icon" @click="selectTheme(theme)">
+        <span>{{ theme.icon }}</span>
       </div>
     </div>
     <hr>
@@ -14,10 +18,10 @@
     <hr>
     <div class="youtube-input">
       <label for="youtube-url">Youtube Video:</label>
-      <textarea name="" v-model="youtubeURL" id=""></textarea>
-      <div id="video-background" :class="{ before: notPlay }" data-vbg="https://www.youtube.com/watch?v=yoY81oAiwD0">
+      <textarea v-model="youtubeURL" id="youtube-url"></textarea>
+      <div id="video-background" :class="{ before: notPlay }" :data-vbg="youtubeURL">
       </div>
-      <button @click="playVid" class="play" ref="myCoolDiv">Play/Pause</button>
+      <button @click="playVid" class="play" ref="myCoolDiv">Play</button>
     </div>
     <div class="volume-control">
       <label for="volume">Background Video volume:</label>
@@ -26,24 +30,162 @@
   </div>
 </template>
 
-
 <script setup>
-
-let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0")
-
-let { name } = defineProps(['name'])
-
+import { ref, computed, onMounted } from 'vue';
 import 'youtube-background';
 
-
-let firstInstance = 1;
+let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
 let notPlay = ref(true);
 let vidtitle = ref("");
 let volume = ref(0);
+let firstInstance;
+let themeIndexes = ref(0);
+let videoIndexes = ref(0);
+let currentThemeIndex = ref(0);
+const themesPerPage = 8;
 
+const themesJs = [
+  {
+    "id": 0,
+    "icon": "🌸",
+    "name": "Spring",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0",
+      "https://www.youtube.com/watch?v=AV5na_QOcX8",
+      "https://www.youtube.com/watch?v=Nlp6FN-mizI"
+    ]
+  },
+  {
+    "id": 1,
+    "icon": "🌃",
+    "name": "Night",
+    "videos": [
+      "https://www.youtube.com/watch?v=N-vLYY9dsIk"
+    ]
+  },
+  {
+    "id": 2,
+    "icon": "☕",
+    "name": "Coffee",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 3,
+    "icon": "🐱",
+    "name": "Cat",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 4,
+    "icon": "🎄",
+    "name": "Christmas",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 5,
+    "icon": "🌊",
+    "name": "Ocean",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 6,
+    "icon": "🔮",
+    "name": "Mystery",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 7,
+    "icon": "⛩️",
+    "name": "Japan",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 8,
+    "icon": "🌸",
+    "name": "Spring",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0",
+      "https://www.youtube.com/watch?v=AV5na_QOcX8",
+      "https://www.youtube.com/watch?v=Nlp6FN-mizI"
+    ]
+  },
+  {
+    "id": 9,
+    "icon": "🌃",
+    "name": "Night",
+    "videos": [
+      "https://www.youtube.com/watch?v=N-vLYY9dsIk"
+    ]
+  },
+  {
+    "id": 10,
+    "icon": "☕",
+    "name": "Coffee",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 11,
+    "icon": "🐱",
+    "name": "Cat",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 12,
+    "icon": "🎄",
+    "name": "Christmas",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 13,
+    "icon": "🌊",
+    "name": "Ocean",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 14,
+    "icon": "⛩️",
+    "name": "Mystery",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+  {
+    "id": 15,
+    "icon": "⛩️",
+    "name": "Japan",
+    "videos": [
+      "https://www.youtube.com/watch?v=yoY81oAiwD0"
+    ]
+  },
+];
 
-// Ví dụ sử dụng hàm:
+const themes = themesJs.map(theme => ({ id: theme.id, icon: theme.icon }));
 
+const currentThemes = computed(() => {
+  const start = currentThemeIndex.value;
+  const end = start + themesPerPage;
+  return themes.slice(start, end);
+});
 
 const doWhenMounted = onMounted(() => {
   const videoBackgrounds = new VideoBackgrounds('[data-vbg]', {
@@ -63,9 +205,7 @@ const doWhenMounted = onMounted(() => {
     document.querySelector("iframe").setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");
     vidtitle.value = firstInstance.player.videoTitle;
   });
-  console.log(firstInstance);
-
-})
+});
 
 async function getTitleVid(videoId) {
   const apiKey = 'AIzaSyAq98m57L7e7jFwHpFP1dlgzC_L6TgT9vs';
@@ -81,78 +221,48 @@ async function getTitleVid(videoId) {
     return '';
   }
 }
+
 function playVid() {
   firstInstance.setSource(youtubeURL.value);
 
-  // Sử dụng setInterval để kiểm tra liên tục
   const checkInstance = setInterval(() => {
     if (firstInstance !== null) {
-      clearInterval(checkInstance); // Dừng setInterval khi firstInstance khác null
+      clearInterval(checkInstance);
       firstInstance.volume = 0.25;
       volume.value = firstInstance.volume * 100;
       firstInstance.play();
       firstInstance.unmute();
       notPlay.value = false;
-      console.log(getTitleVid(firstInstance.id));
       getTitleVid(firstInstance.id).then(titleResult => {
         vidtitle.value = titleResult;
       });
     }
-  }, 500); // Kiểm tra mỗi 100ms
+  }, 500);
 }
 
-
-
-const themesJs = [
-  {
-    "id": '1',
-    "icon": '🌸',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '2',
-    "icon": '🌃',
-    "link": 'https://www.youtube.com/watch?v=N-vLYY9dsIk'
-  },
-  {
-    "id": '3',
-    "icon": '☕',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '4',
-    "icon": '🐱',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '5',
-    "icon": '🎄',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '6',
-    "icon": '🌊',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '7',
-    "icon": '🔮',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  },
-  {
-    "id": '8',
-    "icon": '⛩️',
-    "link": 'https://www.youtube.com/watch?v=yoY81oAiwD0'
-  }
-];
-const themes = themesJs.map(theme => theme.icon);
-
 const selectTheme = (selectedTheme) => {
-  for (const theme of themesJs) {
-    if (selectedTheme === theme.icon) {
-      youtubeURL.value = theme.link;
-      break;
+  const theme = themesJs.find(t => t.icon === selectedTheme.icon);
+  if (theme) {
+    if (themeIndexes.value !== theme.id) {
+      themeIndexes.value = theme.id;
+      videoIndexes.value = 0;
+    } else {
+      videoIndexes.value = (videoIndexes.value + 1) % theme.videos.length;
     }
+  }
+  youtubeURL.value = theme.videos[videoIndexes.value];
+  playVid();
+};
+
+const prevThemeSet = () => {
+  if (currentThemeIndex.value > 0) {
+    currentThemeIndex.value -= themesPerPage;
+  }
+};
+
+const nextThemeSet = () => {
+  if (currentThemeIndex.value + themesPerPage < themes.length) {
+    currentThemeIndex.value += themesPerPage;
   }
 };
 
@@ -171,9 +281,15 @@ const setVolume = () => {
   font-family: Arial, sans-serif;
 }
 
-.theme-icons {
+.navigation-buttons {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.theme-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
@@ -243,12 +359,9 @@ const setVolume = () => {
   background-color: red;
   width: 100px !important;
   height: 100px !important;
-
   position: unset !important;
-
-  border-radius: 8px;
+  border-radius: 8px
 }
-
 
 #video-background {
   z-index: -99 !important;

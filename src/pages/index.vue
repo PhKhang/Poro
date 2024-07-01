@@ -3,7 +3,6 @@
 
     <h2>The line bellow is data taken from its server API (Nitro)</h2>
     <p>{{ data }}</p>
-
     <h2>User data:</h2>
     <p>{{ userData }}</p>
 
@@ -27,7 +26,6 @@
 // definePageMeta({middleware: 'auth'})
 
 const { data, pending, error, refresh } = await useFetch('/api/45')
-
 const { data: userData } = useAuth()
 </script>
 
