@@ -2,7 +2,8 @@
     <div>
         <DraggablePomodoro />
         <DraggableNote />
-        <BackGroundChange /> 
+        <BackGroundChange />
+        <DraggableSound />
     </div>
 </template>
 
@@ -10,6 +11,4 @@
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

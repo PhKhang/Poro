@@ -1,10 +1,6 @@
 <template>
-  <div
-    class="draggable"
-    @mousedown="onMouseDown"
-    :class="{ dragging: isDragging }"
-    :style="{ top: `${position.y}px`, left: `${position.x}px` }"
-  >
+  <div class="draggable" @mousedown="onMouseDown" :class="{ dragging: isDragging }"
+    :style="{ top: `${position.y}px`, left: `${position.x}px` }">
     <slot></slot>
   </div>
 </template>
@@ -63,9 +59,6 @@ export default {
 <style>
 .draggable {
   position: absolute;
-  width: 300px;
-  height: max-content;
-  min-height: 400px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/path/to/your/background-image.jpg');
   background-size: cover;
   background-position: center;
@@ -75,12 +68,10 @@ export default {
   justify-content: center;
   cursor: pointer;
   user-select: none;
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
   transition: filter 0.2s;
-  
   border-radius: 8px;
   backdrop-filter: blur(10px);
 }
-
 </style>
