@@ -1,39 +1,47 @@
 <template>
-  <div class="background-settings">
-    <h2>Background</h2>
-    <p>Click themes below to change background</p>
-    <div class="navigation-buttons">
-      <button @click="prevThemeSet" :disabled="currentThemeIndex === 0">Previous</button>
-      <button @click="nextThemeSet" :disabled="currentThemeIndex + themesPerPage >= themes.length">Next</button>
-    </div>
-    <div class="theme-icons">
-      <div v-for="theme in currentThemes" :key="theme.id" class="theme-icon" @click="selectTheme(theme)">
-        <span>{{ theme.icon }}</span>
+  <div>
+    <div class="background-settings" v-show="isVisible">
+      <button class="close-btn" @click="hideElement">-</button>
+      <h2>Background</h2>
+      <p>Click themes below to change background</p>
+      <div class="navigation-buttons">
+        <button @click="prevThemeSet" :disabled="currentThemeIndex === 0">Previous</button>
+        <button @click="nextThemeSet" :disabled="currentThemeIndex + themesPerPage >= themes.length">Next</button>
+      </div>
+      <div class="theme-icons">
+        <div v-for="theme in currentThemes" :key="theme.id" class="theme-icon" @click="selectTheme(theme)">
+          <span>{{ theme.icon }}</span>
+        </div>
+      </div>
+      <hr>
+      <div class="song-info">
+        <p class="song-title">{{ vidtitle }}</p>
+      </div>
+      <hr>
+      <div class="youtube-input">
+        <label for="youtube-url">Youtube Video:</label>
+        <textarea v-model="youtubeURL" id="youtube-url"></textarea>
+        <button @click="playVid" class="play" ref="myCoolDiv">Play</button>
+      </div>
+      <div class="volume-control">
+        <label for="volume">Background Video volume:</label>
+        <input type="range" id="volume" v-model="volume" min="0" max="100" @input="setVolume">
       </div>
     </div>
-    <hr>
-    <div class="song-info">
-      <p class="song-title">{{ vidtitle }}</p>
-    </div>
-    <hr>
-    <div class="youtube-input">
-      <label for="youtube-url">Youtube Video:</label>
-      <textarea v-model="youtubeURL" id="youtube-url"></textarea>
-      <div id="video-background" :class="{ before: notPlay }" :data-vbg="youtubeURL">
-      </div>
-      <button @click="playVid" class="play" ref="myCoolDiv">Play</button>
-    </div>
-    <div class="volume-control">
-      <label for="volume">Background Video volume:</label>
-      <input type="range" id="volume" v-model="volume" min="0" max="100" @input="setVolume">
-    </div>
+    <div id="video-background" :class="{ before: notPlay }" :data-vbg="youtubeURL"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, defineProps } from 'vue';
 import 'youtube-background';
-
+const props = defineProps({
+  isVisible: Boolean // Define props
+});
+const emit = defineEmits(['close']); // Define emits
+const hideElement = () => {
+  emit('close'); // Emit event to parent
+};
 let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
 let notPlay = ref(true);
 let vidtitle = ref("");
@@ -43,7 +51,6 @@ let themeIndexes = ref(0);
 let videoIndexes = ref(0);
 let currentThemeIndex = ref(0);
 const themesPerPage = 8;
-
 const themesJs = [
   {
     "id": 0,
@@ -269,10 +276,13 @@ const nextThemeSet = () => {
 const setVolume = () => {
   firstInstance.setVolume(volume.value / 100);
 };
+
+
 </script>
 
 <style scoped>
 .background-settings {
+  position: relative;
   background: rgba(0, 0, 0, 0.6);
   padding: 20px;
   border-radius: 10px;
@@ -315,10 +325,6 @@ const setVolume = () => {
 .song-title {
   font-size: 16px;
   font-weight: bold;
-}
-
-.song-artist {
-  font-size: 14px;
 }
 
 .controls {
@@ -365,5 +371,18 @@ const setVolume = () => {
 
 #video-background {
   z-index: -99 !important;
+}
+
+.close-button,
+.show-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 </style>
