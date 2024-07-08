@@ -4,8 +4,11 @@
     <h2>The line bellow is data taken from its server API (Nitro)</h2>
     <p>{{ data }}</p>
 
+    <h2>Vid info</h2>
+    <pre>{{ vid }}</pre>
+
     <h2>User data:</h2>
-    <p>{{ userData }}</p>
+    <pre>{{ userData }}</pre>
 
     <p>You can change what it returns in <code>/server/api/[id].ts</code></p>
 
@@ -27,6 +30,8 @@
 // definePageMeta({middleware: 'auth'})
 
 const { data, pending, error, refresh } = await useFetch('/api/45')
+
+const { data: vid } = await useFetch('https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=4Y4YSpF6d6w&key=AIzaSyAq98m57L7e7jFwHpFP1dlgzC_L6TgT9vs')
 
 const { data: userData } = useAuth()
 </script>

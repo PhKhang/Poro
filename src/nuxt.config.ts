@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     mongoURI: process.env.MONGODB_URI,
     authSecret: process.env.AUTH_SECRET,
+    API_ROUTE_SECRET: process.env.API_ROUTE_SECRET,
   },
 
   routeRules: {
