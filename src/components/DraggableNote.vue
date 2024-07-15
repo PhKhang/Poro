@@ -1,5 +1,5 @@
 <template>
-    <HoverMove>
+    <HoverMove class="hover-move">
         <Editor />
     </HoverMove>
 </template>
@@ -20,5 +20,10 @@ import { Editor } from "novel-vue";
     --novel-highlight-orange: red;
     --novel-highlight-pink: red;
     --novel-highlight-gray: red;
+}
+
+.hover-move {
+    margin-left: 600px;
+    margin-top: 200px;
 }
 </style>

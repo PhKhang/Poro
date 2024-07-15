@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="video-background" :class="{ before: notPlay }" :data-vbg="youtubeURL"></div>
-
+    <SoundMix v-show="elementsVisibility.soundmix" @close="toggleVisibility('soundmix')" />
     <DraggablePomodoro :isVisible="elementsVisibility.pomodoro" @close="toggleVisibility('pomodoro')" />
     <DraggableNote :isVisible="elementsVisibility.note" @close="toggleVisibility('note')" />
     <BackGroundChange :isVisible="elementsVisibility.backgroundChange" @close="toggleVisibility('backgroundChange')" />
@@ -9,21 +9,23 @@
 
     <div class="taskbar">
       <button @click="toggleVisibility('backgroundChange')">Background</button>
+      <button @click="toggleVisibility('soundmix')">Soundmix</button>
       <button @click="toggleVisibility('pomodoro')">Pomodoro</button>
       <button @click="toggleVisibility('sound')">Sound</button>
       <button @click="toggleVisibility('note')">Note</button>
-
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
 const elementsVisibility = ref({
-  note: true,
+  note: false,
   pomodoro: true,
-  sound: true,
-  backgroundChange: true
+  sound: false,
+  backgroundChange: true,
+  soundmix: true
 });
 
 const toggleVisibility = (element) => {
@@ -33,9 +35,7 @@ const toggleVisibility = (element) => {
 // Mock data and methods for video background
 let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
 let notPlay = ref(true);
-
 </script>
-
 <style scoped>
 #app {
   position: relative;
@@ -52,14 +52,21 @@ let notPlay = ref(true);
 }
 
 .taskbar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  /* Adjust this percentage as needed */
+  max-width: 600px;
+  /* Ensure it doesn't get too wide on large screens */
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   padding: 10px;
   gap: 10px;
+  border-radius: 8px;
+  /* Optional: add rounded corners */
 }
 
 .taskbar button {

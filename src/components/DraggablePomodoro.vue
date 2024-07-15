@@ -1,5 +1,5 @@
 <template>
-  <DraggableComponent>
+  <DraggableComponent class="hover-move">
     <PomodoroTimer />
   </DraggableComponent>
 </template>
@@ -18,5 +18,10 @@ export default {
 </script>
 
 <style>
+.hover-move {
+  margin-left: 430px;
+  margin-top: 100px;
+}
+
 /* Thêm style nếu cần */
 </style>

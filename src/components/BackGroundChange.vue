@@ -200,12 +200,11 @@ const doWhenMounted = onMounted(() => {
     'muted': false,
     'mute-button': false,
     'loop': true,
-    'volume': 0.25,
+    'volume': 0.5,
   });
   const firstElement = document.querySelector('[data-vbg]');
   firstInstance = videoBackgrounds.get(firstElement);
   firstInstance.setSource(youtubeURL.value);
-
   volume.value = firstInstance.volume * 100;
   document.querySelector('#video-background').addEventListener('video-background-play', function (event) {
     notPlay.value = false;
@@ -235,7 +234,7 @@ function playVid() {
   const checkInstance = setInterval(() => {
     if (firstInstance !== null) {
       clearInterval(checkInstance);
-      firstInstance.volume = 0.25;
+      firstInstance.volume = 0.5;
       volume.value = firstInstance.volume * 100;
       firstInstance.play();
       firstInstance.unmute();
