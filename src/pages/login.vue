@@ -19,6 +19,7 @@ async function submitLogin() {
 </script>
 
 <template>
+  <button @click="signIn('google')" >Google Login</button>
   <form @submit.prevent="submitLogin">
     <input type="email" v-model="form.email" placeholder="Email"> <br>
     <input type="password" v-model="form.password" placeholder="Password">
