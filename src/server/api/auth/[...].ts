@@ -69,25 +69,25 @@ export default NuxtAuthHandler({
   },
 
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (user) {
-        token = {
-          ...token,
-          ...user
-        }
-      }
+    // async jwt({ token, user, account }) {
+    //   if (user) {
+    //     token = {
+    //       ...token,
+    //       ...user
+    //     }
+    //   }
 
-      return token;
-    },
+    //   return token;
+    // },
 
-    async session({ session, token }) {
-      session.user = {
-        ...token,
-        ...session.user
-      }
+    // async session({ session, token }) {
+    //   session.user = {
+    //     ...token,
+    //     ...session.user
+    //   }
 
-      return session;
-    }
+    //   return session;
+    // }
     
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)

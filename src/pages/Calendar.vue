@@ -169,6 +169,8 @@ useHead({
   ]
 }
 )
+
+const {google} = require('googleapis')
 </script>
 
 <style></style>
