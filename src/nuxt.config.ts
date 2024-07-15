@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   modules: ["@sidebase/nuxt-auth"],
 
   auth: {
-    baseURL: process.env.AUTH_ORIGIN,
+    baseURL: process.env.VERCEL_URL ? `https://${VERCEL_URL}/api/auth` : process.env.AUTH_ORIGIN,
     provider: {
       type: 'authjs'
     }
