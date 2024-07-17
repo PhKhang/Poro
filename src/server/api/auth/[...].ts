@@ -2,11 +2,11 @@ import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { UserModel } from '~/server/models/user';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 async function getMe(session: any) {
   return await $fetch('/api/me', {
@@ -64,11 +64,11 @@ export default NuxtAuthHandler({
     })
   ],
 
-  session: {
-    strategy: 'jwt'
-  },
+  // session: {
+  //   strategy: 'jwt'
+  // },
 
-  callbacks: {
+  // callbacks: {
     // async jwt({ token, user, account }) {
     //   if (user) {
     //     token = {
@@ -95,6 +95,6 @@ export default NuxtAuthHandler({
     //   ;(session as any).subscribed = me?.subscribed
     //   return Promise.resolve(session)
     // }
-  },
+  // },
 
 })
