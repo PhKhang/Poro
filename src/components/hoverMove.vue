@@ -58,7 +58,9 @@ onBeforeUnmount(() => {
 <style>
 .draggable {
   position: absolute;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/path/to/your/background-image.jpg');
+  border-radius: 20px;
+  background-color: rgba(34, 34, 34, 0.5);
+  border: 1px solid #7a7a7a;
   background-size: cover;
   background-position: center;
   color: white;
@@ -67,10 +69,9 @@ onBeforeUnmount(() => {
   justify-content: center;
   cursor: pointer;
   user-select: none;
-  padding: 10px;
+  padding: 0px;
   box-sizing: border-box;
   transition: filter 0.2s;
-  border-radius: 8px;
   backdrop-filter: blur(10px);
 }
 
