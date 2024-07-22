@@ -63,13 +63,31 @@ export default defineComponent({
       ]
     };
   },
+  computed: {
+    totalTask() {
+      return this.tasks.length;
+    },
+    doneTask() {
+      return this.tasks.filter(task => task.isDone).length;
+    }
+  },
   methods: {
     toggleDone(task: { isDone: boolean }) {
       task.isDone = !task.isDone;
+      this.emitTaskUpdate();
     },
     toggleSetting(task: { isSetting: boolean }) {
       task.isSetting = !task.isSetting;
+    },
+    emitTaskUpdate() {
+      this.$emit('task-update', {
+        total: this.tasks.length,
+        done: this.tasks.filter(task => task.isDone).length
+      });
     }
+  },
+  watch: {
+    tasks: 'emitTaskUpdate'
   }
 });
 </script>
@@ -104,11 +122,11 @@ export default defineComponent({
 
 .task-content {
   width: 100%;
-  padding-right: 40px; /* Space for icons */
+  padding-right: 40px; 
 }
 
 .task-content {
-  padding-right: 10px; /* Space for icons */
+  padding-right: 10px; 
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -129,7 +147,7 @@ export default defineComponent({
 
 .task-date {
   color: #ededed;
-  margin: 0;
+  margin-bottom: -3px;
   padding-left: 6px;
   margin-top: 0;
   font: 800 11.2px Poppins, sans-serif;
@@ -145,8 +163,8 @@ export default defineComponent({
   font-size: 10.4px;
   color: #ededed;
   font-weight: 600;
-  padding: 0 3px;
-  margin-top: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
   margin-left: 5px;
 }
 
@@ -171,7 +189,7 @@ export default defineComponent({
   top: 50%;
   transform: translateY(-50%);
   gap: 5px;
-  padding: 1px;
+  padding: 2px;
 }
 
 .task-item:hover .icons {

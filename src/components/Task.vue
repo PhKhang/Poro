@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <TaskList />
+    <TaskList @task-update="handleTaskUpdate"/>
     <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none" class="add-task-icon">
         <circle cx="26" cy="26" r="26" fill="#222222" />
         <g transform="translate(11.5, 11)">
@@ -40,33 +40,40 @@
 </template>
   
 <script lang="ts">
-    import { ref, computed } from 'vue';
-    import { defineComponent } from 'vue';
-    import TaskList from './TaskList.vue';
+import { ref, computed } from 'vue';
+import { defineComponent } from 'vue';
+import TaskList from './TaskList.vue';
 
-    const currentDate = new Date();
-    const currentDay = ref(currentDate.getDate());
-    const currentMonth = ref(currentDate.toLocaleString('default', { month: 'short' }));
+const currentDate = new Date();
+const currentDay = ref(currentDate.getDate());
+const currentMonth = ref(currentDate.toLocaleString('default', { month: 'short' }));
 
-    const totalTasks = ref(3);
-    const doneTasks = ref(1);
+export default defineComponent({
+  name: 'TaskManagement',
+  components: {
+    TaskList,
+  },
+  setup() {
+    const totalTasks = ref(0);
+    const doneTasks = ref(0);
 
-    export default defineComponent({
-        name: 'TaskManagement',
-        components: {
-            TaskList,
-        },
-        setup() {
-            const progress = computed(() => (doneTasks.value / totalTasks.value) * 100);
-            return {
-                currentDay,
-                currentMonth,
-                progress,
-                totalTasks,
-                doneTasks,
-            };
-        },
-    });
+    const progress = computed(() => totalTasks.value > 0 ? (doneTasks.value / totalTasks.value) * 100 : 0);
+
+    function handleTaskUpdate(update: { total: number, done: number }) {
+      totalTasks.value = update.total;
+      doneTasks.value = update.done;
+    }
+
+    return {
+      currentDay,
+      currentMonth,
+      progress,
+      totalTasks,
+      doneTasks,
+      handleTaskUpdate
+    };
+  }
+});
 </script>
   
 <style scoped>
