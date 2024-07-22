@@ -5,27 +5,30 @@
     <DraggablePomodoro :isVisible="elementsVisibility.pomodoro" @close="toggleVisibility('pomodoro')" />
     <DraggableNote :isVisible="elementsVisibility.note" @close="toggleVisibility('note')" />
     <BackGroundChange :isVisible="elementsVisibility.backgroundChange" @close="toggleVisibility('backgroundChange')" />
-    <DraggableSound :isVisible="elementsVisibility.sound" @close="toggleVisibility('sound')" />
-
+    <DraggableSound :isVisible="elementsVisibility.music" @close="toggleVisibility('music')" />
+    <DraggableTask :isVisible="elementsVisibility.task" @close="toggleVisibility('Task')" />
     <div class="taskbar">
       <button @click="toggleVisibility('backgroundChange')">Background</button>
       <button @click="toggleVisibility('soundmix')">Soundmix</button>
       <button @click="toggleVisibility('pomodoro')">Pomodoro</button>
-      <button @click="toggleVisibility('sound')">Sound</button>
+      <button @click="toggleVisibility('music')">Music</button>
       <button @click="toggleVisibility('note')">Note</button>
+      <button @click="toggleVisibility('task')">Task</button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import './assets/base.css'
 
 const elementsVisibility = ref({
   note: false,
-  pomodoro: true,
-  sound: false,
+  pomodoro: false,
+  music: false,
   backgroundChange: true,
-  soundmix: true
+  soundmix: false,
+  task: false
 });
 
 const toggleVisibility = (element) => {
@@ -37,6 +40,7 @@ let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
 let notPlay = ref(true);
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 #app {
   position: relative;
   height: 100vh;
