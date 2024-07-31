@@ -5,6 +5,7 @@
     <slot></slot>
   </div>
 </template>
+
 <script setup>
 import { ref, onBeforeUnmount, defineProps, defineEmits } from 'vue';
 
@@ -17,7 +18,6 @@ const emit = defineEmits(['close']); // Define emits
 const position = ref({ x: 0, y: 0 });
 const isDragging = ref(false);
 const offset = ref({ x: 0, y: 0 });
-const parentRect = ref({ width: 0, height: 0, top: 0, left: 0 });
 
 const onMouseDown = (event) => {
   isDragging.value = true;
@@ -25,30 +25,16 @@ const onMouseDown = (event) => {
     x: event.clientX - position.value.x,
     y: event.clientY - position.value.y,
   };
-
-  const parentElement = event.target.closest('.draggable').parentElement;
-  parentRect.value = parentElement.getBoundingClientRect();
-
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 };
 
 const onMouseMove = (event) => {
   if (isDragging.value) {
-    const newPos = {
+    position.value = {
       x: event.clientX - offset.value.x,
       y: event.clientY - offset.value.y,
     };
-
-    // Prevent the element from being dragged out of the parent element
-    const element = document.querySelector('.draggable');
-    const elementRect = element.getBoundingClientRect();
-
-    // Adjust the new position to keep the element within the parent
-    newPos.x = Math.max(parentRect.value.left, Math.min(newPos.x, parentRect.value.left + parentRect.value.width - elementRect.width));
-    newPos.y = Math.max(parentRect.value.top, Math.min(newPos.y, parentRect.value.top + parentRect.value.height - elementRect.height));
-
-    position.value = newPos;
   }
 };
 
@@ -62,14 +48,16 @@ const hideElement = () => {
   emit('close'); // Emit event to parent
 };
 
+
 onBeforeUnmount(() => {
   document.removeEventListener('mousemove', onMouseMove);
   document.removeEventListener('mouseup', onMouseUp);
 });
 </script>
+
 <style>
 .draggable {
-  position: fixed;
+  position: absolute;
   border-radius: 20px;
   background-color: rgba(34, 34, 34, 0.5);
   border: 1px solid #7a7a7a;

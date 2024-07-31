@@ -359,16 +359,17 @@ const setVolume = () => {
   width: 100%;
 }
 
+.before,
+.before>* {
+  background-color: red;
+  width: 100px !important;
+  height: 100px !important;
+  position: unset !important;
+  border-radius: 8px
+}
+
 #video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -99;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  z-index: -99 !important;
 }
 
 .close-button,
