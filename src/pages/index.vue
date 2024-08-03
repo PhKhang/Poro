@@ -19,6 +19,7 @@
     <NuxtLink to="/login">LOGIN</NuxtLink> <br>
     <NuxtLink to="/register">REGISTER</NuxtLink> <br>
     <NuxtLink to="/room-test">Go to the room testing</NuxtLink> <br>
+    <NuxtLink to="/report">Go to the report</NuxtLink> <br>
     <NuxtLink to="/testing">Go to the background vid</NuxtLink> <br>
     <NuxtLink to="/note">Go to the note taking test</NuxtLink> <br>
     <hr>
@@ -39,5 +40,6 @@ const { data: userData } = useAuth()
 <style>
 body {
     margin: 0px;
+    padding: 0px;
 }
 </style>
