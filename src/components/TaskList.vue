@@ -1,6 +1,6 @@
 <template>
   <ul class="task-list">
-    <li v-for="task in tasks" :key="task.name" :class="['task-item', { 'setting-active': task.isSetting }]">
+    <li v-for="task in tasks" :key="task.id" :class="['task-item', { 'setting-active': task.isSetting }]">
       <div class="task-content">
         <h3 class="task-name">{{ task.name }}</h3>
         <p :class="['task-date', { overdue: task.isOverdue }]">{{ task.date }}</p>
@@ -22,18 +22,35 @@
         </svg>
       </div>
     </li>
+    <TaskComponent v-if="selectedTask" :task="selectedTask" />
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import TaskComponent from './TaskComponent.vue'; 
+
+interface Task {
+  id: number;
+  name: string;
+  date: string;
+  isOverdue: boolean;
+  priorityClass: string;
+  priorityText: string;
+  isDone: boolean;
+  isSetting: boolean;
+}
 
 export default defineComponent({
   name: 'TaskList',
+  components: {
+    TaskComponent // Register TaskComponent
+  },
   data() {
     return {
       tasks: [
         {
+          id: 1,
           name: 'Write Use-case Specification',
           date: 'Nov 18, 2024',
           isOverdue: false,
@@ -43,6 +60,7 @@ export default defineComponent({
           isSetting: false
         },
         {
+          id: 2,
           name: 'Clean room',
           date: '23:00 - 23:59 May 29, 2024 | Due: May 30,20242222',
           isOverdue: true,
@@ -52,6 +70,7 @@ export default defineComponent({
           isSetting: false
         },
         {
+          id: 3,
           name: 'Buy snacks',
           date: 'Jun 30, 2024',
           isOverdue: false,
@@ -60,7 +79,9 @@ export default defineComponent({
           isDone: false,
           isSetting: false
         }
-      ]
+      ],
+      selectedTask: null as Task | null, // Update this line
+      showTaskComponent: false // Add this line
     };
   },
   computed: {
@@ -69,15 +90,22 @@ export default defineComponent({
     },
     doneTask() {
       return this.tasks.filter(task => task.isDone).length;
-    }
+    },
+
   },
   methods: {
     toggleDone(task: { isDone: boolean }) {
       task.isDone = !task.isDone;
       this.emitTaskUpdate();
     },
-    toggleSetting(task: { isSetting: boolean }) {
-      task.isSetting = !task.isSetting;
+    toggleSetting(task: Task) {
+      if (this.selectedTask && this.selectedTask.id === task.id) {
+        this.selectedTask = null; // Deselect if the same task is clicked again
+      } else {
+        this.tasks.forEach(t => (t.isSetting = false)); // Reset all settings
+        task.isSetting = !task.isSetting;
+        this.selectedTask = task.isSetting ? task : null;
+      }
     },
     emitTaskUpdate() {
       this.$emit('task-update', {
@@ -88,6 +116,9 @@ export default defineComponent({
   },
   watch: {
     tasks: 'emitTaskUpdate'
+  },
+  mounted() {
+    this.emitTaskUpdate();
   }
 });
 </script>
@@ -147,7 +178,7 @@ export default defineComponent({
 
 .task-date {
   color: #ededed;
-  margin-bottom: -3px;
+  margin-bottom: -3\px;
   padding-left: 6px;
   margin-top: 0;
   font: 800 11.2px Poppins, sans-serif;

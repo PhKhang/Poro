@@ -64,6 +64,10 @@ export default defineComponent({
       doneTasks.value = update.done;
     }
 
+    onMounted(() => {
+      handleTaskUpdate({ total: totalTasks.value, done: doneTasks.value });
+    });
+
     return {
       currentDay,
       currentMonth,
