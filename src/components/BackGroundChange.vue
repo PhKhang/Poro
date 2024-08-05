@@ -228,8 +228,15 @@ async function getTitleVid(videoId) {
   }
 }
 
-function playVid() {
+
+async function playVid() {
   firstInstance.setSource(youtubeURL.value);
+
+  const { result: fetchData } = await $fetch('/api/user/update-theme', {
+    method: "POST",
+    body: { content: "# Hello world", id: 235 }
+  })
+  console.log(fetchData)
 
   const checkInstance = setInterval(() => {
     if (firstInstance !== null) {

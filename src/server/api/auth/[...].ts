@@ -46,6 +46,7 @@ export default NuxtAuthHandler({
       async authorize(credentials: { email: string, password: string }) {
         console.log("Trying to sign in")
         const user = await UserModel.findOne({ email: credentials.email });
+        console.log(user)
 
         if (!user) {
           console.log("No user");

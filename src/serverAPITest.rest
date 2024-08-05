@@ -3,6 +3,8 @@
 # http://localhost:3000/api/
 
 # Get all users
-http://localhost:3000/api/user/find-user
+# http://localhost:3000/api/user/find-user
+
+http://localhost:3000/api/user/update-theme 
 
 # http://localhost:3000/api/user/add-user

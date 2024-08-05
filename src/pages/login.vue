@@ -4,10 +4,13 @@ const form = ref({ email: "", password: "" });
 
 const { signIn } = useAuth()
 
+// definePageMeta({
+//     auth: { unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
+// })
 async function submitLogin() {
   console.log("Submitted")
   try {
-    const result = await signIn("credentials", form.value);
+    const result = await signIn("credentials", {...form.value,  callbackUrl: '/testing' });
     useRouter().push({name: 'index'});
 
     console.log("Signed in", { result });
