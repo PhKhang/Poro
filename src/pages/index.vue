@@ -5,10 +5,15 @@
     <p>{{ data }}</p>
 
     <h2>Vid info</h2>
-    <pre>{{ vid }}</pre>
+    <!-- <pre>{{ vid }}</pre> -->
 
     <h2>User data:</h2>
     <pre>{{ userData }}</pre>
+    
+    <h2>Session data:</h2>
+    <pre>{{ demo }}</pre>
+    <pre>{{ content }}</pre>
+    <p>Demo data is above me</p>
 
     <p>You can change what it returns in <code>/server/api/[id].ts</code></p>
 
@@ -35,6 +40,8 @@ const { data, pending, error, refresh } = await useFetch('/api/45')
 const { data: vid } = await useFetch('https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=4Y4YSpF6d6w&key=AIzaSyAq98m57L7e7jFwHpFP1dlgzC_L6TgT9vs')
 
 const { data: userData } = useAuth()
+const { data: demo, content } = useFetch('/api/protected')
+const { body: sessionData } = await useFetch('/api/me', {method: 'POST'})
 </script>
 
 <style>

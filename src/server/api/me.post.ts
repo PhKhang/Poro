@@ -4,6 +4,7 @@ export default eventHandler(async event => {
     const runtimeConfig = useRuntimeConfig()
 
     if (query.API_ROUTE_SECRET !== runtimeConfig.API_ROUTE_SECRET) {
+        console.log('Not authorized')
         throw createError({
             statusCode: 401,
             statusMessage: 'You are not authorized to call this API.',
@@ -17,6 +18,8 @@ export default eventHandler(async event => {
             },
         },
     })
+    
+    console.log('Found', account)
 
     return account
 })
