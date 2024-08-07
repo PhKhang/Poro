@@ -9,11 +9,16 @@
 
     <h2>User data:</h2>
     <pre>{{ userData }}</pre>
-    
-    <h2>Session data:</h2>
+
+    <h2>Protected data:</h2>
     <pre>{{ demo }}</pre>
     <pre>{{ content }}</pre>
-    <p>Demo data is above me</p>
+
+    <h2>Token:</h2>
+    <pre>{{ token }}</pre>
+
+    <h2>Session:</h2>
+    <pre>{{ sess }}</pre>
 
     <p>You can change what it returns in <code>/server/api/[id].ts</code></p>
 
@@ -41,7 +46,9 @@ const { data: vid } = await useFetch('https://www.googleapis.com/youtube/v3/vide
 
 const { data: userData } = useAuth()
 const { data: demo, content } = useFetch('/api/protected')
-const { body: sessionData } = await useFetch('/api/me', {method: 'POST'})
+const { body: sessionData } = await useFetch('/api/me', { method: 'POST' })
+const { data: token } = await useFetch('/api/token')
+const { data: sess } = await useFetch('/api/session')
 </script>
 
 <style>

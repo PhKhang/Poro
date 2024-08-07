@@ -60,7 +60,7 @@ export default NuxtAuthHandler({
           throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
         }
 
-        return { ...user.toObject(), password: undefined };
+        return { ...user.toObject(), password: 'censored', role: 'user' };
       }
     })
   ],
@@ -69,7 +69,7 @@ export default NuxtAuthHandler({
   //   strategy: 'jwt'
   // },
 
-  // callbacks: {
+  callbacks: {
     // async jwt({ token, user, account }) {
     //   if (user) {
     //     token = {
@@ -81,14 +81,20 @@ export default NuxtAuthHandler({
     //   return token;
     // },
 
-    // async session({ session, token }) {
-    //   session.user = {
-    //     ...token,
-    //     ...session.user
-    //   }
+    async session({ session, token }) {
+      // console.log('Token:', token)
+      session.user = {
+        ...token,
+        ...session.user
+      }
+      
+      const user = await UserModel.findOne({ email: session.user.email });
+      
+      // const new_session = session
+      // new_session.role = new_session?.role
 
-    //   return session;
-    // }
+      return {...session, id: user?.id};
+    }
     
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)
@@ -96,6 +102,6 @@ export default NuxtAuthHandler({
     //   ;(session as any).subscribed = me?.subscribed
     //   return Promise.resolve(session)
     // }
-  // },
+  },
 
 })
