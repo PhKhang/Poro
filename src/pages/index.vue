@@ -6,6 +6,10 @@
     
     <button v-if="userData" @click="signOut()">Sign out</button>
     <em v-else>Not logged in</em>
+    <p>Trần Nguyễn Phúc Khang</p>
+    <p>Tran Nguyen Phúc Khang</p>
+    <h2>Trần Nguyễn Phúc Khang</h2>
+    <h2>Tran Nguyen Phúc Khang</h2>
 
     <h2>Vid info</h2>
     <!-- <pre>{{ vid }}</pre> -->
@@ -55,8 +59,13 @@ const { data: sess } = await useFetch('/api/session')
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 body {
     margin: 0px;
     padding: 0px;
+    
+    font-family: 'Poppins', 'Montserrat Alternates', sans-serif;
 }
 </style>
