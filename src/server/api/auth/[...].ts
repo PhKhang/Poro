@@ -2,11 +2,11 @@ import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { UserModel } from '~/server/models/user';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 async function getMe(session: any) {
   return await $fetch('/api/me', {
@@ -27,7 +27,7 @@ export default NuxtAuthHandler({
 
   secret: useRuntimeConfig().authSecret,
   
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
 
   providers: [
     // GithubProvider.default({
