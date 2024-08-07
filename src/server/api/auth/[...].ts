@@ -70,31 +70,39 @@ export default NuxtAuthHandler({
   // },
 
   callbacks: {
-    // async jwt({ token, user, account }) {
-    //   if (user) {
-    //     token = {
-    //       ...token,
-    //       ...user
-    //     }
-    //   }
-
-    //   return token;
-    // },
-
-    async session({ session, token }) {
-      // console.log('Token:', token)
-      session.user = {
-        ...token,
-        ...session.user
+    async jwt({ token, user, account }) {
+      console.log('Token:', token)
+      console.log('User:', user)
+      
+      if (user) {
+        token = {
+          ...token,
+          ...user
+        }
       }
-      
-      const user = await UserModel.findOne({ email: session.user.email });
-      
-      // const new_session = session
-      // new_session.role = new_session?.role
+      // else {
+      //   const acc = await UserModel.findOne({ email: token.email });
+      //   token = {...token, id: acc?.id}
+      //   console.log('Update id', acc)
+      // }
 
-      return {...session, id: user?.id};
-    }
+      return token;
+    },
+
+    // async session({ session, token }) {
+    //   // console.log('Token:', token)
+    //   session.user = {
+    //     ...token,
+    //     ...session.user
+    //   }
+      
+    //   const user = await UserModel.findOne({ email: session.user.email });
+      
+    //   // const new_session = session
+    //   // new_session.role = new_session?.role
+
+    //   return {...session, id: user?.id};
+    // }
     
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)
