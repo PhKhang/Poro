@@ -3,6 +3,9 @@
 
     <h2>The line bellow is data taken from its server API (Nitro)</h2>
     <p>{{ data }}</p>
+    
+    <button v-if="userData" @click="signOut()">Sign out</button>
+    <em v-else>Not logged in</em>
 
     <h2>Vid info</h2>
     <!-- <pre>{{ vid }}</pre> -->
@@ -44,7 +47,7 @@ const { data, pending, error, refresh } = await useFetch('/api/45')
 
 const { data: vid } = await useFetch('https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=4Y4YSpF6d6w&key=AIzaSyAq98m57L7e7jFwHpFP1dlgzC_L6TgT9vs')
 
-const { data: userData } = useAuth()
+const { data: userData, signOut, status } = useAuth()
 const { data: demo, content } = useFetch('/api/protected')
 const { body: sessionData } = await useFetch('/api/me', { method: 'POST' })
 const { data: token } = await useFetch('/api/token')

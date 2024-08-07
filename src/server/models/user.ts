@@ -19,4 +19,4 @@ const UserSchema = new Schema(
     },
     { id: true });
 
-export const UserModel = model<UserDocument>('User', UserSchema);
+export const UserModel = model<UserDocument>('User', UserSchema, 'User');

@@ -2,11 +2,11 @@ import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { UserModel } from '~/server/models/user';
-// import { PrismaAdapter } from '@next-auth/prisma-adapter';
-// import { PrismaClient } from '@prisma/client';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 
-// const prisma = new PrismaClient()
+const prisma = new PrismaClient()
 
 async function getMe(session: any) {
   return await $fetch('/api/me', {
@@ -27,14 +27,14 @@ export default NuxtAuthHandler({
 
   secret: useRuntimeConfig().authSecret,
   
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
 
   providers: [
-    // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
     // GithubProvider.default({
     //    clientId: 'enter-your-client-id-here',
     //    clientSecret: 'enter-your-client-secret-here'
     // })
+    // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
     GoogleProvider.default({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
@@ -65,9 +65,9 @@ export default NuxtAuthHandler({
     })
   ],
 
-  // session: {
-  //   strategy: 'jwt'
-  // },
+  session: {
+    strategy: 'jwt'
+  },
 
   callbacks: {
     async jwt({ token, user, account }) {

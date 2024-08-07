@@ -51,3 +51,10 @@ model User {
   Account       Account[]
   Session       Session[]
 }
+
+model users {
+  id            String    @id @default(cuid()) @map("_id")
+  name          String?
+  email         String?   @unique
+  password      String?
+}
