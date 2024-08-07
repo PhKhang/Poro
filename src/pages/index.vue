@@ -10,6 +10,11 @@
     <p>Tran Nguyen Phúc Khang</p>
     <h2>Trần Nguyễn Phúc Khang</h2>
     <h2>Tran Nguyen Phúc Khang</h2>
+    <h1>aẫeệoốuữ</h1>
+    <h3>aẫeệoốuữ</h3>
+    <h4>aẫeệoốuữ</h4>
+    <h5>aẫeệoốuữ</h5>
+    <h6>aẫeệoốuữ</h6>
 
     <h2>Vid info</h2>
     <!-- <pre>{{ vid }}</pre> -->
@@ -59,13 +64,18 @@ const { data: sess } = await useFetch('/api/session')
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,500;1,600;1,700;1,800;1,900&display=swap');
 
 body {
     margin: 0px;
     padding: 0px;
     
     font-family: 'Poppins', 'Montserrat Alternates', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Montserrat Alternates', sans-serif;
+    font-weight: 600;
 }
 </style>
