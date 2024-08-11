@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <TaskList @task-update="handleTaskUpdate"/>
+    <TaskList @task-update="handleTaskUpdate" @task-selected="handleTaskSelected" />
     <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none" class="add-task-icon">
         <circle cx="26" cy="26" r="26" fill="#222222" />
         <g transform="translate(11.5, 11)">
@@ -48,6 +48,17 @@ const currentDate = new Date();
 const currentDay = ref(currentDate.getDate());
 const currentMonth = ref(currentDate.toLocaleString('default', { month: 'short' }));
 
+interface Task {
+  id: number;
+  name: string;
+  date: string;
+  isOverdue: boolean;
+  priorityClass: string;
+  priorityText: string;
+  isDone: boolean;
+  isSetting: boolean;
+}
+
 export default defineComponent({
   name: 'TaskManagement',
   components: {
@@ -56,8 +67,13 @@ export default defineComponent({
   setup() {
     const totalTasks = ref(0);
     const doneTasks = ref(0);
+    const selectedTask = ref<Task | null>(null);
 
     const progress = computed(() => totalTasks.value > 0 ? (doneTasks.value / totalTasks.value) * 100 : 0);
+
+    function handleTaskSelected(task: Task) {
+        selectedTask.value = task;
+    }
 
     function handleTaskUpdate(update: { total: number, done: number }) {
       totalTasks.value = update.total;
@@ -74,7 +90,8 @@ export default defineComponent({
       progress,
       totalTasks,
       doneTasks,
-      handleTaskUpdate
+      handleTaskUpdate,
+      handleTaskSelected
     };
   }
 });

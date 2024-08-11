@@ -22,12 +22,10 @@
         </svg>
       </div>
     </li>
-    <TaskComponent v-if="selectedTask" :task="selectedTask" />
   </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import TaskComponent from './TaskComponent.vue'; 
 
 interface Task {
@@ -106,12 +104,17 @@ export default defineComponent({
         task.isSetting = !task.isSetting;
         this.selectedTask = task.isSetting ? task : null;
       }
+      this.emitselectTask(task);
     },
     emitTaskUpdate() {
       this.$emit('task-update', {
         total: this.tasks.length,
         done: this.tasks.filter(task => task.isDone).length
       });
+    },
+    emitselectTask(task: Task) {
+      this.$emit('task-selected', task);
+      this.selectedTask = task;  // Optionally update local state
     }
   },
   watch: {

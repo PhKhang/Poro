@@ -6,7 +6,9 @@
     <DraggableNote :isVisible="elementsVisibility.note" @close="toggleVisibility('note')" />
     <BackGroundChange :isVisible="elementsVisibility.backgroundChange" @close="toggleVisibility('backgroundChange')" />
     <DraggableSound :isVisible="elementsVisibility.music" @close="toggleVisibility('music')" />
-    <DraggableTask :isVisible="elementsVisibility.task" @close="toggleVisibility('Task')" />
+    <DraggableTask :isVisible="elementsVisibility.task" @close="toggleVisibility('task')" @task-selected="handleTaskSelected" />
+    <DraggableSettingTask v-if="selectedTask" :isVisible="elementsVisibility.tasksetting" :task="selectedTask" />
+    
     <div class="taskbar">
       <button @click="toggleVisibility('backgroundChange')">Background</button>
       <button @click="toggleVisibility('soundmix')">Soundmix</button>
@@ -22,13 +24,21 @@
 import { ref } from 'vue';
 import './assets/base.css'
 
+const selectedTask = ref(null);
+
+const handleTaskSelected = (task) => {
+  selectedTask.value = task;
+  toggleVisibility('tasksetting');
+};
+
 const elementsVisibility = ref({
   note: false,
   pomodoro: false,
   music: false,
   backgroundChange: true,
   soundmix: false,
-  task: false
+  task: false,
+  tasksetting: true // Ensure tasksetting is managed properly
 });
 
 const toggleVisibility = (element) => {
@@ -39,6 +49,7 @@ const toggleVisibility = (element) => {
 let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
 let notPlay = ref(true);
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 #app {
