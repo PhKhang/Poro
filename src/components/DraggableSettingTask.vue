@@ -1,6 +1,6 @@
 <template>
   <DraggableComponent>
-      <TaskComponent v-if="task" :task="task" />
+    <TaskComponent v-if="task" :task="task" />
   </DraggableComponent>
 </template>
 
@@ -11,18 +11,18 @@ import TaskComponent from './TaskComponent.vue';
 export default {
   name: 'DraggableSettingTask',
   components: {
-      DraggableComponent,
-      TaskComponent,
+    DraggableComponent,
+    TaskComponent,
   },
   props: {
-      task: {
-          type: Object,
-          required: true
-      }
+    task: {
+      type: Object,
+      required: true
+    }
   }
 };
 </script>
 
 <style>
-/* Add styles if necessary */
+/* Thêm style nếu cần */
 </style>

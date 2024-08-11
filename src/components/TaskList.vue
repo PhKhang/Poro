@@ -42,7 +42,7 @@ interface Task {
 export default defineComponent({
   name: 'TaskList',
   components: {
-    TaskComponent // Register TaskComponent
+    TaskComponent 
   },
   data() {
     return {
@@ -78,8 +78,8 @@ export default defineComponent({
           isSetting: false
         }
       ],
-      selectedTask: null as Task | null, // Update this line
-      showTaskComponent: false // Add this line
+      selectedTask: null as Task | null, 
+      showTaskComponent: false
     };
   },
   computed: {
@@ -113,8 +113,8 @@ export default defineComponent({
       });
     },
     emitselectTask(task: Task) {
+      this.selectedTask = task; 
       this.$emit('task-selected', task);
-      this.selectedTask = task;  // Optionally update local state
     }
   },
   watch: {

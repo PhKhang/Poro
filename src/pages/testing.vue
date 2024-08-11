@@ -7,7 +7,7 @@
     <BackGroundChange :isVisible="elementsVisibility.backgroundChange" @close="toggleVisibility('backgroundChange')" />
     <DraggableSound :isVisible="elementsVisibility.music" @close="toggleVisibility('music')" />
     <DraggableTask :isVisible="elementsVisibility.task" @close="toggleVisibility('task')" @task-selected="handleTaskSelected" />
-    <DraggableSettingTask v-if="selectedTask" :isVisible="elementsVisibility.tasksetting" :task="selectedTask" />
+    <DraggableSettingTask :isVisible="elementsVisibility.tasksetting" v-if="selectedTask" :task="selectedTask" />
     
     <div class="taskbar">
       <button @click="toggleVisibility('backgroundChange')">Background</button>
@@ -28,7 +28,7 @@ const selectedTask = ref(null);
 
 const handleTaskSelected = (task) => {
   selectedTask.value = task;
-  toggleVisibility('tasksetting');
+  toggleVisibility('tasksetting'); // Show task settings when a task is selected
 };
 
 const elementsVisibility = ref({
@@ -38,7 +38,7 @@ const elementsVisibility = ref({
   backgroundChange: true,
   soundmix: false,
   task: false,
-  tasksetting: true // Ensure tasksetting is managed properly
+  tasksetting: false, 
 });
 
 const toggleVisibility = (element) => {
@@ -46,8 +46,8 @@ const toggleVisibility = (element) => {
 };
 
 // Mock data and methods for video background
-let youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
-let notPlay = ref(true);
+const youtubeURL = ref("https://www.youtube.com/watch?v=yoY81oAiwD0");
+const notPlay = ref(true);
 </script>
 
 <style scoped>
