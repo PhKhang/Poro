@@ -25,6 +25,9 @@ export default defineNuxtConfig({
 
   modules: ["@sidebase/nuxt-auth"],
 
+  // nuxtServerUtils: {
+  //   mongodbUri: process.env.MONGODB_URI,
+  // },
   auth: {
     baseURL: process.env.AUTH_ORIGIN,
     provider: {
@@ -32,8 +35,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // nuxtServerUtils: {
-  //   mongodbUri: process.env.MONGODB_URI,
-  // },
-
+  compatibilityDate: '2024-08-12',
 })
