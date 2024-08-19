@@ -15,14 +15,17 @@
     <!-- Main Content -->
     <div class="main-content">
       <!-- Top Bar -->
-      <div class="topbar">
-        <h1>User Management</h1>
+  <div class="topbar">
+    <h1>User Management</h1>
+      <div class="account-section">
         <div class="account-info">
           <span class="account-name">Moni Roy</span>
           <span class="account-type">Admin</span>
         </div>
-        <dif><button class="account-toggle">▼</button></dif>
-      </div>
+          <button class="account-toggle">▼</button>
+        </div>
+    </div>
+
 
       <!-- Metrics Dashboard -->
       <div class="dashboard">
@@ -70,19 +73,18 @@
           <thead>
             <tr>
               <th>ID</th>
-                <th>NAME</th>
-                <th>TOTAL TIME</th>
-                <th>SESSIONS</th>
-                <th>TYPE</th>
-                <th></th>
+              <th>Name</th>
+              <th>Total Time</th>
+              <th>Sessions</th>
+              <th>Type</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in paginatedItems" :key="item.id">
               <td>{{ item.id }}</td>
-              <td>{{ item.first_name }}</td>
-              <td>{{ item.last_name }}</td>
-              <td>{{ item.total_time }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.totalTime }} h</td>
               <td>{{ item.sessions }}</td>
               <td>{{ item.type }}</td>
               <td>
@@ -95,8 +97,8 @@
         <!-- Pagination Controls -->
         <div class="table-footer">
           <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous </button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
             <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
           </div>
         </div>
@@ -104,14 +106,16 @@
     </div>
   </div>
 </template>
+
+
 <script>
 export default {
   data() {
     return {
-      perPage: 3,
+      perPage: 5,
       currentPage: 1,
       items: [
-      { id: '00001', name: 'Nhi Trần Ngọc Uyên', totalTime: 655, sessions: 10, type: 'User' },
+        { id: '00001', name: 'Nhi Trần Ngọc Uyên', totalTime: 655, sessions: 10, type: 'User' },
         { id: '00002', name: 'Trần Nguyễn Phúc Khang', totalTime: 240, sessions: 10, type: 'User' },
         { id: '00003', name: 'Nguyễn Minh Hoàng', totalTime: 23.2, sessions: 10, type: 'User' },
         { id: '00004', name: 'Lương Quốc Dũng', totalTime: 342.2, sessions: 10, type: 'User' },
@@ -132,7 +136,7 @@ export default {
         { id: '00019', name: 'Emma Lewis', totalTime: 160, sessions: 6, type: 'User' },
         { id: '00020', name: 'Daniel Walker', totalTime: 80, sessions: 4, type: 'User' }
       ]
-    }
+    };
   },
   computed: {
     totalPages() {
@@ -159,8 +163,9 @@ export default {
       }
     }
   }
-}
+};
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
@@ -225,54 +230,64 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  padding: 0 15px;
 }
 
 .topbar h1 {
   font-size: 28px;
+  color: #FFD800; /* Optional: Makes the title more prominent */
+}
+
+.account-section {
+  display: flex;
+  align-items: center;
 }
 
 .account-info {
   display: flex;
   align-items: center;
+  flex-direction: column;
 }
 
 .account-name {
-  margin-right: 10px;
+  font-weight: bold;
+  margin-right: 5px; /* Space between name and type */
 }
 
 .account-type {
   color: #999;
-  margin-right: 10px;
+  font-size: 14px; /* Slightly smaller font for the type */
 }
-
 .account-toggle {
   background: none;
   border: none;
   color: #ffffff;
   cursor: pointer;
+  font-size: 18px; /* Adjust the size for better visibility */
 }
 
-/* Dashboard Styles */
+/* Metrics Dashboard Styles */
 .dashboard {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* Adjusted to provide more space for the table */
 }
 
 .metric-card {
   background-color: #2a2a2a;
   border-radius: 10px;
-  padding: 20px;
-  width: 30%;
+  padding: 15px; /* Reduced padding to make the cards smaller */
+  width: 28%; /* Adjusted width to give more space to the table */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .metric-info h2 {
-  font-size: 36px;
-  margin: 10px 0;
+  font-size: 28px; /* Reduced font size */
+  margin: 5px 0; /* Reduced margin */
 }
+
 
 .metric-change.up {
   color: #4caf50;
@@ -300,14 +315,20 @@ export default {
 .data-table {
   background-color: #2a2a2a;
   border-radius: 10px;
-  padding: 20px;
+  padding: 15px; /* Adjusted padding */
 }
 
 .table-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Adjusted margin */
+}
+
+th, td {
+  padding: 10px; /* Reduced padding for table cells */
+  text-align: left;
+  border-bottom: 1px solid #3a3a3a;
 }
 
 .filter-controls {
@@ -337,12 +358,6 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #3a3a3a;
-}
-
 th {
   background-color: #FFD800;
   color: #2a2a2a;
@@ -358,17 +373,36 @@ th {
 
 .table-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Aligns the pagination to the right */
   align-items: center;
   margin-top: 20px;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
 .pagination button {
-  background: none;
+  background-color: #3a3a3a;
   border: none;
   color: #ffffff;
   cursor: pointer;
   font-size: 18px;
-  margin-left: 10px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
+
+.pagination button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.page-info {
+  margin: 0 10px;
+  font-size: 18px;
+}
+
 </style>
