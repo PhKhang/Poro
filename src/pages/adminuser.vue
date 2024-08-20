@@ -6,7 +6,7 @@
       <nav>
         <ul>
           <li class="active"><a href="#">User Management</a></li>
-          <li><a href="#">Theme Management</a></li>
+          <li><RouterLink to ="/admintheme">Theme Management</RouterLink></li>
           <li><a href="#">Report Message</a></li>
         </ul>
       </nav>
