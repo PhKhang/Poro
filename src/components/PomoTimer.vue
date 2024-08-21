@@ -38,14 +38,15 @@ export default {
     const seconds = computed(() => (timeLeft.value % 60).toString().padStart(2, '0'));
 
     const startTimer = () => {
-      if (timer.value <= 0) {
-        useFetch(`/api/random-write?totalTime=${timer.value}`)
-      } 
       if (!timer.value) {
         timer.value = setInterval(() => {
           if (timeLeft.value > 0) {
             timeLeft.value--;
           } else {
+            if (isWorking.value) {
+              $fetch(`/api/random-write?totalTime=${timer.value}`)
+              console.log('workDuration', workDuration.value)
+            }
             switchMode();
           }
         }, 1000);
