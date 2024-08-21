@@ -136,6 +136,7 @@ const icons = {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet');
 
 #app {
   position: relative;
@@ -175,7 +176,7 @@ const icons = {
   bottom: 0;
   background-color: rgb(122, 122, 122, 0.4); 
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.1s ease;
   border-radius: 8px;
 }
 
@@ -282,16 +283,16 @@ const icons = {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 403px; /* Đặt chiều rộng cố định */
-  height: 72px; /* Đặt chiều cao cố định */
+  width: 403px;
+  height: 72px; 
   background: rgba(34, 34, 34, 0.5);
   backdrop-filter: blur(4.8px); /* Thêm hiệu ứng blur */
   -webkit-backdrop-filter: blur(4.8px); /* Cho Safari */
   display: flex;
   justify-content: center;
-  align-items: center; /* Căn giữa các nút theo chiều dọc */
-  padding: 10px; /* Giảm padding để phù hợp với chiều cao cố định */
-  gap: 10px; /* Khoảng cách giữa các nút */
+  align-items: center; 
+  padding: 10px; 
+  gap: 10px; 
   border-radius: 9.6px;
 }
 
