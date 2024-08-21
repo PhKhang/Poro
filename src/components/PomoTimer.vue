@@ -45,7 +45,7 @@ export default {
           } else {
             if (isWorking.value) {
               $fetch(`/api/random-write?totalTime=${timer.value}`)
-              console.log('workDuration', workDuration.value)
+              // console.log('workDuration', workDuration.value)
             }
             switchMode();
           }
