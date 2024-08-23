@@ -1,7 +1,18 @@
 <template>
   <div v-show="isVisible" class="draggable" ref="draggable" :style="{ left: position.x + 'px', top: position.y + 'px' }"
     @mousedown="startDrag">
-    <button class="close-btn" @click="hideElement">-</button>
+    <div class="close-btn" @click="hideElement">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_1_1163)">
+          <path d="M13.7328 5.7334H3.06607C1.59541 5.7334 0.399414 6.9294 0.399414 8.40005C0.399414 9.87071 1.59541 11.0667 3.06607 11.0667H13.7327C15.2034 11.0667 16.3994 9.87071 16.3994 8.40005C16.3994 6.9294 15.2034 5.7334 13.7328 5.7334Z" fill="#EDEDED" stroke="#EDEDED" stroke-width="0.03125"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1_1163">
+            <rect width="16" height="16" fill="white" transform="translate(0.399414 0.399902)"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
     <slot></slot>
   </div>
 </template>
@@ -68,8 +79,8 @@ const hideElement = () => {
 .draggable {
   position: fixed;
   border-radius: 20px;
-  background-color: rgba(34, 34, 34, 0.5);
-  border: 1px solid #7a7a7a;
+  background-color: rgba(34, 34, 34, 0.70);
+  border: 0.8px solid #7a7a7a;
   background-size: cover;
   background-position: center;
   color: white;
@@ -80,19 +91,19 @@ const hideElement = () => {
   padding: 0px;
   box-sizing: border-box;
   transition: filter 0.2s;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(2.4px);
 }
 
 .close-btn {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background: rgba(0, 0, 0, 0.7);
+  top: 12.8px;
+  right: 16.8px;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
   width: 20px;
   height: 20px;
+  z-index: 2;
 }
 </style>
