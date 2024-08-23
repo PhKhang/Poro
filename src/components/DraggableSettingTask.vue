@@ -1,6 +1,6 @@
 <template>
-  <DraggableComponent>
-    <TaskComponent v-if="task" :task="task" />
+  <DraggableComponent v-show="isVisible">
+    <TaskComponent :task="task" />
   </DraggableComponent>
 </template>
 
@@ -18,6 +18,10 @@ export default {
     task: {
       type: Object,
       required: true
+    },
+    isVisible: {
+      type: Boolean,
+      default: true
     }
   }
 };

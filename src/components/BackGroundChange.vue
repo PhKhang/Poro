@@ -18,8 +18,9 @@
       </div>
       <p class="background-instruction">Click themes below to change background</p>
       <div class="theme-icons">
-        <div v-for="theme in currentThemes" :key="theme.id" class="theme-icon" @click="selectTheme(theme)">
-          <span>{{ theme.icon }}</span>
+        <div v-for="theme in currentThemes" :key="theme.id" class="theme-icon-wrapper" @click="selectTheme(theme)">
+          <div class="theme-icon">{{theme.icon}}</div>
+          <div class="tooltip">{{theme.name}}</div>
         </div>
       </div>
       <div class="navigation-buttons">
@@ -198,7 +199,7 @@ const themesJs = [
   },
 ];
 
-const themes = themesJs.map(theme => ({ id: theme.id, icon: theme.icon }));
+const themes = themesJs.map(theme => ({ id: theme.id, icon: theme.icon, name: theme.name }));
 
 const currentThemes = computed(() => {
   const start = currentThemeIndex.value;
@@ -310,7 +311,8 @@ const setVolume = () => {
   background: rgba(34, 34, 34, 0.70);
   backdrop-filter: blur(6px);
   padding: 20px;
-  margin-left: 10px;
+  padding-top: 10px;
+  margin-left: 10px; 
   border-radius: 10px;
   color: white;
   width: 300px;
@@ -338,26 +340,83 @@ const setVolume = () => {
 }
 
 .theme-icons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8.8px; /* Thay đổi khoảng cách giữa các phần tử */
-  grid-column-gap: 21px; /* Khoảng cách giữa các nút trong cùng một hàng */
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 8.8px; 
+  grid-column-gap: 20px;
+}
+
+.theme-icon-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  display: flex; 
+  justify-content: center;
+  align-items: center; 
+  border-radius: 18.4px;
 }
 
 .theme-icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
   justify-content: center;
   align-items: center;
   background: rgba(34, 34, 34, 0.70);
   border-radius: 18.4px;
-  border: 0.8px #7A7A7A;
-  cursor: pointer;
+  border: 0.8px solid #7A7A7A;
+  width: 100%;
+  height: 100%;
+  font-size: 35px;
+  text-align: center;
+  padding-left: 1px;
+  padding-bottom: 1px;
+  display: inline-flex;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
 }
 
-.theme-icon span {
-  font-size: 30px;
+.theme-icon-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(122, 122, 122, 0.4); /* Màu overlay mờ */
+  opacity: 0;
+  transition: opacity 0.05s ease;
+  border-radius: 18.4px;
+  z-index: 2;
+  pointer-events: none; 
+}
+
+.theme-icon-wrapper:hover::after {
+  opacity: 1;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: rgb(34, 34, 34);
+  color: #ededed;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 3;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.1s ease, visibility 0.1s ease;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.theme-icon-wrapper:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 
 .song-info {
@@ -367,8 +426,6 @@ const setVolume = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Số dòng tối đa hiển thị */
-  -webkit-box-orient: vertical;
 }
 
 .song-title {

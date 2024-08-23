@@ -64,7 +64,7 @@ export default defineComponent({
   components: {
     TaskList,
   },
-  setup() {
+  setup(_, { emit }) {
     const totalTasks = ref(0);
     const doneTasks = ref(0);
     const selectedTask = ref<Task | null>(null);
@@ -73,6 +73,8 @@ export default defineComponent({
 
     function handleTaskSelected(task: Task) {
         selectedTask.value = task;
+        console.log(task);
+        emit('task-selected', task);
     }
 
     function handleTaskUpdate(update: { total: number, done: number }) {
@@ -88,6 +90,7 @@ export default defineComponent({
       currentDay,
       currentMonth,
       progress,
+      selectedTask,
       totalTasks,
       doneTasks,
       handleTaskUpdate,

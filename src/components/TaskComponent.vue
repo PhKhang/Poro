@@ -6,7 +6,7 @@
     <div class="divider"></div>
     <main class="task-content">
       <section class="task-name-section">
-        <h2 class="task-name">{{task.name}}</h2>
+        <h2 class="task-name">{{task.name}} 234</h2>
       </section>
       <section class="tag-section">
         <label for="tagSelect" class="tag-label">Tag</label>
