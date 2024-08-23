@@ -12,7 +12,7 @@ const TaskSchema = new Schema(
     {
         taskId: {
             type: 'UUID', 
-            default: () => randomUUID()
+            default: () => randomUUID().toString()
         },
         accountID: {
             type: String,

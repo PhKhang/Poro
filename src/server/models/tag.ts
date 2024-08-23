@@ -10,7 +10,7 @@ const TagSchema = new Schema(
     {
         tagId: {
             type: 'UUID', 
-            default: () => randomUUID()
+            default: () => randomUUID().toString()
         },
         tagName: {
             type: String,

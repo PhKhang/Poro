@@ -10,7 +10,7 @@ export interface ThemeDocument extends Document {
 const ThemeSchema = new Schema({
     themeId: {
         type: 'UUID', 
-        default: () => randomUUID()
+        default: () => randomUUID().toString()
     },
     icon: {
         type: String,

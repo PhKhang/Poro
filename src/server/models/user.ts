@@ -9,7 +9,7 @@ export interface UserDocument extends Document {
 const UserSchema = new Schema({
     id: {
         type: String,
-        default: () => randomUUID()
+        default: () => randomUUID().toString()
     },
     email: {
         type: String,

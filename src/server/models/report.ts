@@ -15,7 +15,7 @@ const ReportSchema = new Schema(
         },
         reportId: {
             type: 'UUID', 
-            default: () => randomUUID()
+            default: () => randomUUID().toString()
         },
         reportBody: {
             type: String,

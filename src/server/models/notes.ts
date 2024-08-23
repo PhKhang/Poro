@@ -10,7 +10,7 @@ const NoteSchema = new Schema(
     {
         noteId: {
             type: 'UUID', 
-            default: () => randomUUID()
+            default: () => randomUUID().toString()
         },
         accountID: {
             type: String,
