@@ -1,5 +1,6 @@
 import { getToken } from '#auth'
 import dashboardController from "~/server/controllers/dashboardController";
+import { SessionDocument, SessionModel } from '../models/session';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -10,13 +11,13 @@ export default defineEventHandler(async (event) => {
     case 'getRanks':
       return dashboardController.getLeaderBoard(event);
     case 'getCurrentStanding':
-        // if (token == null) {
-        //     return 'Not logged in'
-        // }
-        console.log('Account ID:', token?.id)
-        return dashboardController.getCurrentStanding("57e51cf5-5d8b-4789-aafc-72584b3564d8"); 
-    // case 'createUser':
-    //   return userController.createUser(event, data);
+      // if (token == null) {
+      //     return 'Not logged in'
+      // }
+      // console.log('Account ID:', token?.id)
+      return dashboardController.getCurrentStanding(token?.id);
+    case 'getByTime':
+      return dashboardController.getByTime(token?.id)
     // case 'getUser':
     //   return userController.getUser(event, data.id);
     // case 'updateUser':
