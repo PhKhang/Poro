@@ -7,12 +7,18 @@ export default eventHandler(async (event) => {
     // const name = getRouterParam(event, 'pick')
     const query = getQuery(event)
     
+    if (token == null){
+        console.log('Not logged in, saving time failed')
+        return
+    }
+    
+    console.log("Saving time", token?.id, query.totalTime)
     const new_session = SessionModel.create({
         accountID: token?.id,
-        totalTime: query.totalTime
+        totalTime: Number(query.totalTime)
     })
     
-    console.log("aaaaaaaaaaaaaaaaaa", token?.id)
+    console.log("Write successfully", token?.id)
     return 'write succ'
     return token || 'no token present'
 })

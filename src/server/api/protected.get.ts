@@ -8,5 +8,6 @@ export default eventHandler(async (event) => {
         return { status: 'unauthenticated!' }
     }
     console.log('Logged in')
+    console.log(session)
     return { content: 'authenticated!' }
 })

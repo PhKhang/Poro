@@ -5,14 +5,17 @@
 
   <!-- <h2>The line bellow is data taken from its server API (Nitro)</h2>
     <p>{{ data }}</p> -->
-
-  <button v-if="userData" @click="signOut()">Sign out</button>
-  <em v-else>Not logged in</em>
-  <h1>aẫeệoốuữ</h1>
-  <h3>aẫeệoốuữ</h3>
-  <h4>aẫeệoốuữ</h4>
-  <h5>aẫeệoốuữ</h5>
-  <h6>aẫeệoốuữ</h6>
+    
+    <h1>{{random_shi}}</h1>
+    
+    
+    <button v-if="userData" @click="signOut()">Sign out</button>
+    <em v-else>Not logged in</em>
+    <h1>aẫeệoốuữ</h1>
+    <h3>aẫeệoốuữ</h3>
+    <h4>aẫeệoốuữ</h4>
+    <h5>aẫeệoốuữ</h5>
+    <h6>aẫeệoốuữ</h6>
 
   <h2>Vid info</h2>
   <!-- <pre>{{ vid }}</pre> -->
@@ -57,7 +60,9 @@
 
 const { data: userData, signOut, status } = useAuth();
 // const { data: demo, content } = useFetch('/api/protected')
-const { data: token } = await useFetch("/api/token");
+const { data: token } = await useFetch('/api/token')
+const payload = ref('nothing')
+const { data: random_shi } = await useFetch(`/api/random-write?foo=${payload}`, { pick: 'title'})
 // const { data: sess } = await useFetch('/api/session')
 </script>
 
