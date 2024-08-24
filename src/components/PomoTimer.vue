@@ -30,7 +30,7 @@
         </svg>
       </div>
       <div class="button-wrapper">
-        <svg @click="toggleSettings" width="20" height="20" viewBox="0 0 20 20" :style="{ fill: showSettings ? '#FFD800' : '#EDEDED', transform: showSettings ? 'rotate(30deg)' : 'rotate(0deg)'}" xmlns="http://www.w3.org/2000/svg">
+        <svg @click="toggleSettings" width="19" height="19" viewBox="0 0 20 20" :style="{ fill: showSettings ? '#FFD800' : '#EDEDED', transform: showSettings ? 'rotate(30deg)' : 'rotate(0deg)'}" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M8.79414 0.200195C7.3908 0.200195 6.25314 1.33786 6.25314 2.74124C6.25314 2.94462 6.11289 3.21597 5.77768 3.39802C5.67453 3.45404 5.5728 3.5123 5.47256 3.57273C5.13824 3.77427 4.8244 3.76133 4.64014 3.6559C3.41634 2.95568 1.85684 3.37353 1.14709 4.59183L0.442666 5.80097C-0.268444 7.02161 0.151216 8.5879 1.37737 9.2894C1.55514 9.3912 1.72229 9.6499 1.71415 10.0348C1.71299 10.0898 1.7124 10.145 1.7124 10.2002C1.7124 10.2555 1.71299 10.3106 1.71415 10.3656C1.72229 10.7506 1.55515 11.0093 1.37739 11.111C0.151246 11.8125 -0.268414 13.3788 0.442696 14.5994L1.14714 15.8086C1.85689 17.0269 3.41637 17.4447 4.64017 16.7445C4.82443 16.6391 5.13825 16.6261 5.47256 16.8277C5.5728 16.8881 5.67453 16.9464 5.77768 17.0024C6.11289 17.1844 6.25314 17.4558 6.25314 17.6592C6.25314 19.0625 7.3908 20.2002 8.79414 20.2002H10.2528C11.6562 20.2002 12.7938 19.0625 12.7938 17.6592C12.7938 17.4558 12.9341 17.1844 13.2693 17.0024C13.3724 16.9464 13.4742 16.8881 13.5744 16.8277C13.9087 16.6261 14.2225 16.6391 14.4068 16.7445C15.6306 17.4447 17.1901 17.0269 17.8998 15.8086L18.6043 14.5994C19.3154 13.3788 18.8957 11.8125 17.6696 11.111C17.4918 11.0093 17.3247 10.7506 17.3328 10.3656C17.334 10.3106 17.3346 10.2554 17.3346 10.2002C17.3346 10.145 17.334 10.0898 17.3328 10.0348C17.3247 9.6498 17.4918 9.3911 17.6696 9.2894C18.8958 8.5879 19.3154 7.0216 18.6043 5.80096L17.8999 4.59182C17.1901 3.37352 15.6306 2.95567 14.4068 3.65589C14.2226 3.76133 13.9087 3.77426 13.5744 3.57272C13.4742 3.51229 13.3725 3.45404 13.2693 3.39802C12.9341 3.21597 12.7938 2.94462 12.7938 2.74124C12.7938 1.33786 11.6562 0.200195 10.2528 0.200195L8.79414 0.200195ZM9.52344 7.2002C7.86654 7.2002 6.52344 8.5433 6.52344 10.2002C6.52344 11.8571 7.86654 13.2002 9.52344 13.2002C11.1803 13.2002 12.5234 11.8571 12.5234 10.2002C12.5234 8.5433 11.1803 7.2002 9.52344 7.2002Z"/>
         </svg>  
       </div>
@@ -60,6 +60,10 @@ export default {
     const timeLeft = ref(workDuration.value * 60);
     const timer = ref(null);
     const isTimerRunning = ref(false);
+
+    // const hours = computed(() => Math.floor(timeLeft.value / 3600).toString().padStart(2, '0'));
+    // const minutes = computed(() => Math.floor((timeLeft.value % 3600) / 60).toString().padStart(2, '0'));
+    // const seconds = computed(() => (timeLeft.value % 60).toString().padStart(2, '0'));
 
     const minutes = computed(() => Math.floor(timeLeft.value / 60).toString().padStart(2, '0'));
     const seconds = computed(() => (timeLeft.value % 60).toString().padStart(2, '0'));
@@ -145,6 +149,7 @@ export default {
       workDuration,
       breakDuration,
       isWorking,
+      // hours,
       minutes,
       seconds,
       startTimer,
@@ -195,6 +200,7 @@ export default {
 .button-wrapper svg {
   display: relative; 
   z-index: 2;
+  cursor: pointer;
 }
 
 .button-wrapper::after {

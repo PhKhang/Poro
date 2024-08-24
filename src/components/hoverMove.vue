@@ -78,7 +78,7 @@ const hideElement = () => {
 <style scoped>
 .draggable {
   position: fixed;
-  border-radius: 20px;
+  border-radius: 15px;
   background-color: rgba(34, 34, 34, 0.70);
   border: 0.8px solid #7a7a7a;
   background-size: cover;
@@ -86,12 +86,13 @@ const hideElement = () => {
   color: white;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  /* cursor: pointer; */
   user-select: none;
   padding: 0px;
   box-sizing: border-box;
   transition: filter 0.2s;
-  backdrop-filter: blur(2.4px);
+  backdrop-filter: blur(4.8px);
+  -webkit-backdrop-filter: blur(4.8px);
 }
 
 .close-btn {
