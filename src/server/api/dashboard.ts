@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
       // if (token == null) {
       //     return 'Not logged in'
       // }
-      // console.log('Account ID:', token?.id)
       return dashboardController.getCurrentStanding(token?.id);
     case 'getByTime':
       return dashboardController.getByTime(token?.id)
