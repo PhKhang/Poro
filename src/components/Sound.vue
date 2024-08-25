@@ -29,7 +29,7 @@ export default {
                 if (hostname.includes('spotify.com')) {
                     const urlParts = url.pathname.split('/');
                     const idPart = urlParts.pop().split('?')[0];
-                    const type = urlParts.pop(); // Get either 'track', 'playlist', or 'album'
+                    const type = urlParts.pop();
 
                     if (['track', 'playlist', 'album'].includes(type)) {
                         embedURL = `https://open.spotify.com/embed/${type}/${idPart}`;
@@ -39,8 +39,15 @@ export default {
                 } else if (hostname.includes('music.youtube.com') || hostname.includes('youtube.com')) {
                     const videoId = url.searchParams.get('v');
                     const listId = url.searchParams.get('list');
-                    if (videoId) {
-                        embedURL = `https://www.youtube.com/embed/${videoId}${listId ? `?list=${listId}` : ''}`;
+                    if (listId && videoId) {
+                        // Nếu có cả list và video ID, nhúng track trong danh sách phát
+                        embedURL = `https://www.youtube.com/embed/${videoId}?list=${listId}`;
+                    } else if (listId) {
+                        // Nếu chỉ có list ID, nhúng cả danh sách phát
+                        embedURL = `https://www.youtube.com/embed/playlist?list=${listId}`;
+                    } else if (videoId) {
+                        // Nếu chỉ có video ID, nhúng video đó
+                        embedURL = `https://www.youtube.com/embed/${videoId}`;
                     }
                 }
 
@@ -48,6 +55,9 @@ export default {
             }
             return '';
         });
+
+
+
 
         return {
             mediaURL,
