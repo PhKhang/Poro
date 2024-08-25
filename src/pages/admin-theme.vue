@@ -39,7 +39,7 @@ const toggleExpand = (theme) => {
       <h1 class="logo">Poro</h1>
       <nav>
         <ul>
-          <li><RouterLink to="/adminuser">User Management</RouterLink></li>
+          <li><RouterLink to="/admin-user">User Management</RouterLink></li>
           <li class="active"><a href="#">Theme Management</a></li>
           <li><a href="#">Report Message</a></li>
         </ul>

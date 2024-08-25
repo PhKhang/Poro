@@ -6,7 +6,7 @@
       <nav>
         <ul>
           <li class="active"><a href="#">User Management</a></li>
-          <li><RouterLink to ="/admintheme">Theme Management</RouterLink></li>
+          <li><RouterLink to="/admintheme">Theme Management</RouterLink></li>
           <li><a href="#">Report Message</a></li>
         </ul>
       </nav>
@@ -15,24 +15,22 @@
     <!-- Main Content -->
     <div class="main-content">
       <!-- Top Bar -->
-  <div class="topbar">
-    <h1>User Management</h1>
-      <div class="account-section">
-        <div class="account-info">
-          <span class="account-name">Moni Roy</span>
-          <span class="account-type">Admin</span>
+      <div class="topbar">
+        <h1>User Management</h1>
+        <div class="account-section">
+          <div class="account-info">
+            <span class="account-name">Moni Roy</span>
+            <span class="account-type">Admin</span>
+          </div>
         </div>
-          <button class="account-toggle">▼</button>
-        </div>
-    </div>
-
+      </div>
 
       <!-- Metrics Dashboard -->
       <div class="dashboard">
         <div class="metric-card">
           <div class="metric-info">
             <span>Total User</span>
-            <h2>40,689</h2>
+            <h2>{{ totalUser }}</h2>
             <p><span class="metric-change up">8.5% Up from yesterday</span></p>
           </div>
           <div class="metric-icon users-icon"></div>
@@ -41,7 +39,7 @@
         <div class="metric-card">
           <div class="metric-info">
             <span>Total Hours</span>
-            <h2>18,911</h2>
+            <h2>{{ totalTime }}</h2>
             <p><span class="metric-change up">1.8% Up from yesterday</span></p>
           </div>
           <div class="metric-icon hours-icon"></div>
@@ -50,7 +48,7 @@
         <div class="metric-card">
           <div class="metric-info">
             <span>Total Sessions</span>
-            <h2>10,293</h2>
+            <h2>{{ totalSessions }}</h2>
             <p><span class="metric-change up">1.3% Up from past week</span></p>
           </div>
           <div class="metric-icon sessions-icon"></div>
@@ -81,8 +79,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in paginatedItems" :key="item.id">
-              <td>{{ item.id }}</td>
+            <tr v-for="item in paginatedItems" :key="item._id">
+              <td>{{ item._id }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.totalTime }} h</td>
               <td>{{ item.sessions }}</td>
@@ -107,64 +105,57 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 
-<script>
-export default {
-  data() {
-    return {
-      perPage: 5,
-      currentPage: 1,
-      items: [
-        { id: '00001', name: 'Nhi Trần Ngọc Uyên', totalTime: 655, sessions: 10, type: 'User' },
-        { id: '00002', name: 'Trần Nguyễn Phúc Khang', totalTime: 240, sessions: 10, type: 'User' },
-        { id: '00003', name: 'Nguyễn Minh Hoàng', totalTime: 23.2, sessions: 10, type: 'User' },
-        { id: '00004', name: 'Lương Quốc Dũng', totalTime: 342.2, sessions: 10, type: 'User' },
-        { id: '00005', name: 'Nguyễn Quang Huy', totalTime: 12.7, sessions: 10, type: 'User' },
-        { id: '00006', name: 'Alfred Murray', totalTime: 123, sessions: 10, type: 'User' },
-        { id: '00007', name: 'Maggie Sullivan', totalTime: 34, sessions: 10, type: 'User' },
-        { id: '00008', name: 'John Doe', totalTime: 100, sessions: 5, type: 'User' },
-        { id: '00009', name: 'Jane Smith', totalTime: 50, sessions: 3, type: 'User' },
-        { id: '00010', name: 'Michael Johnson', totalTime: 200, sessions: 8, type: 'User' },
-        { id: '00011', name: 'Emily Davis', totalTime: 150, sessions: 6, type: 'User' },
-        { id: '00012', name: 'Robert Wilson', totalTime: 75, sessions: 4, type: 'User' },
-        { id: '00013', name: 'Sophia Anderson', totalTime: 300, sessions: 12, type: 'User' },
-        { id: '00014', name: 'William Martinez', totalTime: 250, sessions: 10, type: 'User' },
-        { id: '00015', name: 'Olivia Taylor', totalTime: 180, sessions: 7, type: 'User' },
-        { id: '00016', name: 'James Brown', totalTime: 90, sessions: 3, type: 'User' },
-        { id: '00017', name: 'Ava Thomas', totalTime: 120, sessions: 5, type: 'User' },
-        { id: '00018', name: 'Benjamin Clark', totalTime: 220, sessions: 9, type: 'User' },
-        { id: '00019', name: 'Emma Lewis', totalTime: 160, sessions: 6, type: 'User' },
-        { id: '00020', name: 'Daniel Walker', totalTime: 80, sessions: 4, type: 'User' }
-      ]
-    };
-  },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.items.length / this.perPage);
-    },
-    paginatedItems() {
-      const start = (this.currentPage - 1) * this.perPage;
-      const end = start + this.perPage;
-      return this.items.slice(start, end);
-    },
-    rows() {
-      return this.items.length;
-    }
-  },
-  methods: {
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage -= 1;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage += 1;
-      }
-    }
+const userData = ref([]);
+const totalUser = ref(0);
+const totalTime = ref(0);
+const totalSessions = ref(0);
+
+const perPage = ref(5);
+const currentPage = ref(1);
+
+async function fetchUserStats() {
+  try {
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: {
+        action: 'getUserStats',
+      },
+    });
+    userData.value = response.users || []; 
+    totalUser.value = response.totalUser || 0;
+    totalTime.value = response.totalTime || 0;
+    totalSessions.value = response.totalSessions || 0;
+    console.log('Received data:', response);
+  } catch (error) {
+    console.error('Error fetching user stats:', error);
   }
-};
+}
+
+onMounted(fetchUserStats);
+
+const totalPages = computed(() => Math.ceil(userData.value.length / perPage.value));
+const paginatedItems = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value;
+  return userData.value.slice(start, start + perPage.value);
+});
+const rows = computed(() => userData.value.length);
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1;
+  }
+}
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value += 1;
+  }
+}
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
