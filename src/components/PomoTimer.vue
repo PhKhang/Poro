@@ -39,11 +39,11 @@
       <hr>
       <div class="setting-row">
         <label class="poppins-semibold">Pomodoro:</label>
-        <input v-model.number="workDuration" type="number" min="1" />
+        <input v-model.number="workDuration" @blur="validateDuration('work')" type="number" min="1" />
       </div>
       <div class="setting-row">
         <label class="poppins-semibold">Break:</label>
-        <input v-model.number="breakDuration" type="number" min="1" />
+        <input v-model.number="breakDuration" @blur="validateDuration('break')" type="number" min="1" />
       </div>
     </div>
   </div>
@@ -82,7 +82,7 @@ export default {
                 }
 
               })
-              // console.log('workDuration', workDuration.value)
+              console.log('workDuration', workDuration.value)
             }
             switchMode();
           }
@@ -134,6 +134,18 @@ export default {
         timeLeft.value = newValue * 60;
       }
     });
+
+    watch([workDuration, breakDuration], () => {
+      pauseTimer(); // Tạm dừng bộ đếm thời gian khi giá trị thay đổi
+    });
+
+    const validateDuration = (type) => {
+      if (type === 'work' && workDuration.value < 1) {
+        workDuration.value = 1;
+      } else if (type === 'break' && breakDuration.value < 1) {
+        breakDuration.value = 1;
+      }
+    };
     
     const hideElement = () => {
       emit('close'); // Emit event to parent
@@ -161,6 +173,7 @@ export default {
       isTimerRunning,
       showSettings,
       toggleSettings,
+      validateDuration,
     };
   }
 };
