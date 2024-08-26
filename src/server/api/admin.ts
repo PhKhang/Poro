@@ -25,7 +25,8 @@ export default defineEventHandler(async (event) => {
       
     case 'getUserStats':
       return adminController.getUserStats();
-      
+    case 'getThemeData':
+      return adminController.getThemeData();
     default:
       return { error: 'Unknown action' };
   }

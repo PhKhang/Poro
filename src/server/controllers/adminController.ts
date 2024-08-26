@@ -1,5 +1,6 @@
 import { SessionModel } from "../models/session";
 import { UserModel } from "../models/user";
+import { ThemeModel } from "../models/theme";
 
 export default {
     async getTotalUser() {
@@ -46,28 +47,62 @@ export default {
 
     async getUserStats() {
         try {
-            const users = await UserModel.aggregate([
+            const userStats = await UserModel.aggregate([
                 {
                     $lookup: {
                         from: 'sessions',
-                        localField: '_id',
-                        foreignField: 'userId',
+                        localField: 'id',
+                        foreignField: 'accountID',
                         as: 'sessions'
+                    }
+                },
+                {
+                    $addFields: {
+                        totalHours: { $sum: "$sessions.totalTime" },
+                        sessionCount: { $size: "$sessions" }
                     }
                 },
                 {
                     $project: {
                         id: 1,
                         name: 1,
-                        sessionCount: { $size: "$sessions" },
-                        totalHours: { $sum: "$sessions.totalTime" }
+                        totalHours: 1,
+                        sessionCount: 1
                     }
                 }
             ]);
-            return { users };
+    
+            return { users: userStats };
         } catch (error) {
             console.error('Error in getUserStats:', error);
             return { error: 'Failed to get user stats' };
+        }
+    },
+
+    async getThemeData() {
+        try {
+            const themes = await ThemeModel.aggregate([
+                {
+                    $lookup: {
+                        from: 'themes',
+                        localField: '_id',
+                        foreignField: 'themeId',
+                        as: 'themes'
+                    }
+                },
+                {
+                    $project: {
+                        themeId: 1,
+                        icon: 1,
+                        name: 1,
+                        video: 1
+                    }
+                }
+            ]);
+            return { themes };
+        } catch (error) {
+            console.error('Error in getThemeData:', error);
+            return { error: 'Failed to get theme data' };
         }
     }
 };

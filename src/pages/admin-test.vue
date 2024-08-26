@@ -2,7 +2,7 @@
   <div>
     <h1>User Stats</h1>
     <button @click="getUserStats">Load User Stats</button>
-    <table v-if="data.length">
+    <table v-if="userData.length">
       <thead>
         <tr>
           <th>User ID</th>
@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in data" :key="user._id">
+        <tr v-for="user in userData" :key="user._id">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.sessionCount }}</td>
@@ -20,17 +20,40 @@
         </tr>
       </tbody>
     </table>
-    <p v-else>{{ data }}</p>
+    <p v-else>{{ userData }}</p>
+
+    <h1>Theme Data</h1>
+    <button @click="getThemeData">Load Theme Data</button>
+    <table v-if="themeData.length">
+      <thead>
+        <tr>
+          <th>Theme ID</th>
+          <th>Icon</th>
+          <th>Name</th>
+          <th>Video</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="theme in themeData" :key="theme._id">
+          <td>{{ theme.themeId }}</td>
+          <td>{{ theme.icon }}</td>
+          <td>{{ theme.name }}</td>
+          <td>{{ theme.video }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p v-else>{{ themeData }}</p>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-const data = ref([]);
+const userData = ref([]);
+const themeData = ref([]);
 
 async function getUserStats() {
-  console.log('loading');
+  console.log('loading user stats');
   try {
     const response = await $fetch('/api/admin', {
       method: 'POST',
@@ -38,11 +61,28 @@ async function getUserStats() {
         action: 'getUserStats',
       }
     });
-    data.value = response.users;
-    console.log('Received data:', response);
+    userData.value = response.users;
+    console.log('Received user data:', response);
   } catch (error) {
     console.error('Error fetching user stats:', error);
-    data.value = 'Error fetching data';
+    userData.value = 'Error fetching data';
+  }
+}
+
+async function getThemeData() {
+  console.log('loading theme data');
+  try {
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: {
+        action: 'getThemeData',
+      }
+    });
+    themeData.value = response.themes;
+    console.log('Received theme data:', response);
+  } catch (error) {
+    console.error('Error fetching theme data:', error);
+    themeData.value = 'Error fetching data';
   }
 }
 </script>

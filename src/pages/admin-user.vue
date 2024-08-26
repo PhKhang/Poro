@@ -1,112 +1,5 @@
-<template>
-  <div class="app-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h1 class="logo">Poro</h1>
-      <nav>
-        <ul>
-          <li class="active"><a href="#">User Management</a></li>
-          <li><RouterLink to="/admintheme">Theme Management</RouterLink></li>
-          <li><a href="#">Report Message</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Top Bar -->
-      <div class="topbar">
-        <h1>User Management</h1>
-        <div class="account-section">
-          <div class="account-info">
-            <span class="account-name">Moni Roy</span>
-            <span class="account-type">Admin</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Dashboard -->
-      <div class="dashboard">
-        <div class="metric-card">
-          <div class="metric-info">
-            <span>Total User</span>
-            <h2>{{ totalUser }}</h2>
-            <p><span class="metric-change up">8.5% Up from yesterday</span></p>
-          </div>
-          <div class="metric-icon users-icon"></div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-info">
-            <span>Total Hours</span>
-            <h2>{{ totalTime }}</h2>
-            <p><span class="metric-change up">1.8% Up from yesterday</span></p>
-          </div>
-          <div class="metric-icon hours-icon"></div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-info">
-            <span>Total Sessions</span>
-            <h2>{{ totalSessions }}</h2>
-            <p><span class="metric-change up">1.3% Up from past week</span></p>
-          </div>
-          <div class="metric-icon sessions-icon"></div>
-        </div>
-      </div>
-
-      <!-- Data Table -->
-      <div class="data-table">
-        <!-- Table Controls -->
-        <div class="table-controls">
-          <div class="filter-controls">
-            <button class="filter-btn">Filter</button>
-            <button class="reset-btn">Reset</button>
-          </div>
-          <div class="table-hint">Showing {{ paginatedItems.length }} of {{ rows }} entries</div>
-        </div>
-
-        <!-- Table -->
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Total Time</th>
-              <th>Sessions</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in paginatedItems" :key="item._id">
-              <td>{{ item._id }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.totalTime }} h</td>
-              <td>{{ item.sessions }}</td>
-              <td>{{ item.type }}</td>
-              <td>
-                <button class="delete-btn">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Pagination Controls -->
-        <div class="table-footer">
-          <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const userData = ref([]);
 const totalUser = ref(0);
@@ -118,17 +11,29 @@ const currentPage = ref(1);
 
 async function fetchUserStats() {
   try {
-    const response = await $fetch('/api/admin', {
+    const userStatsResponse = await $fetch('/api/admin', {
       method: 'POST',
-      body: {
-        action: 'getUserStats',
-      },
+      body: { action: 'getUserStats' }
     });
-    userData.value = response.users || []; 
-    totalUser.value = response.totalUser || 0;
-    totalTime.value = response.totalTime || 0;
-    totalSessions.value = response.totalSessions || 0;
-    console.log('Received data:', response);
+
+    const totalUserResponse = await $fetch('/api/admin', {
+      method: 'POST',
+      body: { action: 'getTotalUser' }
+    });
+
+    const totalTimeResponse = await $fetch('/api/admin', {
+      method: 'POST',
+      body: { action: 'getTotalTime' }
+    });
+
+    userData.value = userStatsResponse.users || [];
+    totalUser.value = totalUserResponse.total || 0;
+    totalTime.value = totalTimeResponse.time || 0;
+    totalSessions.value = userStatsResponse.users.reduce((acc, user) => acc + user.sessionCount, 0);
+
+    console.log('Received user stats:', userStatsResponse);
+    console.log('Received total user:', totalUserResponse);
+    console.log('Received total time:', totalTimeResponse);
   } catch (error) {
     console.error('Error fetching user stats:', error);
   }
@@ -155,7 +60,116 @@ function nextPage() {
   }
 }
 </script>
+  
 
+
+<template>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h1 class="logo">Poro</h1>
+      <nav>
+        <ul>
+          <li class="active"><a href="#">User Management</a></li>
+          <li><RouterLink to="/admin-theme">Theme Management</RouterLink></li>
+          <li><a href="#">Report Message</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Bar -->
+      <div class="topbar">
+        <h1>User Management</h1>
+        <div class="account-section">
+          <div class="account-info">
+            <span class="account-name">Quang Huy</span>
+            <span class="account-type">Admin</span>
+          </div>
+            <span class="account-toggle">🌌</span>
+        </div>
+      </div>
+
+      <!-- Metrics Dashboard -->
+      <div class="dashboard">
+        <div class="metric-card">
+          <div class="metric-info">
+            <span>Total User</span>
+            <h2>{{ totalUser }}</h2>
+            <p><span class="metric-change up"></span></p>
+          </div>
+          <div class="metric-icon users-icon"></div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-info">
+            <span>Total Hours</span>
+            <h2>{{ totalTime }}</h2>
+            <p><span class="metric-change up"></span></p>
+          </div>
+          <div class="metric-icon hours-icon"></div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-info">
+            <span>Total Sessions</span>
+            <h2>{{ totalSessions }}</h2>
+            <p><span class="metric-change up"></span></p>
+          </div>
+          <div class="metric-icon sessions-icon"></div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="data-table">
+        <!-- Table Controls -->
+        <div class="table-controls">
+          <div class="filter-controls">
+            <button class="filter-btn" @click="fetchUserStats">Load User Data</button>
+            <button class="reset-btn">Reset</button>
+          </div>
+          <div class="table-hint">Showing {{ paginatedItems.length }} of {{ userData.length }} entries</div>
+        </div>
+
+        <!-- Table -->
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Total Time</th>
+              <th>Sessions</th>
+              <th>Type</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in paginatedItems" :key="item._id">
+              <td>{{ item._id }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.totalHours }} h</td>
+              <td>{{ item.sessionCount }}</td>
+              <td>{{ item.type }}</td>
+              <td>
+                <button class="delete-btn">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="table-footer">
+          <div class="pagination">
+            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');

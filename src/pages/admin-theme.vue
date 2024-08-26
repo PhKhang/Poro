@@ -25,7 +25,7 @@ const themes = ref([
   },
 ]);
 
-const userName = ref('Moni Roy');
+const userName = ref('Quang Huy');
 const userType = ref('Admin');
 
 const toggleExpand = (theme) => {
@@ -54,7 +54,7 @@ const toggleExpand = (theme) => {
             <span class="account-name">{{ userName }}</span>
             <span class="account-type">{{ userType }}</span>
           </div>
-          <button class="account-toggle">▼</button>
+          <button class="account-toggle">🌌</button>
         </div>
       </div>
 
