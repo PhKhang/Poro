@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
     // throw createError({message: "Missing required fields"});
   }
 
-  console.log("thing")
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(body.password, salt);
 
