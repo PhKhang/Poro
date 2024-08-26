@@ -10,19 +10,24 @@ export default defineEventHandler(async (event) => {
   switch (action) {
     case 'getRanks':
       return dashboardController.getLeaderBoard(event);
+
     case 'getCurrentStanding':
       // if (token == null) {
       //     return 'Not logged in'
       // }
       return dashboardController.getCurrentStanding(token?.id);
+
     case 'getByTime':
       return dashboardController.getByTime(token?.id)
-    // case 'getUser':
-    //   return userController.getUser(event, data.id);
-    // case 'updateUser':
-    //   return userController.updateUser(event, data.id, data);
-    // case 'deleteUser':
-    //   return userController.deleteUser(event, data.id);
+
+    case 'getDailyActivities':
+      if (!token) {
+        return { error: 'Login is required for this action' };
+      }
+      const result = await dashboardController.getDailyActivities(token?.id)
+      console.log('Daily activities:', result)
+      return result
+
     default:
       throw createError({
         statusCode: 400,

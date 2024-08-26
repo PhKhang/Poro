@@ -9,6 +9,7 @@
     <button @click="fetchData">Fetch ranks</button>
     <button @click="fetchCurrentStandingData">Fetch current standing data</button>
     <button @click="fetchByTime">Fetch data by time marks</button>
+    <button @click="fetchDaily">Fetch data of each day</button>
     
   </div>
 </template>
@@ -49,6 +50,18 @@ async function fetchByTime() {
       method: 'POST',
       body: {
         action: 'getByTime',
+      }
+    })
+  value? dta.value = JSON.stringify(value) : null
+  console.log('Received data:', value)
+}
+
+async function fetchDaily() {
+  console.log('loading')
+  const value = await $fetch('/api/dashboard', {
+      method: 'POST',
+      body: {
+        action: 'getDailyActivities',
       }
     })
   value? dta.value = JSON.stringify(value) : null

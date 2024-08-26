@@ -25,7 +25,7 @@ export default {
       const result = await SessionModel.aggregate([
         {
           $match: {
-            accountID: "5ec417e0-81d5-4700-97f6-402e19dc452a",
+            accountID: accountID,
             totalTime: { $gt: 0 },
             createdAt: { $gte: new Date(date.getFullYear(), date.getMonth(), 1) }
           }
@@ -73,5 +73,33 @@ export default {
     return {index, totalTimeSoFar}
   },
 
-  
+  async getDailyActivities(accountID: any) {
+    const date = new Date()
+      const result = await SessionModel.aggregate([
+        {
+          $match: {
+            accountID: accountID,
+            totalTime: { $gt: 0 },
+            createdAt: { $gte: new Date(date.getFullYear(), date.getMonth(), 1) }
+          }
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            totalTime: { $sum: "$totalTime" }
+          }
+        },
+      ])
+      
+      let dailyActivities = []
+      for (let i = 0; i < result.length; i++) {
+        let day = {
+          date: result[i]._id,
+          totalTime: result[i].totalTime
+        }
+        dailyActivities.push(day)
+      }
+      
+      return dailyActivities
+  },
 };
