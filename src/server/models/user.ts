@@ -6,26 +6,29 @@ export interface UserDocument extends Document {
     password: string,
 }
 
-const UserSchema = new Schema({
-    id: {
-        type: String,
-        default: () => randomUUID().toString()
+const UserSchema = new Schema(
+    {
+        id: {
+            type: String,
+            default: () => randomUUID().toString()
+        },
+        email: {
+            type: String,
+            require: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            require: true,
+        },
+        image: {
+            type: String
+        },
+        name: {
+            type: String
+        }
     },
-    email: {
-        type: String,
-        require: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        require: true,
-    },
-    image: {
-        type: String
-    },
-    name: {
-        type: String
-    }
-});
+    { timestamps: true }
+);
 
 export const UserModel = model<UserDocument>('User', UserSchema, 'User');
