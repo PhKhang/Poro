@@ -67,7 +67,8 @@ export default {
                         id: 1,
                         name: 1,
                         totalHours: 1,
-                        sessionCount: 1
+                        sessionCount: 1,
+                        type: 1
                     }
                 }
             ]);
@@ -103,6 +104,24 @@ export default {
         } catch (error) {
             console.error('Error in getThemeData:', error);
             return { error: 'Failed to get theme data' };
+        }
+    },
+    async deleteUser(userId: string) {
+        try {
+            // Delete the user
+            const deletedUser = await UserModel.findByIdAndDelete(userId);
+            
+            if (!deletedUser) {
+                return { success: false, error: 'User not found' };
+            }
+
+            // Delete all sessions associated with the user
+            await SessionModel.deleteMany({ accountID: userId });
+
+            return { success: true };
+        } catch (error) {
+            console.error('Error in deleteUser:', error);
+            return { success: false, error: 'Failed to delete user' };
         }
     }
 };

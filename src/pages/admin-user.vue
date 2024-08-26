@@ -9,6 +9,10 @@ const totalSessions = ref(0);
 const perPage = ref(5);
 const currentPage = ref(1);
 
+// New refs for delete confirmation
+const showDeleteModal = ref(false);
+const userToDelete = ref(null);
+
 async function fetchUserStats() {
   try {
     const userStatsResponse = await $fetch('/api/admin', {
@@ -39,6 +43,45 @@ async function fetchUserStats() {
   }
 }
 
+async function deleteUser() {
+  if (!userToDelete.value) return;
+
+  try {
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: { action: 'deleteUser', userId: userToDelete.value._id }
+    });
+
+    if (response.success) {
+      // Remove the user from the local data
+      userData.value = userData.value.filter(user => user._id !== userToDelete.value._id);
+      totalUser.value -= 1;
+      // Recalculate total sessions and time
+      totalSessions.value = userData.value.reduce((acc, user) => acc + user.sessionCount, 0);
+      totalTime.value = userData.value.reduce((acc, user) => acc + user.totalHours, 0);
+      // Close the modal
+      showDeleteModal.value = false;
+      userToDelete.value = null;
+    } else {
+      console.error('Failed to delete user:', response.error);
+      // Optionally, show an error message to the user
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    // Optionally, show an error message to the user
+  }
+}
+
+function confirmDelete(user) {
+  userToDelete.value = user;
+  showDeleteModal.value = true;
+}
+
+function cancelDelete() {
+  showDeleteModal.value = false;
+  userToDelete.value = null;
+}
+
 onMounted(fetchUserStats);
 
 const totalPages = computed(() => Math.ceil(userData.value.length / perPage.value));
@@ -60,8 +103,6 @@ function nextPage() {
   }
 }
 </script>
-  
-
 
 <template>
   <div class="app-container">
@@ -71,8 +112,10 @@ function nextPage() {
       <nav>
         <ul>
           <li class="active"><a href="#">User Management</a></li>
-          <li><RouterLink to="/admin-theme">Theme Management</RouterLink></li>
-          <li><a href="#">Report Message</a></li>
+          <li>
+            <RouterLink to="/admin-theme">Theme Management</RouterLink>
+          </li>
+          <li><RouterLink to="/admin-report">Report Message</RouterLink></li>
         </ul>
       </nav>
     </div>
@@ -87,7 +130,7 @@ function nextPage() {
             <span class="account-name">Quang Huy</span>
             <span class="account-type">Admin</span>
           </div>
-            <span class="account-toggle">🌌</span>
+          <span class="account-toggle">🌌</span>
         </div>
       </div>
 
@@ -152,7 +195,7 @@ function nextPage() {
               <td>{{ item.sessionCount }}</td>
               <td>{{ item.type }}</td>
               <td>
-                <button class="delete-btn">🗑️</button>
+                <button class="delete-btn" @click="confirmDelete(item)">🗑️</button>
               </td>
             </tr>
           </tbody>
@@ -164,6 +207,18 @@ function nextPage() {
             <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
             <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
             <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+          </div>
+        </div>
+        <!-- Delete Confirmation Modal -->
+        <div v-if="showDeleteModal" class="modal-overlay">
+          <div class="modal">
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete the user {{ userToDelete?.name }}?</p>
+            <p>This action cannot be undone.</p>
+            <div class="modal-actions">
+              <button @click="deleteUser" class="confirm-btn">Confirm Delete</button>
+              <button @click="cancelDelete" class="cancel-btn">Cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -409,5 +464,54 @@ th {
   margin: 0 10px;
   font-size: 18px;
 }
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.modal {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.modal h2 {
+  color: #FFD800;
+  margin-bottom: 10px;
+}
+
+.modal p {
+  margin-bottom: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.confirm-btn, .cancel-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirm-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #3a3a3a;
+  color: white;
+}
 </style>

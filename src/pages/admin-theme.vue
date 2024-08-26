@@ -41,7 +41,7 @@ const toggleExpand = (theme) => {
         <ul>
           <li><RouterLink to="/admin-user">User Management</RouterLink></li>
           <li class="active"><a href="#">Theme Management</a></li>
-          <li><a href="#">Report Message</a></li>
+          <li><RouterLink to="/admin-report">Report Message</RouterLink></li>
         </ul>
       </nav>
     </div>
