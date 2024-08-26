@@ -148,11 +148,11 @@ const getSoundIcon = (index) => {
     border-radius: 10px;
     border:#7A7A7A 0.8px solid;
     padding: 10px 20px 25px 20px;
-    z-index: 1000;
+    z-index: 2;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
-    margin-top: 60px;
+    margin-top: 55px;
 }
 
 .sound-header {
@@ -170,7 +170,6 @@ const getSoundIcon = (index) => {
 #audio-board p {
     margin: 0;
     padding-bottom: 10px;
-    font-weight: bold;
     text-align: left;
 }
 
@@ -202,9 +201,11 @@ const getSoundIcon = (index) => {
     padding-bottom: 0 !important;
     font-family: "Source Sans 3", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 100;
     font-size: 18px;
     font-style: normal;
+    font-family: "Source Sans 3";
+    font-weight: 400;
+    line-height: normal;
 }
 
 .sound-icon {
