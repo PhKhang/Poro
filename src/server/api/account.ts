@@ -1,5 +1,6 @@
 import accountController from "../controllers/accountController";
 import { getToken } from '#auth'
+import { stringifyQuery } from "vue-router";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
@@ -47,28 +48,28 @@ export default defineEventHandler(async (event) => {
             }
 
         case 'changeUsername':
-            if (!data.userId) {
-                return { error: 'userId is required for this action' };
+            if (!token) {
+                return { error: 'Login is required for this action' };
             }
             if (!data.newName) {
                 return { error: 'newName is required for this action' };
             }
-            return accountController.changeUsername(data.userId, data.newName);
+            return accountController.changeUsername(token.id, data.newName);
 
         case 'changePassword':
-            if (!data.userId) {
-                return { error: 'userId is required for this action' };
+            if (!token) {
+                return { error: 'Login is required for this action' };
             }
             if (!data.newPassword) {
                 return { error: 'newPassword is required for this action' };
             }
-            return accountController.changeUsername(data.userId, data.newPassword);
+            return accountController.changeUsername(token.id, data.newPassword);
 
         case 'deleteUser':
-            if (!data.userId) {
-                return { error: 'userId is required for deleteUser action' };
+            if (!token) {
+                return { error: 'Login is required for deleteUser action' };
             }
-            return accountController.deleteUser(data.userId);
+            return accountController.deleteUser(String(token.id));
 
         default:
             return { error: 'Unknown action' };

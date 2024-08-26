@@ -26,8 +26,8 @@ export default defineEventHandler(async (event) => {
             return noteController.getNoteList(token.id)
 
         case 'editNote':
-            if (!data.userId) {
-                return { error: 'userId is required for this action' };
+            if (!token) {
+                return { error: 'Login is required for this action' };
             }
             if (!data.noteId) {
                 return { error: 'noteId is required for this action' };
@@ -35,25 +35,25 @@ export default defineEventHandler(async (event) => {
             if (!data.newNoteBody) {
                 return { error: 'newNoteBody is required for this action' };
             }
-            return noteController.editNote(data.userId, data.noteId, data.newNoteBody);
+            return noteController.editNote(token.id, data.noteId, data.newNoteBody);
 
         case 'createNote':
-            if (!data.userId) {
-                return { error: 'userId is required for this action' };
+            if (!token) {
+                return { error: 'Login is required for this action' };
             }
             if (!data.newNoteBody) {
                 return { error: 'newNoteBody is required for this action' };
             }
-            return noteController.createNote(data.userId, data.newNoteBody);
+            return noteController.createNote(token.id, data.newNoteBody);
 
         case 'deleteNote':
-            if (!data.userId) {
-                return { error: 'userId is required for this action' };
+            if (!token) {
+                return { error: 'Login is required for this action' };
             }
             if (!data.noteId) {
                 return { error: 'noteId is required for this action' };
             }
-            return noteController.deleteNode(data.userId, data.noteId);
+            return noteController.deleteNode(token.id, data.noteId);
 
         default:
             return { error: 'Unknown action' };
