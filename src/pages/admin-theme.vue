@@ -1,11 +1,15 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
+// Search term for filtering
+const searchTerm = ref('');
+
+// Themes data
 const themes = ref([
-  { 
-    id: '0001', 
-    icon: '🌸', 
-    name: 'Spring', 
+  {
+    id: '0001',
+    icon: '🌸',
+    name: 'Spring',
     backgrounds: [
       'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -13,10 +17,10 @@ const themes = ref([
     ],
     expanded: false
   },
-  { 
-    id: '0002', 
-    icon: '🎄', 
-    name: 'Christmas', 
+  {
+    id: '0002',
+    icon: '🎄',
+    name: 'Christmas',
     backgrounds: [
       'https://www.youtube.com/watch?v=HgzGwKwLmgM',
       'https://www.youtube.com/watch?v=HgzGwKwLmgM',
@@ -28,9 +32,19 @@ const themes = ref([
 const userName = ref('Quang Huy');
 const userType = ref('Admin');
 
+// Toggle expand/collapse for theme rows
 const toggleExpand = (theme) => {
   theme.expanded = !theme.expanded;
 };
+
+// Filtered themes based on search term
+const filteredThemes = computed(() => {
+  if (!searchTerm.value) return themes.value;
+  return themes.value.filter(theme =>
+    theme.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    theme.id.toLowerCase().includes(searchTerm.value.toLowerCase())
+  );
+});
 </script>
 
 <template>
@@ -39,9 +53,13 @@ const toggleExpand = (theme) => {
       <h1 class="logo">Poro</h1>
       <nav>
         <ul>
-          <li><RouterLink to="/admin-user">User Management</RouterLink></li>
+          <li>
+            <RouterLink to="/admin-user">User Management</RouterLink>
+          </li>
           <li class="active"><a href="#">Theme Management</a></li>
-          <li><RouterLink to="/admin-report">Report Message</RouterLink></li>
+          <li>
+            <RouterLink to="/admin-report">Report Message</RouterLink>
+          </li>
         </ul>
       </nav>
     </div>
@@ -60,7 +78,7 @@ const toggleExpand = (theme) => {
 
       <div class="theme-management">
         <div class="search-bar">
-          <input type="text" placeholder="Search theme" />
+          <input type="text" placeholder="Search theme" v-model="searchTerm" />
         </div>
         <table class="theme-table">
           <thead>
@@ -73,7 +91,7 @@ const toggleExpand = (theme) => {
             </tr>
           </thead>
           <tbody>
-            <template v-for="theme in themes" :key="theme.id">
+            <template v-for="theme in filteredThemes" :key="theme.id">
               <tr @click="toggleExpand(theme)">
                 <td>{{ theme.id }}</td>
                 <td>{{ theme.icon }}</td>
@@ -82,17 +100,24 @@ const toggleExpand = (theme) => {
                   {{ theme.backgrounds[0] }}
                   <span v-if="theme.backgrounds.length > 1">...</span>
                 </td>
-                <td>
-                  <button class="icon-button">⚙️</button>
-                  <button class="icon-button">🗑️</button>
+                <td class="buttons">
+                  <button class="edit-button">
+                    <span class="material-symbols-outlined"> edit </span>
+                  </button>
+                  <button class="delete-btn" @click="confirmDelete(theme)">
+                    <span class="material-symbols-outlined"> delete </span>
+                  </button>
                 </td>
+
               </tr>
               <tr v-if="theme.expanded" class="expanded-row">
                 <td colspan="5">
                   <ul>
                     <li v-for="(bg, index) in theme.backgrounds" :key="index">
                       {{ index + 1 }}. {{ bg }}
-                      <button class="icon-button">🗑️</button>
+                      <button class="delete-btn" @click="confirmDelete(theme)">
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
                     </li>
                   </ul>
                   <button class="add-button">+</button>
@@ -100,6 +125,7 @@ const toggleExpand = (theme) => {
               </tr>
             </template>
           </tbody>
+
         </table>
       </div>
     </div>
@@ -108,7 +134,7 @@ const toggleExpand = (theme) => {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 * {
   margin: 0;
   padding: 0;
@@ -192,7 +218,7 @@ const toggleExpand = (theme) => {
 
 .account-name {
   font-weight: bold;
-  margin-right: 5px; /* Space between name and type */  
+  margin-right: 5px;
 }
 
 .account-type {
@@ -243,13 +269,40 @@ const toggleExpand = (theme) => {
   background-color: #2a2a2a;
 }
 
-.icon-button {
+.theme-table td.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+.edit-button,
+.delete-btn {
   background: none;
   border: none;
-  color: #ffffff;
   cursor: pointer;
+  color: #ffffff;
+  font-size: 16px; 
+  margin: 0 5px; 
+
+}
+.edit-button {
+  margin-right: 5px;
+}
+
+
+.delete-btn {
   margin-left: 5px;
-  font-size: 16px;
+}
+
+.edit-button .material-symbols-outlined,
+.delete-btn .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 .expanded-row {

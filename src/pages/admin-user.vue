@@ -150,16 +150,14 @@ function formatTime(minutes) {
           <div class="metric-info">
             <span>Total Users</span>
             <h2>{{ totalUsers }}</h2>
-            <p><span class="metric-change up"></span></p>
           </div>
-          <div class="metric-icon users-icon"></div>
+          <div class="metric-icon users-icon"></div>  
         </div>
 
         <div class="metric-card">
           <div class="metric-info">
             <span>Total Hours</span>
             <h2>{{ totalHours }}</h2>
-            <p><span class="metric-change up"></span></p>
           </div>
           <div class="metric-icon hours-icon"></div>
         </div>
@@ -168,7 +166,6 @@ function formatTime(minutes) {
           <div class="metric-info">
             <span>Total Sessions</span>
             <h2>{{ totalSessions }}</h2>
-            <p><span class="metric-change up"></span></p>
           </div>
           <div class="metric-icon sessions-icon"></div>
         </div>
@@ -207,7 +204,9 @@ function formatTime(minutes) {
               <td>{{ item.sessionCount }}</td>
               <td>{{ item.role }}</td>
               <td>
-                <button class="delete-btn" @click="confirmDelete(item)">🗑️</button>
+                <button class="delete-btn" @click="confirmDelete(item)">
+                  <span class="material-symbols-outlined"> delete </span>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -239,6 +238,7 @@ function formatTime(minutes) {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
 * {
@@ -370,11 +370,6 @@ function formatTime(minutes) {
   /* Reduced margin */
 }
 
-
-.metric-change.up {
-  color: #4caf50;
-}
-
 .metric-icon {
   width: 50px;
   height: 50px;
@@ -466,9 +461,18 @@ th {
 .delete-btn {
   background: none;
   border: none;
-  color: #FFD800;
   cursor: pointer;
-  font-size: 18px;
+  color: #e8eaed;
+  font-size: 18px; /* Adjust size if needed */
+}
+
+.delete-btn .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif; /* Specify the font family */
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 .table-footer {
