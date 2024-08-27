@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   let user
   try {
-    user = await UserModel.create({ ...body, password: hashedPassword });
+    user = await UserModel.create({ email: body.email, name: body.username, password: hashedPassword });
     console.log("Register new user successfully!")
     return { ...user.toObject(), password: undefined };
   }

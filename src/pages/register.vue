@@ -12,7 +12,7 @@
         <h1>SIGN UP</h1>
         <form @submit.prevent="submitForm" class="signup_form">
           <div class="user">
-            <input type="text" placeholder="Username" class="user_form" />
+            <input type="text" v-model="form.username" placeholder="Username" class="user_form" />
             <span class="material-symbols-outlined"> person </span>
           </div>
           <div class="email">
@@ -69,6 +69,7 @@ async function submitForm() {
       method: "POST",
       body: form.value,
     });
+    navigateTo("/login");
   } catch (e) {
     console.log(e);
   }

@@ -71,18 +71,6 @@ export default NuxtAuthHandler({
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      // console.log('------------')
-      // console.log('user', user)
-      // console.log('------------')
-      // console.log('account', account)
-      // console.log('------------')
-      // console.log('profile', profile)
-      // console.log('------------')
-      // console.log('email', email)
-      // console.log('------------')
-      // console.log('credentials', credentials)
-      // console.log('------------')
-
       let new_user
       if (account?.provider === 'google') {
         if (!(await UserModel.exists({ email: user.email }))) {
