@@ -1,5 +1,6 @@
 import { PipelineStage } from "mongoose";
 import { SessionModel } from "../models/session";
+import { h } from "vue";
 
 const pipeline: PipelineStage[] = [
   {
@@ -68,9 +69,9 @@ export default {
     }
     // console.log('ahoihgiohwhoiwhoigoi')
     allRankings = await SessionModel.aggregate(pipeline) as ([] | null)
-    const index = allRankings?.findIndex((obj: any) => obj._id === accountID)
-    const totalTimeSoFar = allRankings && index != null ? allRankings[index]?.totalWorkingTime : null
-    return {index, totalTimeSoFar}
+    const top = allRankings?.findIndex((obj: any) => obj._id === accountID)
+    const totalTimeSoFar = allRankings && top != null ? allRankings[top]?.totalWorkingTime : null
+    return {top, totalTimeSoFar}
   },
 
   async getDailyActivities(accountID: any) {
@@ -92,10 +93,20 @@ export default {
       ])
       
       let dailyActivities = []
+      function getActivityLevel(hours: any) {
+        if (hours === 0) return 'no-study';
+        if (hours <= 1) return 'low-activity';
+        if (hours <= 2) return 'medium-activity';
+        if (hours <= 3) return 'medium-high-activity';
+        if (hours > 3)  return 'high-activity';
+        return 'high-activity';
+    }
+
       for (let i = 0; i < result.length; i++) {
         let day = {
           date: result[i]._id,
-          totalTime: result[i].totalTime
+          hours_studied: result[i].totalTime,
+          activity_level: result[i].totalTime ? getActivityLevel(result[i].totalTime) : 'no-study'
         }
         dailyActivities.push(day)
       }
