@@ -92,14 +92,23 @@ topUsers.value = topRankList.value
 const currentRankInfo = ref("")
 const totalTime = ref("2")
 const currentRank = ref("1")
-currentRankInfo.value = await $fetch('/api/dashboard', {
+
+// currentRankInfo.value = await $fetch('/api/dashboard', {
+currentRank.value = await $fetch('/api/dashboard', {
     method: 'POST',
     body: {
         action: 'getCurrentStanding',
     }
 })
 
-console.log('Received data:', currentRankInfo.value)
+totalTime.value = await $fetch('/api/dashboard', {
+    method: 'POST',
+    body: {
+        action: 'getTotalTime',
+    }
+})
+
+console.log('thing:', currentRankInfo.value)
 
 // currentRank.value = currentRankInfo.value.top
 // totalTime.value = currentRankInfo.value.totalTimeSoFar

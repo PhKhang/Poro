@@ -19,7 +19,8 @@ const pipeline: PipelineStage[] = [
       _id: '$accountID',
       totalWorkingTime: { $sum: '$totalTime' },
       createdAt: { $first: '$createdAt' },
-      name: { $first: '$username.name' }
+      name: { $first: '$username.name' },
+      accountID: { $first: '$username.id' },
     }
   },
   { $sort: { totalWorkingTime: -1 } }
@@ -29,34 +30,6 @@ let allRankings: ([] | null) = null
 
 export default {
 
-  async getJoin() {
-    const join = await SessionModel.aggregate([
-      {
-        $lookup: {
-          from: "User", // collection name in db
-          localField: "accountID",
-          foreignField: "id",
-          as: "username",
-        },
-      },
-      {
-        $unwind: "$username"
-      },
-      {
-        $project: {
-          "username.password": 0,
-          "username._id": 0,
-          "username.id": 0,
-          "username.email": 0,
-          "username.image": 0,
-          "username.__v": 0,
-          "username.createdAt:": 0,
-          "username.updatedAt:": 0,
-        }
-      },
-    ])
-    return join
-  },
   async getLeaderBoard(req: any) {
     allRankings = await SessionModel.aggregate(pipeline) as ([] | null)
     return allRankings
@@ -111,7 +84,17 @@ export default {
     allRankings = await SessionModel.aggregate(pipeline) as ([] | null)
     const top = allRankings?.findIndex((obj: any) => obj._id === accountID)
     const totalTimeSoFar = allRankings && top != null ? allRankings[top]?.totalWorkingTime : null
-    return {top, totalTimeSoFar}
+    return top
+  },
+  async getTotalTime(accountID: any) {
+    if (accountID == null) {
+      return null
+    }
+    // console.log('ahoihgiohwhoiwhoigoi')
+    allRankings = await SessionModel.aggregate(pipeline) as ([] | null)
+    const top = allRankings?.findIndex((obj: any) => obj._id === accountID)
+    const totalTimeSoFar = allRankings && top != null ? allRankings[top]?.totalWorkingTime : null
+    return totalTimeSoFar
   },
 
   async getDailyActivities(accountID: any) {
