@@ -260,58 +260,12 @@ h3 {
   text-decoration: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 916px) {
   .container {
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 20px;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .left,
-  .right {
-    width: 100%;
-    padding: 0;
-    order: unset;
-  }
-  .left {
-    flex: 1;
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-  .logo {
-    width: 100%;
-    height: auto;
-  }
-
-  .login {
-    width: 100%;
-    height: auto;
-    padding: 40px;
-  }
-
-  h1 {
-    padding: 50px 20px;
-    font-size: 32px;
-  }
-
-  .email_form input,
-  .password_form input,
-  .login_button {
-    width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding: 20px;
-    align-items: center;
     justify-content: space-between;
   }
 
@@ -319,7 +273,6 @@ h3 {
   .right {
     width: 100%;
     padding: 0;
-    order: unset;
   }
 
   .left {
@@ -327,53 +280,37 @@ h3 {
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .logo {
     width: 50%;
-    margin-bottom: 20px;
+    height: 50%;
   }
 
-  .login {
+  .signup {
     width: 100%;
     height: auto;
     padding: 10px;
     box-sizing: border-box;
   }
 
-  .login_button {
-    margin-bottom: 20px;
-  }
-
   h1 {
-    padding-top: 10px;
-    font-size: 32px;
+    font-size: 20px;
+    padding: 50px;
   }
 
-  .back_button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 18px;
+  .signup_button {
+    width: 90%;
   }
 
-  .back_button.material-symbols-outlined {
-    font-size: 16px;
+  .password {
+    padding-bottom: 20px;
   }
 
-  .email_form,
-  .password_form {
-    display: flex;
+  .login {
+    padding-bottom: 20px;
     width: 100%;
-  }
-
-  h3 {
-    font-size: 16px;
-  }
-
-  .google_logo {
-    height: 40px;
-    width: 40px;
   }
 }
 
