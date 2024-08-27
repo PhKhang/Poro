@@ -2,14 +2,15 @@
 import { ref, onMounted, computed } from 'vue';
 
 const userData = ref([]);
-const totalUser = ref(0);
-const totalTime = ref(0);
+const totalUsers = ref(0);  // Changed from totalUser to totalUsers
+const totalTimeInMinutes = ref(0);
 const totalSessions = ref(0);
 
 const perPage = ref(5);
 const currentPage = ref(1);
 
-// New refs for delete confirmation
+const searchTerm = ref('');
+
 const showDeleteModal = ref(false);
 const userToDelete = ref(null);
 
@@ -20,24 +21,17 @@ async function fetchUserStats() {
       body: { action: 'getUserStats' }
     });
 
-    const totalUserResponse = await $fetch('/api/admin', {
+    const totalUsersResponse = await $fetch('/api/admin', {  // Changed from totalUserResponse to totalUsersResponse
       method: 'POST',
       body: { action: 'getTotalUser' }
     });
 
-    const totalTimeResponse = await $fetch('/api/admin', {
-      method: 'POST',
-      body: { action: 'getTotalTime' }
-    });
-
     userData.value = userStatsResponse.users || [];
-    totalUser.value = totalUserResponse.total || 0;
-    totalTime.value = totalTimeResponse.time || 0;
-    totalSessions.value = userStatsResponse.users.reduce((acc, user) => acc + user.sessionCount, 0);
-
-    console.log('Received user stats:', userStatsResponse);
-    console.log('Received total user:', totalUserResponse);
-    console.log('Received total time:', totalTimeResponse);
+    totalUsers.value = totalUsersResponse.total || 0;  // Changed from totalUser to totalUsers
+    totalTimeInMinutes.value = userData.value.reduce((acc, user) => acc + user.totalTime, 0);  // Changed totalTime to totalTimeInMinutes
+    totalSessions.value = userData.value.reduce((acc, user) => acc + user.sessionCount, 0);
+    console.log(`Total time for all users: ${totalTimeInMinutes.value} minutes`);
+    console.log('Received total users:', totalUsersResponse);  // Changed from 'total user' to 'total users'
   } catch (error) {
     console.error('Error fetching user stats:', error);
   }
@@ -53,22 +47,20 @@ async function deleteUser() {
     });
 
     if (response.success) {
-      // Remove the user from the local data
+      // Update the local user data after deletion
       userData.value = userData.value.filter(user => user._id !== userToDelete.value._id);
-      totalUser.value -= 1;
-      // Recalculate total sessions and time
+      totalUsers.value -= 1;  // Adjusted total user count
       totalSessions.value = userData.value.reduce((acc, user) => acc + user.sessionCount, 0);
-      totalTime.value = userData.value.reduce((acc, user) => acc + user.totalHours, 0);
-      // Close the modal
+      totalTimeInMinutes.value = userData.value.reduce((acc, user) => acc + user.totalTime, 0);  // Updated variable name for clarity
+
+      // Close the modal and reset the selected user
       showDeleteModal.value = false;
       userToDelete.value = null;
     } else {
       console.error('Failed to delete user:', response.error);
-      // Optionally, show an error message to the user
     }
   } catch (error) {
     console.error('Error deleting user:', error);
-    // Optionally, show an error message to the user
   }
 }
 
@@ -84,12 +76,21 @@ function cancelDelete() {
 
 onMounted(fetchUserStats);
 
-const totalPages = computed(() => Math.ceil(userData.value.length / perPage.value));
+const filteredData = computed(() => {
+  if (!searchTerm.value) return userData.value;
+  return userData.value.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+    user._id.toLowerCase().includes(searchTerm.value.toLowerCase())
+  );
+});
+
+const totalPages = computed(() => Math.ceil(filteredData.value.length / perPage.value));
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * perPage.value;
-  return userData.value.slice(start, start + perPage.value);
+  return filteredData.value.slice(start, start + perPage.value);
 });
-const rows = computed(() => userData.value.length);
+
+const totalHours = computed(() => (totalTimeInMinutes.value / 60).toFixed(1));
 
 function prevPage() {
   if (currentPage.value > 1) {
@@ -101,6 +102,13 @@ function nextPage() {
   if (currentPage.value < totalPages.value) {
     currentPage.value += 1;
   }
+}
+
+// Helper function to convert minutes to hours and minutes
+function formatTime(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return `${hours}h ${remainingMinutes}m`;
 }
 </script>
 
@@ -140,8 +148,8 @@ function nextPage() {
       <div class="dashboard">
         <div class="metric-card">
           <div class="metric-info">
-            <span>Total User</span>
-            <h2>{{ totalUser }}</h2>
+            <span>Total Users</span>
+            <h2>{{ totalUsers }}</h2>
             <p><span class="metric-change up"></span></p>
           </div>
           <div class="metric-icon users-icon"></div>
@@ -150,7 +158,7 @@ function nextPage() {
         <div class="metric-card">
           <div class="metric-info">
             <span>Total Hours</span>
-            <h2>{{ totalTime }}</h2>
+            <h2>{{ totalHours }}</h2>
             <p><span class="metric-change up"></span></p>
           </div>
           <div class="metric-icon hours-icon"></div>
@@ -173,7 +181,7 @@ function nextPage() {
           <div class="filter-controls">
             <button class="filter-btn" @click="fetchUserStats">Load User Data</button>
             <div class="search-bar">
-              <input type="text" placeholder="Search theme" />
+              <input type="text" placeholder="Search user" v-model="searchTerm"  />
             </div>
           </div>
           <div class="table-hint">Showing {{ paginatedItems.length }} of {{ userData.length }} entries</div>
@@ -195,9 +203,9 @@ function nextPage() {
             <tr v-for="item in paginatedItems" :key="item._id">
               <td>{{ item._id }}</td>
               <td>{{ item.name }}</td>
-              <td>{{ item.totalHours }} h</td>
+              <td>{{ formatTime(item.totalTime) }}</td>
               <td>{{ item.sessionCount }}</td>
-              <td>{{ item.type }}</td>
+              <td>{{ item.role }}</td>
               <td>
                 <button class="delete-btn" @click="confirmDelete(item)">🗑️</button>
               </td>
@@ -401,16 +409,9 @@ function nextPage() {
   /* Adjusted margin */
 }
 
-th,
-td {
-  padding: 10px;
-  /* Reduced padding for table cells */
-  text-align: left;
-  border-bottom: 1px solid #3a3a3a;
-}
-
 .filter-controls {
   display: flex;
+  align-items: center;
 }
 
 .filter-btn,
@@ -423,14 +424,12 @@ td {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .search-bar {
-  margin-bottom: 20px;
-  display: left; 
-  align-items: center;
+  margin-left: 10px;
 }
 
 .search-bar input {
-  width: 100%;
   padding: 10px;
   background-color: #2a2a2a;
   border: none;
@@ -449,6 +448,14 @@ td {
 table {
   width: 100%;
   border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  /* Reduced padding for table cells */
+  text-align: left;
+  border-bottom: 1px solid #3a3a3a;
 }
 
 th {
