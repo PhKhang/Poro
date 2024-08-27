@@ -58,7 +58,7 @@ export default {
                 },
                 {
                     $addFields: {
-                        totalHours: { $sum: "$sessions.totalTime" },
+                        totalTime: { $sum: "$sessions.totalTime" },
                         sessionCount: { $size: "$sessions" }
                     }
                 },
@@ -66,9 +66,9 @@ export default {
                     $project: {
                         id: 1,
                         name: 1,
-                        totalHours: 1,
+                        totalTime: 1,
                         sessionCount: 1,
-                        type: 1
+                        role: 1
                     }
                 }
             ]);
