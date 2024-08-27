@@ -11,7 +11,7 @@ export interface TaskDocument extends Document {
 const TaskSchema = new Schema(
     {
         taskId: {
-            type: 'UUID', 
+            type: String, 
             default: () => randomUUID().toString()
         },
         accountID: {

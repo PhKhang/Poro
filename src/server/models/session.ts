@@ -9,7 +9,7 @@ export interface SessionDocument extends Document {
 const SessionSchema = new Schema(
     {
         sessionId: {
-            type: 'UUID', 
+            type: String, 
             default: () => randomUUID().toString()
         },
         accountID: {
