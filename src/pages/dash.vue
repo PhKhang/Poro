@@ -1,37 +1,21 @@
 <template>
-    <pre>{{ daily }}</pre>
     <div class="container">
         <!-- Calendar Section -->
-        <div class="calendar-section">
-            <div class="calendar-header">
-                <h2>July, 2024</h2>
-            </div>
-            <div class="calendar-grid">
-                <div v-for="day in daysActivity" :key="day.date" :class="day.activity_level">
-                    {{ day.date.split('-')[2] }}<br>
-                    {{ day.hours_studied }}h
-                </div>
-            </div>
-        </div>
 
         <!-- Summary Section -->
         <div class="summary-section">
             <h3>Your working time in this</h3>
             <div>
                 <span>Day</span>
-                <span>1.4 h</span>
+                <span>{{ dayTime }} h</span>
             </div>
             <div>
                 <span>Week</span>
-                <span>120 h</span>
+                <span>{{ weekTime }} h</span>
             </div>
             <div>
                 <span>Month</span>
-                <span>331.1 h</span>
-            </div>
-            <div>
-                <span>Average time a day</span>
-                <span>2.1 h</span>
+                <span>{{ monthTime }} h</span>
             </div>
         </div>
 
@@ -43,7 +27,7 @@
                 <span>{{ user.total_hours }} h</span>
             </div>
             <div class="your-rank">
-                Your Rank<br>#25<br>24.4 h
+                Your Rank<br>{{ currentRank }}<br>{{ totalTime }}
             </div>
         </div>
     </div>
@@ -86,28 +70,78 @@
 //                 { "date": "2024-07-30", "hours_studied": 0.6, "activity_level": "low-activity" },
 //                 { "date": "2024-07-31", "hours_studied": 3.2, "activity_level": "high-activity" }
 //             ],
-//             topUsers: [
-//                 { "rank": 1, "name": "Nhi Trần Ngọc Uyên", "total_hours": 655 },
-//                 { "rank": 2, "name": "Nguyen Hoang", "total_hours": 523 },
-//                 { "rank": 3, "name": "User 3", "total_hours": 300.1 },
-//                 { "rank": 4, "name": "User 4", "total_hours": 231.5 },
-//                 { "rank": 5, "name": "User 5", "total_hours": 45.1 },
-//                 { "rank": 6, "name": "User 6", "total_hours": 40 },
-//                 { "rank": 7, "name": "User 7", "total_hours": 40 },
-//                 { "rank": 8, "name": "User 8", "total_hours": 40 },
-//                 { "rank": 9, "name": "User 9", "total_hours": 40 },
-//                 { "rank": 10, "name": "User 10", "total_hours": 40 }
-//             ]
+
 //         };
 //     }
 // }
 
-const {data: daily} = await useFetch('/api/dashboard', {
+const daysActivity = ref("")
+daysActivity.value = await useFetch('/api/dashboard', {
     method: 'POST',
     body: {
         action: 'getDailyActivities',
     }
 })
+daysActivity.value = JSON.stringify(daysActivity.value)
+
+const topRankList = ref("")
+topRankList.value = await $fetch('/api/dashboard', {
+    method: 'POST',
+    body: {
+        action: 'getRanks',
+    }
+})
+
+
+const currentRankInfo = ref("")
+const totalTime = ref("2")
+const currentRank = ref("1")
+currentRankInfo.value = await $fetch('/api/dashboard', {
+    method: 'POST',
+    body: {
+        action: 'getCurrentStanding',
+    }
+})
+
+// currentRank.value = currentRankInfo.value.top
+// totalTime.value = currentRankInfo.value.totalTimeSoFar
+
+const dayTime = ref("1")
+const weekTime = ref("2")
+const monthTime = ref("3")
+
+
+const timeAnalysis = ref("")
+timeAnalysis.value = await $fetch('/api/dashboard', {
+    method: 'POST',
+    body: {
+        action: 'getByTime',
+    }
+})
+dayTime.value = timeAnalysis.value.totalTimeOfToday
+weekTime.value = timeAnalysis.value.totalTimeOfWeek
+monthTime.value = timeAnalysis.value.totalTimeOfMonth
+
+const topUsers = ref("")
+topUsers.value = [
+    { "rank": 1, "name": "Nhi Trần Ngọc Uyên", "total_hours": 655 },
+    { "rank": 2, "name": "Nguyen Hoang", "total_hours": 523 },
+    { "rank": 3, "name": "User 3", "total_hours": 300.1 },
+    { "rank": 4, "name": "User 4", "total_hours": 231.5 },
+    { "rank": 5, "name": "User 5", "total_hours": 45.1 },
+    { "rank": 6, "name": "User 6", "total_hours": 40 },
+    { "rank": 7, "name": "User 7", "total_hours": 40 },
+    { "rank": 8, "name": "User 8", "total_hours": 40 },
+    { "rank": 9, "name": "User 9", "total_hours": 40 },
+    { "rank": 10, "name": "User 10", "total_hours": 40 }
+]
+
+console.log("----------------------------")
+// console.log('Received data:', timeAnalysis.value)
+// console.log('Received data:', daysActivity.value)
+// console.log('Received data:', currentRankInfo.value)
+console.log('Received data:', topRankList.value)
+console.log("----------------------------")
 
 </script>
 
