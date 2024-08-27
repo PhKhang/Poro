@@ -115,7 +115,9 @@ function nextPage() {
           <li>
             <RouterLink to="/admin-theme">Theme Management</RouterLink>
           </li>
-          <li><RouterLink to="/admin-report">Report Message</RouterLink></li>
+          <li>
+            <RouterLink to="/admin-report">Report Message</RouterLink>
+          </li>
         </ul>
       </nav>
     </div>
@@ -170,7 +172,9 @@ function nextPage() {
         <div class="table-controls">
           <div class="filter-controls">
             <button class="filter-btn" @click="fetchUserStats">Load User Data</button>
-            <button class="reset-btn">Reset</button>
+            <div class="search-bar">
+              <input type="text" placeholder="Search theme" />
+            </div>
           </div>
           <div class="table-hint">Showing {{ paginatedItems.length }} of {{ userData.length }} entries</div>
         </div>
@@ -295,7 +299,8 @@ function nextPage() {
 
 .topbar h1 {
   font-size: 28px;
-  color: #FFD800; /* Optional: Makes the title more prominent */
+  color: #FFD800;
+  /* Optional: Makes the title more prominent */
 }
 
 .account-section {
@@ -311,41 +316,50 @@ function nextPage() {
 
 .account-name {
   font-weight: bold;
-  margin-right: 5px; /* Space between name and type */
+  margin-right: 5px;
+  /* Space between name and type */
 }
 
 .account-type {
   color: #999;
-  font-size: 14px; /* Slightly smaller font for the type */
+  font-size: 14px;
+  /* Slightly smaller font for the type */
 }
+
 .account-toggle {
   background: none;
   border: none;
   color: #ffffff;
   cursor: pointer;
-  font-size: 18px; /* Adjust the size for better visibility */
+  font-size: 18px;
+  /* Adjust the size for better visibility */
 }
 
 /* Metrics Dashboard Styles */
 .dashboard {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px; /* Adjusted to provide more space for the table */
+  margin-bottom: 20px;
+  /* Adjusted to provide more space for the table */
 }
 
 .metric-card {
   background-color: #2a2a2a;
   border-radius: 10px;
-  padding: 15px; /* Reduced padding to make the cards smaller */
-  width: 28%; /* Adjusted width to give more space to the table */
+  padding: 15px;
+  /* Reduced padding to make the cards smaller */
+  width: 28%;
+  /* Adjusted width to give more space to the table */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .metric-info h2 {
-  font-size: 28px; /* Reduced font size */
-  margin: 5px 0; /* Reduced margin */
+  font-size: 28px;
+  /* Reduced font size */
+  margin: 5px 0;
+  /* Reduced margin */
 }
 
 
@@ -375,18 +389,22 @@ function nextPage() {
 .data-table {
   background-color: #2a2a2a;
   border-radius: 10px;
-  padding: 15px; /* Adjusted padding */
+  padding: 15px;
+  /* Adjusted padding */
 }
 
 .table-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px; /* Adjusted margin */
+  margin-bottom: 15px;
+  /* Adjusted margin */
 }
 
-th, td {
-  padding: 10px; /* Reduced padding for table cells */
+th,
+td {
+  padding: 10px;
+  /* Reduced padding for table cells */
   text-align: left;
   border-bottom: 1px solid #3a3a3a;
 }
@@ -395,7 +413,8 @@ th, td {
   display: flex;
 }
 
-.filter-btn, .reset-btn {
+.filter-btn,
+.reset-btn {
   background-color: #3a3a3a;
   border: none;
   color: #ffffff;
@@ -403,6 +422,20 @@ th, td {
   margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+.search-bar {
+  margin-bottom: 20px;
+  display: left; 
+  align-items: center;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  background-color: #2a2a2a;
+  border: none;
+  color: #ffffff;
+  border-radius: 5px;
 }
 
 .reset-btn {
@@ -433,7 +466,8 @@ th {
 
 .table-footer {
   display: flex;
-  justify-content: flex-end; /* Aligns the pagination to the right */
+  justify-content: flex-end;
+  /* Aligns the pagination to the right */
   align-items: center;
   margin-top: 20px;
 }
@@ -464,6 +498,7 @@ th {
   margin: 0 10px;
   font-size: 18px;
 }
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -498,7 +533,8 @@ th {
   justify-content: space-between;
 }
 
-.confirm-btn, .cancel-btn {
+.confirm-btn,
+.cancel-btn {
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
