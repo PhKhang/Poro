@@ -65,7 +65,7 @@ async function submitLogin() {
           <a href="./register.vue" class="signup_button">Sign Up</a>
         </div>
         <h3>- Or Login With -</h3>
-        <button @click="signIn('google')" class="sign_up_button">
+        <button @click="signIn('google', { callbackUrl: '/testing' })" class="sign_up_button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
