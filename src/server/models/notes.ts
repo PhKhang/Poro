@@ -9,7 +9,7 @@ export interface NoteDocument extends Document {
 const NoteSchema = new Schema(
     {
         noteId: {
-            type: 'UUID', 
+            type: String, 
             default: () => randomUUID().toString()
         },
         accountID: {

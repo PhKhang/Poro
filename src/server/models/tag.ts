@@ -9,7 +9,7 @@ export interface TagDocument extends Document {
 const TagSchema = new Schema(
     {
         tagId: {
-            type: 'UUID', 
+            type: String, 
             default: () => randomUUID().toString()
         },
         tagName: {
