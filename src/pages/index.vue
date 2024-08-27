@@ -62,7 +62,7 @@ const { data: userData, signOut, status } = useAuth();
 // const { data: demo, content } = useFetch('/api/protected')
 const { data: token } = await useFetch('/api/token')
 const payload = ref('nothing')
-const { data: random_shi } = await useFetch(`/api/random-write?foo=${payload}`, { pick: 'title'})
+// const { data: random_shi } = await useFetch(`/api/random-write?foo=${payload}`, { pick: 'title'})
 // const { data: sess } = await useFetch('/api/session')
 </script>
 
