@@ -8,8 +8,14 @@ export default defineEventHandler(async (event) => {
   const { action, ...data } = body;
 
   switch (action) {
+    case 'test':
+      const a = await dashboardController.getJoin()
+      console.log('Join:', a)
+      return a
     case 'getRanks':
-      return dashboardController.getLeaderBoard(event);
+      const reult = await dashboardController.getLeaderBoard(event)
+      console.log('Result:', reult)
+      return reult;
 
     case 'getCurrentStanding':
       // if (token == null) {

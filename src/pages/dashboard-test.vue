@@ -6,6 +6,7 @@
 
     <pre>{{ dta }}</pre>
 
+    <button @click="test">Test</button>
     <button @click="fetchData">Fetch ranks</button>
     <button @click="fetchCurrentStandingData">Fetch current standing data</button>
     <button @click="fetchByTime">Fetch data by time marks</button>
@@ -20,6 +21,19 @@ const { data: userData, signOut, status } = useAuth()
 const { data: info } = await useFetch('/api/db')
 
 const dta = ref('')
+
+async function test() {
+  console.log('loading')
+  const value = await $fetch('/api/dashboard', {
+      method: 'POST',
+      body: {
+        action: 'test',
+      }
+    })
+  value? dta.value = JSON.stringify(value) : null
+  console.log('Received data:', value)
+}
+
 async function fetchData() {
   console.log('loading')
   const value = await $fetch('/api/dashboard', {
