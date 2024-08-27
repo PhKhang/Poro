@@ -150,7 +150,49 @@ export default {
         }
         dailyActivities.push(day)
       }
-      
-      return dailyActivities
+      function generateDateRange(startDate : any, endDate : any) {
+        let dates = [];
+        let currentDate = new Date(startDate);
+        endDate = new Date(endDate);
+    
+        while (currentDate <= endDate) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dates;
+    }
+    // Hàm tạo danh sách tất cả các ngày trong một tháng bất kỳ
+    function generateMonthDays(year : any, month : any) {
+        let startDate = new Date(year, month - 1, 1);
+        let endDate = new Date(year, month, 0); // Lấy ngày cuối cùng của tháng
+        return generateDateRange(startDate, endDate);
+    }
+    
+    // Hàm thêm các ngày với hours_studied = 0 vào danh sách hiện tại
+    function fillMissingDays(daysActivity: any[], year: number, month: number) {
+      let allDates = generateMonthDays(year, month);
+      let daysMap: { [key: string]: any } = {};
+  
+      // Create a map of existing days
+      daysActivity.forEach(item => {
+          daysMap[item.date] = item;
+      });
+  
+      // Create a new array to avoid mutating the original array while iterating
+      let updatedDaysActivity = [...daysActivity];
+  
+      // Add missing days with default values
+      allDates.forEach(date => {
+          if (!daysMap[date]) {
+              updatedDaysActivity.push({ "date": date, "hours_studied": 0, "activity_level": "no-study" });
+          }
+      });
+  
+      // Sort the array by date
+      updatedDaysActivity.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  
+      return updatedDaysActivity;
+  }
+      return fillMissingDays(dailyActivities, date.getFullYear(), date.getMonth() + 1)
   },
 };
