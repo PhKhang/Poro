@@ -139,7 +139,7 @@ const getSoundIcon = (index) => {
 #audio-board {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 12px;
     display: flex;
     flex-direction: column;
     width: 230px;

@@ -140,17 +140,21 @@ export default {
     });
 
     const validateDuration = (type) => {
-      if (type === 'work' && workDuration.value < 1) {
-        workDuration.value = 1;
-      } else if (type === 'break' && breakDuration.value < 1) {
-        breakDuration.value = 1;
+      if (type === 'work') {
+        if (workDuration.value < 1) {
+          workDuration.value = 1;
+        } else if (workDuration.value > 1000000) {
+          workDuration.value = 1000000;
+        }
+      } else if (type === 'break') {
+        if (breakDuration.value < 1) {
+          breakDuration.value = 1;
+        } else if (breakDuration.value > 1000000) {
+          breakDuration.value = 1000000;
+        }
       }
     };
-    
-    const hideElement = () => {
-      emit('close'); // Emit event to parent
-    };
-
+  
     const showSettings = ref(false); // Biến để theo dõi trạng thái hiển thị cài đặt
 
     const toggleSettings = () => {
