@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
             return {
                 name: token.name,
                 email: token.email,
-                picture: token.picture
+                image: token.picture
             }
 
         case 'changeUsername':
@@ -54,7 +54,10 @@ export default defineEventHandler(async (event) => {
             if (!data.newName) {
                 return { error: 'newName is required for this action' };
             }
-            return accountController.changeUsername(token.id, data.newName);
+            console.log('Change username:', data.newName, ' for ', token.id)
+            const re = await accountController.changeUsername(token.id, data.newName)
+            console.log('Updated', re)
+            return re;
 
         case 'changePassword':
             if (!token) {
