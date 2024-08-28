@@ -27,38 +27,47 @@ const newTheme = ref({
 });
 const formError = ref(''); // Add this line
 
-const addTheme = () => {
+const addTheme = async () => {
   // Validate the form
   if (!newTheme.value.name || !newTheme.value.icon || !newTheme.value.videos) {
     formError.value = 'All fields are required.';
     return;
   }
 
-  // Split the videos string into an array
-  const videosArray = newTheme.value.videos.split(',').map(video => video.trim());
+  try {
+    // Send the new theme to the backend
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: {
+        action: 'addTheme',
+        themeData: newTheme.value
+      }
+    });
 
-  // Create a new theme object
-  const newThemeObj = {
-    id: themeData.value.length,
-    name: newTheme.value.name,
-    icon: newTheme.value.icon,
-    videos: videosArray,
-    expanded: false
-  };
+    if (response.error) {
+      console.error('Error adding theme:', response.error);
+      return;
+    }
 
-  // Add the new theme to the themes array
-  themeData.value.push(newThemeObj);
+    // Add the new theme to the local themes array
+    themeData.value.push(response.theme);
 
-  // Reset the form
-  newTheme.value = {
-    name: '',
-    icon: '',
-    videos: ''
-  };
-  formError.value = ''; // Reset the error message
+    // Reset the form
+    newTheme.value = {
+      name: '',
+      icon: '',
+      videos: ''
+    };
+    formError.value = ''; // Reset the error message
 
-  // Close the modal
-  showAddThemeModal.value = false;
+    // Close the modal
+    showAddThemeModal.value = false;
+
+    console.log('Theme added successfully:', response);
+
+  } catch (error) {
+    console.error('Error adding theme:', error);
+  }
 };
 const editBackground = (theme, index) => {
   currentTheme.value = theme;

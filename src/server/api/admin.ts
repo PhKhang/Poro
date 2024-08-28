@@ -48,6 +48,14 @@ export default defineEventHandler(async (event) => {
       return adminController.updateTheme(themeId, themeData);
     }
 
+    case 'addTheme': {
+      const { themeData } = data;
+      if (!themeData) { 
+        return { error: 'themeData is required for addTheme action' };
+      } 
+      return adminController.addTheme(themeData);
+    }
+
     default:
       return { error: `Unknown action: ${action}` };
   }

@@ -120,6 +120,22 @@ export default {
             return { error: 'Failed to update theme data' };
         }
     },    
+
+    async addTheme(themeData: any) {
+        try {
+            // Get the current number of themes
+            const themeCount = await ThemeModel.countDocuments();
+
+            // Set the new theme ID to the current number of themes + 1
+            themeData.id = themeCount + 1;
+            const newTheme = new ThemeModel(themeData);
+            const savedTheme = await newTheme.save();
+            return { theme: savedTheme };
+        } catch (error) {
+            console.error('Error in addTheme:', error);
+            return { error: 'Failed to add theme data' };
+        }
+    },
     
     async deleteUser(userId: string) {
         try {
