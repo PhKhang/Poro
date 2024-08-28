@@ -42,6 +42,33 @@ const saveNewUrl = () => {
   }
 };
 
+const showAddModal = ref(false);
+const newBackgroundUrl = ref('');
+
+// Function to show the add background modal
+const showAddBackgroundModal = (theme) => {
+  currentTheme.value = theme;
+  newBackgroundUrl.value = '';
+  showAddModal.value = true;
+};
+
+// Function to close the add background modal
+const closeAddModal = () => {
+  showAddModal.value = false;
+  currentTheme.value = null;
+  newBackgroundUrl.value = '';
+};
+
+// Function to add a new background
+const addNewBackground = async () => {
+  if (newBackgroundUrl.value && currentTheme.value) {
+    currentTheme.value.videos.push(newBackgroundUrl.value);
+    await saveTheme(currentTheme.value); // Save the updated theme
+    closeAddModal();
+  }
+};
+
+
 // Toggle expand/collapse for theme rows
 const toggleExpand = (theme) => {
   theme.expanded = !theme.expanded;
@@ -312,7 +339,7 @@ onMounted(() => {
                     </li>
                   </ul>
                   <div class="buttons">
-                    <button class="add-button">
+                    <button class="add-button" @click="showAddBackgroundModal(theme)">
                       <span class="material-symbols-outlined">add_circle</span>
                     </button>
                   </div>
@@ -349,6 +376,23 @@ onMounted(() => {
     <div class="edit-modal-footer">
       <button class="button save-button" @click="saveNewUrl">Save</button>
       <button class="button cancel-button" @click="closeEditModal">Cancel</button>
+    </div>
+  </div>
+  <!-- Add Background Modal -->
+  <div v-if="showAddModal" class="edit-modal">
+    <div class="edit-modal-header">
+      <h3>Add New Background</h3>
+      <button class="close-button" @click="closeAddModal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+      <label for="new-youtube-url">YouTube URL:</label>
+      <input v-model="newBackgroundUrl" id="new-youtube-url" type="text" />
+    </div>
+    <div class="edit-modal-footer">
+      <button class="button save-button" @click="addNewBackground">Add</button>
+      <button class="button cancel-button" @click="closeAddModal">Cancel</button>
     </div>
   </div>
 </template>
