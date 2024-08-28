@@ -14,6 +14,34 @@ const currentPage = ref(1);
 const userName = ref('Quang Huy');
 const userType = ref('Admin');
 
+const showEditModal = ref(false);
+const newUrl = ref('');
+const currentTheme = ref(null);
+const currentIndex = ref(null);
+
+
+const editBackground = (theme, index) => {
+  currentTheme.value = theme;
+  currentIndex.value = index;
+  newUrl.value = theme.videos[index];
+  showEditModal.value = true;
+};
+
+const closeEditModal = () => {
+  showEditModal.value = false;
+  currentTheme.value = null;
+  currentIndex.value = null;
+  newUrl.value = '';
+};
+
+const saveNewUrl = () => {
+  if (newUrl.value) {
+    currentTheme.value.videos[currentIndex.value] = newUrl.value;
+    saveTheme(currentTheme.value); // Save the updated theme
+    closeEditModal();
+  }
+};
+
 // Toggle expand/collapse for theme rows
 const toggleExpand = (theme) => {
   theme.expanded = !theme.expanded;
@@ -176,8 +204,10 @@ onMounted(() => {
   console.log('Component mounted, fetching theme data...');
 });
 </script>
+
 <template>
   <div class="app-container">
+    <!-- Sidebar -->
     <div class="sidebar">
       <h1 class="logo">Poro</h1>
       <nav>
@@ -193,7 +223,9 @@ onMounted(() => {
       </nav>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content">
+      <!-- Top Bar -->
       <div class="topbar">
         <h1>Theme Management</h1>
         <div class="account-section">
@@ -205,6 +237,7 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- Theme Management -->
       <div class="theme-management">
         <!-- Table Controls -->
         <div class="table-controls">
@@ -213,7 +246,9 @@ onMounted(() => {
               <input type="text" placeholder="Search theme" v-model="searchTerm" />
             </div>
           </div>
-          <div class="table-hint">Showing {{ paginatedThemes.length }} of {{ themeData.length }} entries</div>
+          <div class="table-hint">
+            Showing {{ paginatedThemes.length }} of {{ themeData.length }} entries
+          </div>
         </div>
 
         <!-- Table -->
@@ -231,12 +266,12 @@ onMounted(() => {
             <template v-for="theme in paginatedThemes" :key="theme.id">
               <tr @click="toggleExpand(theme)">
                 <td>{{ theme.id }}</td>
-                <td v-if="editingTheme && editingTheme.id === theme.id" class = "editing-cell">
-                  <input v-model="editingTheme.icon" />
+                <td v-if="editingTheme && editingTheme.id === theme.id" class="editing-cell">
+                  <input v-model="editingTheme.icon" class="edit-input icon-input" />
                 </td>
                 <td v-else>{{ theme.icon }}</td>
-                <td v-if="editingTheme && editingTheme.id === theme.id" class = "editing-cell">
-                  <input v-model="editingTheme.name" />
+                <td v-if="editingTheme && editingTheme.id === theme.id" class="editing-cell">
+                  <input v-model="editingTheme.name" class="edit-input name-input" />
                 </td>
                 <td v-else>{{ theme.name }}</td>
                 <td>
@@ -244,41 +279,47 @@ onMounted(() => {
                   <span v-if="theme.videos.length > 1">...</span>
                 </td>
                 <td class="buttons">
-                  <!-- Edit Button: Starts the editing process for the theme -->
+                  <!-- Edit Button -->
                   <button class="edit-button" @click.stop="editTheme(theme)">
                     <span class="material-symbols-outlined">edit</span>
                   </button>
-
-                  <!-- Delete Button: Confirms and deletes the theme -->
-                  <button class="delete-btn" @click.stop="confirmDelete(theme)">
-                    <span class="material-symbols-outlined"> delete </span>
+                  <!-- Delete Button -->
+                  <button class="delete-button" @click.stop="confirmDelete(theme)">
+                    <span class="material-symbols-outlined">delete</span>
                   </button>
-
-                  <!-- Save button -->
-                  <button class="save-button" v-if="editingTheme && editingTheme.id === theme.id"
-                    @click.stop="saveTheme">
+                  <!-- Save Button -->
+                  <button class="save-button" v-if="editingTheme && editingTheme.id === theme.id" @click.stop="saveTheme">
                     <span class="material-symbols-outlined">add_task</span>
                   </button>
-
                 </td>
               </tr>
 
+              <!-- Expanded Row -->
               <tr v-if="theme.expanded" class="expanded-row">
+                <td colspan="3"></td>
                 <td colspan="6">
                   <ul>
                     <li v-for="(bg, index) in theme.videos" :key="index">
                       {{ index + 1 }}. {{ bg }}
-                      <button class="delete-btn" @click="confirmDelete(theme)">
-                        <span class="material-symbols-outlined"> delete </span>
-                      </button>
+                      <div class="buttons">
+                        <button class="edit-bg-button" @click="editBackground(theme, index)">
+                          <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button class="delete-bg-button" @click="confirmDelete(theme)">
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
                     </li>
                   </ul>
-                  <button class="add-button">+</button>
+                  <div class="buttons">
+                    <button class="add-button">
+                      <span class="material-symbols-outlined">add_circle</span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </template>
           </tbody>
-
         </table>
 
         <!-- Pagination Controls -->
@@ -292,7 +333,26 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <!-- Edit Modal -->
+  <div v-if="showEditModal" class="edit-modal">
+    <div class="edit-modal-header">
+      <h3>Edit Background</h3>
+      <button class="close-button" @click="closeEditModal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+      <label for="youtube-url">YouTube URL:</label>
+      <input v-model="newUrl" id="youtube-url" type="text" />
+    </div>
+    <div class="edit-modal-footer">
+      <button class="button save-button" @click="saveNewUrl">Save</button>
+      <button class="button cancel-button" @click="closeEditModal">Cancel</button>
+    </div>
+  </div>
 </template>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
@@ -414,12 +474,6 @@ onMounted(() => {
   gap: 8px;
 }
 
-.edit-icon,
-.delete-icon {
-  cursor: pointer;
-}
-
-
 .search-bar {
   margin-bottom: 20px;
 }
@@ -433,6 +487,7 @@ onMounted(() => {
   border-radius: 5px;
 }
 
+/* Table Styles */
 .theme-table {
   width: 100%;
   border-collapse: collapse;
@@ -452,12 +507,14 @@ onMounted(() => {
 .theme-table td.buttons {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
+}
+.theme-table td.buttons button {
+  margin-left: 5px; /* Add some spacing between buttons */
 }
 
-.edit-button,
-.save-button,
-.delete-btn {
+/* Button Styles */
+button {
   background: none;
   border: none;
   cursor: pointer;
@@ -465,18 +522,27 @@ onMounted(() => {
   font-size: 16px;
   margin: 0 5px;
 }
-
-.edit-button {
-  margin-right: 5px;
+.add-button,
+.close-button,
+.edit-button,
+.edit-bg-button,
+.save-button,
+.delete-button,
+.delete-bg-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0 5px;
 }
-
-.delete-btn {
-  margin-left: 5px;
-}
-
+.add-button .material-symbols-outlined,
+.close-button .material-symbols-outlined,
+.edit-bg-button .material-symbols-outlined,
 .edit-button .material-symbols-outlined,
 .save-button .material-symbols-outlined,
-.delete-btn .material-symbols-outlined {
+.delete-button .material-symbols-outlined,
+.delete-bg-button .material-symbols-outlined {
   font-family: 'Material Symbols Outlined', sans-serif;
   font-variation-settings:
     'FILL' 0,
@@ -485,8 +551,22 @@ onMounted(() => {
     'opsz' 24;
 }
 
+
+.close-button:hover,
+.edit-button:hover,
+.edit-bg-button:hover,
+.save-button:hover {
+  color: #FFD800;
+}
+
+.delete-button:hover,
+.delete-bg-button:hover {
+  color: #ff4d4d;
+}
+
+/* Expanded Row Styles */
 .expanded-row {
-  background-color: #2a2a2a;
+  background-color: #1e1e1e;
 }
 
 .expanded-row ul {
@@ -499,31 +579,24 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+}
+/* Ensure buttons are aligned to the right */
+.theme-table td .buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.add-button {
-  background-color: #FFD800;
-  color: #2a2a2a;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  cursor: pointer;
-  margin-top: 10px;
+.theme-table td .buttons button {
+  margin-left: 5px; /* Add some spacing between buttons */
 }
-
 /* Table Controls Styles */
 .table-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.filter-controls {
-  display: flex;
-  align-items: center;
 }
 
 .table-hint {
@@ -565,6 +638,7 @@ onMounted(() => {
   font-size: 18px;
 }
 
+/* Editing Cell Styles */
 .editing-cell {
   padding: 0 !important;
 }
@@ -573,16 +647,11 @@ onMounted(() => {
   width: 100%;
   padding: 8px;
   background-color: #2a2a2a;
-  border: 1px solid #FFD800;
-  color: #2a2a2a;
+  border: 1px solid #ffffff;
+  color: #ffffff;
   border-radius: 4px;
   font-size: 14px;
   transition: all 0.3s ease;
-}
-
-.edit-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 216, 0, 0.5);
 }
 
 .icon-input {
@@ -593,12 +662,72 @@ onMounted(() => {
 .name-input {
   width: 100%;
 }
-.edit-button:hover,
-.save-button:hover {
-  color: #FFD800;
+
+/* Modal Styles */
+.edit-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1e1e1e;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+  width: 300px;
+  color: white;
 }
 
-.delete-btn:hover {
-  color: #ff4d4d;
-} 
+.edit-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.edit-modal-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.edit-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-modal-body label {
+  font-weight: bold;
+}
+
+.edit-modal-body input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.edit-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.edit-modal-footer .button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-modal-footer .save-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-modal-footer .cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
 </style>
