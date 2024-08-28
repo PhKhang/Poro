@@ -19,7 +19,47 @@ const newUrl = ref('');
 const currentTheme = ref(null);
 const currentIndex = ref(null);
 
+const showAddThemeModal = ref(false);
+const newTheme = ref({
+  name: '',
+  icon: '',
+  videos: ''
+});
+const formError = ref(''); // Add this line
 
+const addTheme = () => {
+  // Validate the form
+  if (!newTheme.value.name || !newTheme.value.icon || !newTheme.value.videos) {
+    formError.value = 'All fields are required.';
+    return;
+  }
+
+  // Split the videos string into an array
+  const videosArray = newTheme.value.videos.split(',').map(video => video.trim());
+
+  // Create a new theme object
+  const newThemeObj = {
+    id: themeData.value.length,
+    name: newTheme.value.name,
+    icon: newTheme.value.icon,
+    videos: videosArray,
+    expanded: false
+  };
+
+  // Add the new theme to the themes array
+  themeData.value.push(newThemeObj);
+
+  // Reset the form
+  newTheme.value = {
+    name: '',
+    icon: '',
+    videos: ''
+  };
+  formError.value = ''; // Reset the error message
+
+  // Close the modal
+  showAddThemeModal.value = false;
+};
 const editBackground = (theme, index) => {
   currentTheme.value = theme;
   currentIndex.value = index;
@@ -315,7 +355,8 @@ onMounted(() => {
                     <span class="material-symbols-outlined">delete</span>
                   </button>
                   <!-- Save Button -->
-                  <button class="save-button" v-if="editingTheme && editingTheme.id === theme.id" @click.stop="saveTheme">
+                  <button class="save-button" v-if="editingTheme && editingTheme.id === theme.id"
+                    @click.stop="saveTheme">
                     <span class="material-symbols-outlined">add_task</span>
                   </button>
                 </td>
@@ -356,6 +397,9 @@ onMounted(() => {
             <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
             <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
           </div>
+          <button class="add-theme-button" @click="showAddThemeModal = true">
+            <span class="material-symbols-outlined">add_circle</span>
+          </button>
         </div>
       </div>
     </div>
@@ -395,6 +439,34 @@ onMounted(() => {
       <button class="button cancel-button" @click="closeAddModal">Cancel</button>
     </div>
   </div>
+  <!-- Add Theme Modal -->
+<div v-if="showAddThemeModal" class="add-theme-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add New Theme</h3>
+      <button class="close-button" @click="showAddThemeModal = false">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label for="new-theme-name">Name:</label>
+      <input v-model="newTheme.name" id="new-theme-name" type="text" />
+
+      <label for="new-theme-icon">Icon:</label>
+      <input v-model="newTheme.icon" id="new-theme-icon" type="text" />
+
+      <label for="new-theme-videos">Videos (comma-separated URLs):</label>
+      <input v-model="newTheme.videos" id="new-theme-videos" type="text" />
+
+      <!-- Error message -->
+      <div v-if="formError" class="error-message">{{ formError }}</div>
+    </div>
+    <div class="modal-footer">
+      <button class="button save-button" @click="addTheme">Add</button>
+      <button class="button cancel-button" @click="showAddThemeModal = false">Cancel</button>
+    </div>
+  </div>
+</div>
 </template>
 
 
@@ -553,8 +625,10 @@ onMounted(() => {
   align-items: center;
   justify-content: flex-end;
 }
+
 .theme-table td.buttons button {
-  margin-left: 5px; /* Add some spacing between buttons */
+  margin-left: 5px;
+  /* Add some spacing between buttons */
 }
 
 /* Button Styles */
@@ -566,13 +640,15 @@ button {
   font-size: 16px;
   margin: 0 5px;
 }
+
 .add-button,
 .close-button,
 .edit-button,
 .edit-bg-button,
 .save-button,
 .delete-button,
-.delete-bg-button {
+.delete-bg-button,
+.add-theme-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -580,13 +656,15 @@ button {
   font-size: 16px;
   margin: 0 5px;
 }
+
 .add-button .material-symbols-outlined,
 .close-button .material-symbols-outlined,
 .edit-bg-button .material-symbols-outlined,
 .edit-button .material-symbols-outlined,
 .save-button .material-symbols-outlined,
 .delete-button .material-symbols-outlined,
-.delete-bg-button .material-symbols-outlined {
+.delete-bg-button .material-symbols-outlined,
+.add-theme-button .material-symbols-outlined {
   font-family: 'Material Symbols Outlined', sans-serif;
   font-variation-settings:
     'FILL' 0,
@@ -595,7 +673,7 @@ button {
     'opsz' 24;
 }
 
-
+.add-button:hover,
 .close-button:hover,
 .edit-button:hover,
 .edit-bg-button:hover,
@@ -623,8 +701,9 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
 }
+
 /* Ensure buttons are aligned to the right */
 .theme-table td .buttons {
   display: flex;
@@ -633,8 +712,10 @@ button {
 }
 
 .theme-table td .buttons button {
-  margin-left: 5px; /* Add some spacing between buttons */
+  margin-left: 5px;
+  /* Add some spacing between buttons */
 }
+
 /* Table Controls Styles */
 .table-controls {
   display: flex;
@@ -647,10 +728,11 @@ button {
   color: #999;
 }
 
+
 /* Pagination Styles */
 .table-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   margin-top: 20px;
 }
@@ -681,6 +763,27 @@ button {
   margin: 0 10px;
   font-size: 18px;
 }
+
+/* Add Theme Button Styles */
+.add-theme-button {
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Keeps it positioned to the right */
+}
+
+.add-theme-button .material-symbols-outlined {
+  font-size: 36px; /* Makes the icon bigger */
+}
+
+.add-theme-button:hover {
+  color: #FFD800;
+  transform: scale(1.1); /* Slightly enlarges the button on hover */
+}
+
 
 /* Editing Cell Styles */
 .editing-cell {
@@ -774,4 +877,65 @@ button {
   color: white;
 }
 
+.add-theme-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 300px;
+  color: white;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header, .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-body label {
+  font-weight: bold;
+}
+.modal-body input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.modal-footer {
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+.modal-footer .button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px; /* Add margin to the right */
+}
+.modal-footer .save-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-footer .cancel-button {
+  background-color: #f44336;
+  color: white;
+}
 </style>
