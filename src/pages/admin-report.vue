@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="app-container">
     <div class="sidebar">
@@ -24,19 +22,21 @@
           <button class="account-toggle">🌌</button>
         </div>
       </div>
-
+      <div class="main-content">
+        <div class="dashboard_report"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .app-container {
@@ -54,7 +54,7 @@
 }
 
 .logo {
-  color: #FFD800;
+  color: #ffd800;
   font-size: 26px;
   margin-bottom: 30px;
 }
@@ -77,7 +77,7 @@
 
 .sidebar ul li.active a,
 .sidebar ul li a:hover {
-  background-color: #FFD800;
+  background-color: #ffd800;
   color: #2a2a2a;
 }
 
@@ -99,7 +99,7 @@
 
 .topbar h1 {
   font-size: 28px;
-  color: #FFD800;
+  color: #ffd800;
 }
 
 .account-section {
@@ -115,7 +115,7 @@
 
 .account-name {
   font-weight: bold;
-  margin-right: 5px; /* Space between name and type */  
+  margin-right: 5px; /* Space between name and type */
 }
 
 .account-type {
@@ -131,8 +131,6 @@
   font-size: 18px;
 }
 
-
-
 .expanded-row li {
   margin: 5px 0;
   display: flex;
@@ -141,7 +139,7 @@
 }
 
 .add-button {
-  background-color: #FFD800;
+  background-color: #ffd800;
   color: #2a2a2a;
   border: none;
   border-radius: 50%;

@@ -45,16 +45,22 @@ async function submitLogin() {
         <h1>LOGIN</h1>
         <form @submit.prevent="submitLogin" class="login_form">
           <!-- box input the email -->
-          <div class="email_form">
-            <input type="email" v-model="form.email" placeholder="Email" />
+          <div class="email">
+            <input 
+              type="email" 
+              v-model="form.email" 
+              placeholder="Email" 
+              class="email_form"
+            />
             <span class="material-symbols-outlined">mail</span>
           </div>
           <!-- box input the password -->
-          <div class="password_form">
+          <div class="password">
             <input
               type="password"
               v-model="form.password"
               placeholder="Password"
+              class="password_form"
             />
             <span class="material-symbols-outlined">lock</span>
           </div>
@@ -64,7 +70,7 @@ async function submitLogin() {
           <p>Don't have an account?</p>
           <a href="./register.vue" class="signup_button">Sign Up</a>
         </div>
-        <h3>- Or Login With -</h3>
+        <div class="sign_in_with_google">        <h3>- Or Login With -</h3>
         <button @click="signIn('google', { callbackUrl: '/testing' })" class="sign_up_button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -94,6 +100,7 @@ async function submitLogin() {
           </svg>
         </button>
       </div>
+     </div>
     </div>
   </div>
 </template>
@@ -129,9 +136,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.left {
   position: relative;
 }
 
@@ -141,6 +145,7 @@ body {
   left: 20px;
   top: 20px;
   text-align: center;
+  text-decoration: none;
 }
 
 .back_button .material-symbols-outlined {
@@ -168,66 +173,63 @@ body {
   height: 678px;
 }
 
+h1 {
+  font-weight: 800;
+  margin: 0 auto;
+  padding: 100px 50px;
+  font-size: 40px;
+}
+
 .login_form {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
   justify-content: center;
-  align-items: center;
-}
-
-h1 {
+  align-items: center; 
   color: var(--white);
-  margin: 0 auto;
-  padding: 80px 50px;
-  font-size: 40px;
 }
 
 .email_form,
 .password_form {
   border: none;
   background-color: var(--black);
-  border-bottom: 1px solid var(--white);
+  border-bottom: 2px solid var(--white);
+  width: 100%;
+  height: 60px;
+  padding: 5px;
 }
 
-input {
-  font-weight: 600;
-  font-size: 20px;
-  width: 470px;
-  height: 57px;
-  background-color: var(--black);
-  border: none;
-  outline: none;
-  padding: 20px;
-}
-
+::placeholder,
 .material-symbols-outlined {
   font-size: 20px;
-  padding: 20px;
+  padding-bottom: 50px;
+  font-weight: 600;
+  margin: -40px;
 }
 
-::placeholder {
-  font-size: 20px;
-  font-weight: 600;
+.email,
+.password {
+  width: 80%;
+  border: none;
+}
+
+.password {
+  padding-bottom: 50px;
 }
 
 .login_button {
-  margin: 40px 0;
-  width: 470px;
-  height: 57px;
+  width: 453px;
+  height: 50px;
   background-color: var(--yelllow);
-  color: var(--black);
-  font-weight: bold;
+  color: #000000;
+  font-weight: 700;
   font-size: 24px;
-  border-radius: 15px;
-}
-
-.login_button:hover,
-.sign_up_button:hover {
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .signup {
+  padding: 10px 0;
   display: flex;
   margin: 0 auto;
   justify-items: center;
@@ -246,6 +248,13 @@ a {
   text-decoration: none;
 }
 
+.sign_in_with_google {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 h3 {
   padding: 10px;
   margin: 0 auto;
@@ -258,6 +267,7 @@ h3 {
   border: none;
   outline: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 @media (max-width: 916px) {
@@ -288,7 +298,7 @@ h3 {
     height: 50%;
   }
 
-  .signup {
+  .login {
     width: 100%;
     height: auto;
     padding: 10px;
@@ -300,7 +310,7 @@ h3 {
     padding: 50px;
   }
 
-  .signup_button {
+  .login_button {
     width: 90%;
   }
 
@@ -308,9 +318,15 @@ h3 {
     padding-bottom: 20px;
   }
 
-  .login {
-    padding-bottom: 20px;
-    width: 100%;
+  .signup_button {
+    padding: 0;
+    margin: 0;
+
+  }
+
+  .sign_up_button {
+    padding: 0;
+    margin: 0;
   }
 }
 
@@ -355,8 +371,7 @@ h3 {
     font-size: 50px;
   }
 
-  .email_form input,
-  .password_form input,
+  input,
   .login_button {
     width: 90%;
     font-size: 18px;
@@ -385,7 +400,7 @@ h3 {
   .email_form,
   .password_form {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 
   h3 {
