@@ -8,7 +8,7 @@ export interface ThemeDocument extends Document {
 }
 
 const ThemeSchema = new Schema({
-    themeId: {
+    id: {
         type: String, 
         default: () => randomUUID().toString()
     },
@@ -20,7 +20,7 @@ const ThemeSchema = new Schema({
         type: String,
         require: true
     },
-    video: {
+    videos: {
         type: [String]
     }
 });

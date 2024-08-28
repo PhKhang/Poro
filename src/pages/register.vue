@@ -12,7 +12,7 @@
         <h1>SIGN UP</h1>
         <form @submit.prevent="submitForm" class="signup_form">
           <div class="user">
-            <input type="text" v-model="form.username" placeholder="Username" class="user_form" />
+            <input type="text" placeholder="Username" class="user_form" />
             <span class="material-symbols-outlined"> person </span>
           </div>
           <div class="email">
@@ -151,7 +151,7 @@ body {
 
 h1 {
   font-weight: 800;
-  font-size: 40;
+  font-size: 40px;
   margin: 0 auto;
   padding: 100px 50px;
 }
@@ -188,6 +188,7 @@ h1 {
 .email,
 .password {
   width: 80%;
+  border: none;
 }
 
 .password {
@@ -202,6 +203,7 @@ h1 {
   width: 453px;
   height: 50px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .login {
