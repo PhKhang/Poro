@@ -70,7 +70,7 @@
       </div>
       <div class="button-container" @click="toggleVisibility('pomodoro')">
         <div>
-          <svg width="26" height="24" viewBox="0 0 26 24" fill="none" :stroke="elementsVisibility.pomodoro ? '#ffd800' : '#EDEDED'" xmlns="http://www.w3.org/2000/svg" ">
+          <svg width="26" height="24" viewBox="0 0 26 24" fill="none" :stroke="elementsVisibility.pomodoro ? '#ffd800' : '#EDEDED'" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.2 21.7001C18.0601 21.7001 22 17.7602 22 12.9001C22 8.03999 18.0601 4.1001 13.2 4.1001C8.33992 4.1001 4.40002 8.03999 4.40002 12.9001C4.40002 17.7602 8.33992 21.7001 13.2 21.7001Z" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M13.2 8.50024V12.9002L15.4 15.1002" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M5.50001 1.90015L2.20001 5.20015" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>

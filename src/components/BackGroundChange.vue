@@ -83,10 +83,10 @@ const emit = defineEmits(['close']); // Define emits
 const hideElement = () => {
   emit('close'); // Emit event to parent
 };
-let youtubeURL = ref("");
+let youtubeURL = ref("https://www.youtube.com/watch?v=Nlp6FN-mizI");
 const temporaryYoutubeURL = ref('');
 let notPlay = ref(true);
-let vidtitle = ref("");
+let vidtitle = ref('');
 let volume = ref(0);
 let firstInstance;
 let themeIndexes = ref(0);
