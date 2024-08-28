@@ -107,15 +107,19 @@ export default {
         }
     },
     
-    async updateTheme(themeId: any, themeData: any) {
+    async updateTheme(themeId: string, themeData: any) {
         try {
-            const themes = await ThemeModel.findOneAndUpdate(themeId, {...themeData});
-            return { themes };
+            const updatedTheme = await ThemeModel.findOneAndUpdate(
+                { _id: themeId },
+                { $set: themeData },
+                { new: true } // Return the updated document
+            );
+            return { theme: updatedTheme };
         } catch (error) {
             console.error('Error in updateTheme:', error);
             return { error: 'Failed to update theme data' };
         }
-    },
+    },    
     
     async deleteUser(userId: string) {
         try {

@@ -17,12 +17,17 @@ export default defineEventHandler(async (event) => {
   switch (action) {
     case 'getTotalUser':
       return adminController.getTotalUser();
-      
+
     case 'getTotalTime':
-      const totalTime = await adminController.getTotalHour();
-      console.log('Total time', totalTime);
-      return totalTime;
-      
+      try {
+        const totalTime = await adminController.getTotalHour();
+        console.log('Total time', totalTime);
+        return totalTime;
+      } catch (error) {
+        console.error('Error getting total time:', error);
+        return { error: 'Failed to get total time' };
+      }
+
     case 'getUserStats':
       return adminController.getUserStats();
 
@@ -35,7 +40,15 @@ export default defineEventHandler(async (event) => {
       }
       return adminController.deleteUser(data.userId);
 
+    case 'updateTheme': {
+      const { themeId, themeData } = data;
+      if (!themeId || !themeData) {
+        return { error: 'themeId and themeData are required for updateTheme action' };
+      }
+      return adminController.updateTheme(themeId, themeData);
+    }
+
     default:
-      return { error: 'Unknown action' };
+      return { error: `Unknown action: ${action}` };
   }
 });
