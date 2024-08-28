@@ -10,7 +10,7 @@
     <DraggableSettingTask :isVisible="elementsVisibility.tasksetting" v-if="selectedTask" :task="selectedTask" />
     
     <div class="manager-user">
-      <NuxtLink to="/profile" class="btn">
+      <NuxtLink to="/dash" class="btn">
         <svg width="22" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0.999998 21.6001H21" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
           <path d="M2 21.6001V14.1001C2 13.2717 2.6716 12.6001 3.5 12.6001H6.5C7.3284 12.6001 8 13.2717 8 14.1001V21.6001" stroke="#EDEDED" stroke-width="2"/>
