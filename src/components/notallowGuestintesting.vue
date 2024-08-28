@@ -56,8 +56,8 @@ const { data: userData, signOut, status } = useAuth();
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
     z-index: 9998; 
 }
 
