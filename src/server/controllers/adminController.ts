@@ -93,7 +93,7 @@ export default {
                 },
                 {
                     $project: {
-                        themeId: 1,
+                        id: 1,
                         icon: 1,
                         name: 1,
                         video: 1
@@ -106,6 +106,17 @@ export default {
             return { error: 'Failed to get theme data' };
         }
     },
+    
+    async updateTheme(themeId: any, themeData: any) {
+        try {
+            const themes = await ThemeModel.findOneAndUpdate(themeId, {...themeData});
+            return { themes };
+        } catch (error) {
+            console.error('Error in updateTheme:', error);
+            return { error: 'Failed to update theme data' };
+        }
+    },
+    
     async deleteUser(userId: string) {
         try {
             // Delete the user
