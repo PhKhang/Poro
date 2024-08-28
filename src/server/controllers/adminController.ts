@@ -96,7 +96,7 @@ export default {
                         id: 1,
                         icon: 1,
                         name: 1,
-                        video: 1
+                        videos: 1
                     }
                 }
             ]);

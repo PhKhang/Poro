@@ -20,7 +20,7 @@ const ThemeSchema = new Schema({
         type: String,
         require: true
     },
-    video: {
+    videos: {
         type: [String]
     }
 });

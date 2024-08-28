@@ -35,10 +35,16 @@
       </thead>
       <tbody>
         <tr v-for="theme in themeData" :key="theme._id">
-          <td>{{ theme.themeId }}</td>
+          <td>{{ theme.id }}</td>
           <td>{{ theme.icon }}</td>
           <td>{{ theme.name }}</td>
-          <td>{{ theme.video }}</td>
+          <td>
+            <ul>
+              <li v-for="(video, index) in theme.videos" :key="index">
+                <a :href="video" target="_blank">{{ video }}</a>
+              </li>
+            </ul>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -100,5 +106,14 @@ th, td {
 
 th {
   background-color: #f2f2f2;
+}
+
+ul {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+li {
+  margin-bottom: 5px;
 }
 </style>
