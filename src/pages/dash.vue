@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <NotallowGuest></NotallowGuest>
         <!-- Calendar Section -->
         <div class="calendar-section">
             <div class="calendar-header">
@@ -48,6 +49,8 @@
 </template>
 
 <script setup>
+import NotallowGuest from '~/components/notallowGuest.vue';
+
 function getDay(date) {
     return new Date(date).getDate();
 }
@@ -135,8 +138,8 @@ console.log("----------------------------")
 
 </script>
 
-<style>
-/* Add your CSS styling here */
+<style scoped>
+
 .container {
     display: flex;
     flex-direction: row;
