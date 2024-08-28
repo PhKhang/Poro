@@ -5,6 +5,7 @@ import { UserModel } from '~/server/models/user';
 // import { PrismaAdapter } from '@next-auth/prisma-adapter';
 // import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
+import { useModel } from 'vue';
 
 // const prisma = new PrismaClient()
 
@@ -100,11 +101,15 @@ export default NuxtAuthHandler({
       console.log('In User:', user)
 
       if (user) {
+        // console.log('Update id', acc)
         token = {
           ...token,
-          ...user
+          ...user,
         }
       }
+      
+      // const acc = await UserModel.findOne({ email: token.email });
+      // console.log('JWT update', acc)
       // else {
       //   const acc = await UserModel.findOne({ email: token.email });
       //   token = {...token, id: acc?.id}
@@ -114,20 +119,20 @@ export default NuxtAuthHandler({
       return token;
     },
 
-    // async session({ session, token }) {
-    //   // console.log('Token:', token)
-    //   session.user = {
-    //     ...token,
-    //     ...session.user
-    //   }
+    async session({ session, token }) {
+      // console.log('Token:', token)
+      session.user = {
+        ...token,
+        ...session.user
+      }
 
-    //   const user = await UserModel.findOne({ email: session.user.email });
+      const user = await UserModel.findOne({ email: session.user.email });
 
-    //   // const new_session = session
-    //   // new_session.role = new_session?.role
+      // const new_session = session
+      // new_session.role = new_session?.role
 
-    //   return {...session, id: user?.id};
-    // }
+      return {...session, id: user?.id};
+    }
 
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)

@@ -6,7 +6,7 @@ import bcrypt from "bcrypt"
 export default {
     async changeUsername(id: any, newName: any) {
         try {
-            UserModel.findByIdAndUpdate(id, { name: newName });
+            await UserModel.findOneAndUpdate({ id: id }, { name: newName });
             return { success: true };
         } catch (error) {
             console.error('Cannot change username:', error);
