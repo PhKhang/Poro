@@ -27,6 +27,14 @@ const newTheme = ref({
 });
 const formError = ref(''); // Add this line
 
+const resetNewTheme = () => {
+  newTheme.value = {
+    name: '',
+    icon: '',
+    videos: ''
+  };
+};
+
 const addTheme = async () => {
   // Validate the form
   if (!newTheme.value.name || !newTheme.value.icon || !newTheme.value.videos) {
@@ -58,6 +66,7 @@ const addTheme = async () => {
       icon: '',
       videos: ''
     };
+    resetNewTheme();
     formError.value = ''; // Reset the error message
 
     // Close the modal
@@ -112,7 +121,36 @@ const closeAddModal = () => {
 const addNewBackground = async () => {
   if (newBackgroundUrl.value && currentTheme.value) {
     currentTheme.value.videos.push(newBackgroundUrl.value);
-    await saveTheme(currentTheme.value); // Save the updated theme
+
+    // Send the updated theme to the backend
+    const themeId = currentTheme.value._id || currentTheme.value.id;
+    try {
+      const response = await $fetch('/api/admin', {
+        method: 'POST',
+        body: {
+          action: 'updateTheme',
+          themeId: themeId,
+          themeData: currentTheme.value
+        }
+      });
+
+      if (response.error) {
+        console.error('Error updating theme:', response.error);
+        return;
+      }
+
+      // Update the local data
+      const index = themeData.value.findIndex(t => t._id === themeId || t.id === themeId);
+      if (index !== -1) {
+        themeData.value[index] = { ...currentTheme.value };
+      }
+
+      console.log('Background added and theme updated successfully:', response);
+
+    } catch (error) {
+      console.error('Error updating theme:', error);
+    }
+
     closeAddModal();
   }
 };
