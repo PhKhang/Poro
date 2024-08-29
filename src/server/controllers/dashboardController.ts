@@ -117,11 +117,11 @@ export default {
       
       let dailyActivities = []
       function getActivityLevel(hours: any) {
-        if (hours === 0) return 'no-study';
-        if (hours <= 1) return 'low-activity';
-        if (hours <= 2) return 'medium-activity';
-        if (hours <= 3) return 'medium-high-activity';
-        if (hours > 3)  return 'high-activity';
+        if ((hours/60) === 0) return 'no-study';
+        if ((hours/60) <= 1) return 'low-activity';
+        if ((hours/60) <= 2) return 'medium-activity';
+        if ((hours/60) <= 3) return 'medium-high-activity';
+        if ((hours/60) > 3)  return 'high-activity';
         return 'high-activity';
     }
 
@@ -147,7 +147,7 @@ export default {
     // Hàm tạo danh sách tất cả các ngày trong một tháng bất kỳ
     function generateMonthDays(year : any, month : any) {
         let startDate = new Date(year, month - 1, 1);
-        let endDate = new Date(year, month, 0); // Lấy ngày cuối cùng của tháng
+        let endDate = new Date(year, month, 1); // Lấy ngày cuối cùng của tháng
         return generateDateRange(startDate, endDate);
     }
     

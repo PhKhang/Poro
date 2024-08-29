@@ -1,7 +1,7 @@
 <template>
     <div class="issue-report-screen">
         <header class="header">
-            <NuxtLink to="/testing">
+            <NuxtLink href="/testing">
                 <svg class="right-arrow-next" alt="Right arrow next" width="61" height="17" viewBox="0 0 61 17"
                     fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -53,7 +53,10 @@
                     <label for="email" class="form-label">Email (not editable):</label>
                     <input type="text" id="email" class="form-input" v-model="email" readonly />
                 </div>
-                <p class="success-message" v-if="isSaved">Your profile has been saved successfully!</p>
+                <p class="success-message" v-if="isSaved">Your profile has been saved successfully. We will redirected to the Login page for you!</p>
+                <p class="success-message" v-if="!isSaved" >
+                    Notice that you will be logged out after clicking save.
+                </p>
                 <button type="submit" class="submit-button">Save</button>
             </form>
         </main>
@@ -99,9 +102,9 @@ const handleSave = () => {
         setTimeout(() => {
             isSaved.value = false
             
-        }, 3000);
+        }, 4500);
         signOut({ callbackUrl: '/login' })
-    }, 3000); // Đợi 3 giây trước khi ẩn form
+    }, 4500);
 };
 
 const handleAvatarChange = (event: Event) => {
@@ -136,6 +139,7 @@ body {
     color: #ededed;
     font: 400 20px 'Source Sans 3', sans-serif;
     padding-left: 15px;
+    padding-top:15px;
 }
 
 .back-icon {
@@ -171,7 +175,6 @@ body {
 .issue-report-screen {
     display: flex;
     flex-direction: column;
-    padding: 15px 0px 0px 0px;
     height: 100%;
 }
 
@@ -278,6 +281,17 @@ body {
     max-width: 549px;
 }
 
+.form-description {
+    margin: 0;
+    color: #ededed;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 400 14px 'Poppins', sans-serif;
+    width: 400px;
+}
+
 .form-label {
     padding-left: 15px;
     color: #ededed;
@@ -333,7 +347,7 @@ body {
 }
 
 .success-message {
-    color: #fff;
+    color: #ededed;
     margin-top: 22px;
     font: 500 16px 'Poppins', sans-serif;
     text-align: center;

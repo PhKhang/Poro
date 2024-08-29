@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <a href="testing">
+        <NuxtLink to="/testing">
             <svg class="right-arrow-next" alt="Right arrow next" width="61" height="17" viewBox="0 0 61 17"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -10,7 +10,7 @@
                     d="M5.44684 8.84758L10.8577 14.2585C11.0501 14.4508 11.3609 14.4508 11.5533 14.2585C11.7456 14.0661 11.7456 13.7553 11.5533 13.5629L6.49016 8.49982L11.5533 3.43672C11.7456 3.24439 11.7456 2.93351 11.5533 2.74118C11.4573 2.64526 11.3314 2.59705 11.2055 2.59705C11.0796 2.59705 10.9536 2.64526 10.8577 2.74118L5.44682 8.15207C5.25452 8.34437 5.25452 8.65526 5.44684 8.84758Z"
                     stroke="#EDEDED" stroke-width="1.41873" />
             </svg>
-        </a>
+        </NuxtLink>
     </header>
     <div class="container">
         <notallowGuest></notallowGuest>
@@ -22,10 +22,14 @@
                     <h3>{{ formattedToday }}</h3>
                 </div>
                 <div class="calendar-grid">
-                    <div class="block" v-for="day in daysActivity" :key="day.date" >
-                        <p class="date-block" :class="{ 'highlight-today': isToday(day.date) }">{{ getDay(day.date) }}<br></p>
+                    <div class="block" v-for="day in daysActivity" :key="day.date">
+                        <p class="date-block" :class="{ 'highlight-today': isToday(day.date) }">
+                            {{ getDay(day.date) }}<br>
+                        </p>
                         <div class="time-block" :class="day.activity_level">
-                            {{ formatTime(day.hours_studied / 60)  }}h
+                            <span class="tooltip">
+                                {{ formatTime(day.hours_studied / 60)  }}h
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -248,12 +252,12 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-top: 35px;
     padding-right: 10px;
     background-color: #222222;
     color: #ededed;
-    margin-left: 60px;
-    margin-right: 60px;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 15px;
 }
 
 .header {
@@ -370,6 +374,29 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     font-size: 12px;
     width: 48.548px;
     height: 18.205px;
+    position: relative;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the time-block */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-size: 12px;
+}
+
+.time-block:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }
 
 .no-study {
@@ -538,7 +565,7 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 5px 0;
     border-bottom: 1px solid #383838;
     font-size: 16px;
 }
