@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
 useHead({
   link: [
     {
@@ -20,6 +22,7 @@ async function submitLogin() {
   try {
     const result = await signIn("credentials", {
       ...form.value,
+      callbackUrl: "/testing",
     });
     useRouter().push({ name: "index" });
 
@@ -71,7 +74,7 @@ async function submitLogin() {
         </form>
         <div class="signup">
           <p>Don't have an account?</p>
-          <a href="./register.vue" class="signup_button">Sign Up</a>
+          <RouterLink to="./register" class="signup_button">Sign Up</RouterLink>
         </div>
         <div class="sign_in_with_google">        <h3>- Or Login With -</h3>
         <button @click="signIn('google', { callbackUrl: '/testing' })" class="sign_up_button">
