@@ -149,9 +149,9 @@
       </div>
     </div>
     <div class="popup_content">
-      <div class="top_b">
+      <button class="close-button">
         <span class="material-symbols-outlined"> close </span>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -372,9 +372,33 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-.top_b .material-symbols-outlined {
-  background-color: red;
-  color: red;
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0 5px;
+}
+.check-button,
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0 5px;
+}
+.check-button .am,
+.close-button .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+.close-button:hover{
+  color:#ff4d4d
 }
 </style>
