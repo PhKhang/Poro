@@ -410,6 +410,24 @@ const sliderStyle = computed(() => ({
   margin-top: 10px;
 }
 
+.navigation-buttons button {
+  color: #ededed; 
+  border: 2px solid #ededed;
+  border: none; 
+  padding: 5px 10px; 
+  border-radius: 3px; 
+  cursor: pointer; 
+  font-size: 14px; 
+  background: #3A3A3A;
+  backdrop-filter: blur(4.8px); 
+  transition: background-color 0.3s ease; 
+}
+
+.navigation-buttons button:hover {
+  background-color: #0056b3; 
+  border-color: #004494;
+}
+
 .theme-icons {
   display: flex;
   flex-wrap: wrap;
