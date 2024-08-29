@@ -86,15 +86,22 @@ export default NuxtAuthHandler({
           console.log('Google account already exists')
           const old_user = await UserModel.findOne({ email: user.email });
           user.name = old_user?.name
+          user.image = old_user?.image
+          user.role = old_user?.role
         }
       }
       else if (credentials == null) {
         console.log('Sign in with wrong password')
         return false
       }
+      
       // console.log('New user:', user)
+      console.log('User on signin:', user)
+      if (user.role == 'Admin' || user.role == 'admin') {
+        return '/admin-user'
+      }
 
-      return true
+      return '/testing'
     },
 
     async jwt({ token, user, account }) {

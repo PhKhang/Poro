@@ -61,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-// import { getServerSession } from '#auth'
-// const {} = getServerSession()
+// Only authenticated users can access this page
+definePageMeta({middleware: 'auth'});
 
 const showForm = ref(false);
 
