@@ -117,11 +117,11 @@ export default {
       
       let dailyActivities = []
       function getActivityLevel(hours: any) {
-        if (hours === 0) return 'no-study';
-        if (hours <= 1) return 'low-activity';
-        if (hours <= 2) return 'medium-activity';
-        if (hours <= 3) return 'medium-high-activity';
-        if (hours > 3)  return 'high-activity';
+        if ((hours/60) === 0) return 'no-study';
+        if ((hours/60) <= 1) return 'low-activity';
+        if ((hours/60) <= 2) return 'medium-activity';
+        if ((hours/60) <= 3) return 'medium-high-activity';
+        if ((hours/60) > 3)  return 'high-activity';
         return 'high-activity';
     }
 

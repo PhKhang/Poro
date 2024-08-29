@@ -22,10 +22,14 @@
                     <h3>{{ formattedToday }}</h3>
                 </div>
                 <div class="calendar-grid">
-                    <div class="block" v-for="day in daysActivity" :key="day.date" >
-                        <p class="date-block" :class="{ 'highlight-today': isToday(day.date) }">{{ getDay(day.date) }}<br></p>
+                    <div class="block" v-for="day in daysActivity" :key="day.date">
+                        <p class="date-block" :class="{ 'highlight-today': isToday(day.date) }">
+                            {{ getDay(day.date) }}<br>
+                        </p>
                         <div class="time-block" :class="day.activity_level">
-                            {{ formatTime(day.hours_studied / 60)  }}h
+                            <span class="tooltip">
+                                {{ formatTime(day.hours_studied / 60)  }}h
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -370,6 +374,29 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     font-size: 12px;
     width: 48.548px;
     height: 18.205px;
+    position: relative;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the time-block */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-size: 12px;
+}
+
+.time-block:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }
 
 .no-study {
@@ -381,17 +408,14 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
 }
 
 .medium-activity {
-    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 0.5);
 }
 
 .medium-high-activity {
-    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 0.75);
 }
 
 .high-activity {
-    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 1);
 }
 
