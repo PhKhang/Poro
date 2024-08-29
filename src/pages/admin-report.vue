@@ -1,19 +1,44 @@
 <script lang="ts" setup>
-// const dep = ref("TRhibn rthin thib g");
+import './assets/base.css';
+const dep = ref("TRhibn rthin thib g");
 
-// const reportList = ref();
-// const data = await $fetch("/api/admin", {
-//   method: "POST",
-//   body: {
-//     action: "getReport",
-//   },
-// }).then(data => {
-//   reportList.value = data.result
-//   console.log('Reports:', data.result)
-// });
+const reportList = ref();
+const data = await $fetch("/api/admin", {
+  method: "POST",
+  body: {
+    action: "getReport",
+  },  
+}).then(data => {
+  reportList.value = data.result
+  console.log('Reports:', data.result)
+});
+
+const dropdownVisible = ref(false);
+
+const toggleDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value;
+};
+
+const elementsVisibility = reactive({
+  showNotallowGuest: false,
+  logout: false,
+});
+
+const toggleVisibility = (element) => {
+  if (element === 'note' && !userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
+  if (element === 'task' && !userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
+  elementsVisibility[element] = !elementsVisibility[element];
+};
 </script>
 
 <template>
+  <h1>{{reportList[0].createAt}}dd</h1>
   <div class="app-container">
     <div class="sidebar">
       <h1 class="logo">Poro</h1>
@@ -148,16 +173,11 @@
         </div>
       </div>
     </div>
-    <div class="popup_content">
-      <div class="top_b">
-        <span class="material-symbols-outlined"> close </span>
-      </div>
-    </div>
+    <div class="popup_content">{{ dep }}</div>
   </div>
 </template>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
 
 * {
@@ -259,7 +279,111 @@
   cursor: pointer;
   font-size: 18px;
 }
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(34, 34, 34, 0.7);
+  backdrop-filter: blur(4.8px);
+  width: 182px;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  border-radius: 8.8px;
+  border: 1.2px solid #7a7a7a;
+}
 
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 9px 13px;
+  cursor: pointer;
+  color: #ededed;
+  text-decoration: none;
+}
+
+.dropdown-item svg {
+  width: 25px;
+  height: 25px;
+}
+
+.dropdown-item span {
+  margin-left: 13px;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(122, 122, 122, 0.4);
+}
+
+.button-container,
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(34, 34, 34, 0.7);
+  border-radius: 8.8px;
+  border: 1.2px solid #7a7a7a;
+  margin-left: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+}
+
+.button-container::after,
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(122, 122, 122, 0.4);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  border-radius: 8px;
+}
+
+.button-container:hover::after,
+.btn:hover::after {
+  opacity: 1;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: rgb(34, 34, 34);
+  color: #ededed;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 2;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+  text-align: center;
+  font-weight: 700;
+}
+
+.button-container:hover .tooltip,
+.btn:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.close-button {
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 .expanded-row li {
   margin: 5px 0;
   display: flex;
@@ -364,17 +488,13 @@
   word-break: normal;
 }
 .popup_content {
+  display: none;
   position: absolute;
-  height: 500px;
-  width: 500px;
-  background-color: #2e2e2e;
+  height: 100px;
+  width: 100px;
+  background-color: red;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.top_b .material-symbols-outlined {
-  background-color: red;
-  color: red;
 }
 </style>

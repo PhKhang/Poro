@@ -55,6 +55,13 @@ export default defineEventHandler(async (event) => {
       } 
       return adminController.addTheme(themeData);
     }
+    case 'deleteTheme': {
+      const { themeId } = data;
+      if (!themeId) {
+        return { error: 'themeId is required for deleteTheme action' };
+      }
+      return adminController.deleteTheme(themeId);
+    }
 
     default:
       return { error: `Unknown action: ${action}` };

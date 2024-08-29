@@ -5,7 +5,6 @@ import { UserModel } from '~/server/models/user';
 // import { PrismaAdapter } from '@next-auth/prisma-adapter';
 // import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
-import { useModel } from 'vue';
 
 // const prisma = new PrismaClient()
 
@@ -85,13 +84,22 @@ export default NuxtAuthHandler({
         }
         else {
           console.log('Google account already exists')
+          const old_user = await UserModel.findOne({ email: user.email });
+          user.name = old_user?.name
+          user.image = old_user?.image
+          user.role = old_user?.role
         }
       }
       else if (credentials == null) {
         console.log('Sign in with wrong password')
         return false
       }
+      
       // console.log('New user:', user)
+      console.log('User on signin:', user)
+      if (user.role == 'Admin' || user.role == 'admin') {
+        // return true
+      }
 
       return true
     },
@@ -119,20 +127,23 @@ export default NuxtAuthHandler({
       return token;
     },
 
-    async session({ session, token }) {
-      // console.log('Token:', token)
-      session.user = {
-        ...token,
-        ...session.user
-      }
+    // async session({ session, token }) {
+    //   console.log('Session update')
+    //   session.user = {
+    //     ...token,
+    //     ...session.user
+    //   }
 
-      const user = await UserModel.findOne({ email: session.user.email });
+    //   const user = await UserModel.findOne({ email: session.user.email });
+    //   // await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // const new_session = session
-      // new_session.role = new_session?.role
+    //   // const new_session = session
+    //   // new_session.role = new_session?.role
+    //   // const time = new Date();
+    //   token.name = user?.name
 
-      return {...session, id: user?.id};
-    }
+    //   return {...session};
+    // }
 
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)

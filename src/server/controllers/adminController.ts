@@ -155,5 +155,16 @@ export default {
             console.error('Error in deleteUser:', error);
             return { success: false, error: 'Failed to delete user' };
         }
+    },
+
+    async deleteTheme(themeId: string) { 
+        try {   
+            const deletedTheme = await ThemeModel.findByIdAndDelete(themeId);
+            return { theme: deletedTheme };
+        } catch (error) {
+            console.error('Error in deleteTheme:', error);
+            return { error: 'Failed to delete theme' };
+        }
     }
+
 };

@@ -6,7 +6,7 @@
   <!-- <h2>The line bellow is data taken from its server API (Nitro)</h2>
     <p>{{ data }}</p> -->
     
-    <h1>{{random_shi}}</h1>
+    <!-- <h1>{{random_shi}}</h1> -->
     
     
     <button v-if="userData" @click="signOut()">Sign out</button>
