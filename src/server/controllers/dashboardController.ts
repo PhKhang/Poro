@@ -31,7 +31,8 @@ export default {
 
   async getLeaderBoard(req: any) {
     allRankings = await SessionModel.aggregate(pipeline) as ([] | null)
-    return allRankings
+    const topRankings = allRankings ? allRankings.slice(0, 10) : null;
+    return topRankings;
   },
   async getByTime(accountID: any) {
     const date = new Date()

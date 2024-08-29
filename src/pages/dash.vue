@@ -107,6 +107,13 @@
 </template>
 
 <script setup>
+const { data: token } = await useFetch('/api/token')
+if (token.value) {
+  if (token.value.role == 'Admin' || token.value.role == 'admin') {
+    await navigateTo('/admin-user')
+  }
+}
+
 import NotallowGuest from '~/components/notallowGuest.vue';
 import './assets/base.css';
 
