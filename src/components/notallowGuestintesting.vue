@@ -1,11 +1,22 @@
 <template>
-    <div v-if="!userData" class="noti-wrapper" @click="closeIfOutside">
+    <div class="noti-wrapper" @click="closeIfOutside">
         <div id="noti-board" class="noti" @click.stop>
+            <div class="close-btn" @click="hideElement">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1_1163)">
+                    <path d="M13.7328 5.7334H3.06607C1.59541 5.7334 0.399414 6.9294 0.399414 8.40005C0.399414 9.87071 1.59541 11.0667 3.06607 11.0667H13.7327C15.2034 11.0667 16.3994 9.87071 16.3994 8.40005C16.3994 6.9294 15.2034 5.7334 13.7328 5.7334Z" fill="#EDEDED" stroke="#EDEDED" stroke-width="0.03125"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1_1163">
+                      <rect width="16" height="16" fill="white" transform="translate(0.399414 0.399902)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+            </div>
             <div class="noti-content">
                 <div class="noti-header poppins-bold">Join for free!</div>
                 <div class="noti-header2 poppins-medium">Log in or Sign up to unlock this restricted feature!</div>
                 <div class="choice">
-                    <a href="testing" class="noti-header32 poppins-semibold">Go to Main Page</a>
                     <a href="login" class="noti-header3 poppins-semibold">Log In or Sign up</a>
                 </div>
             </div>
@@ -15,7 +26,11 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-const emit = defineEmits(['close']); 
+const emit = defineEmits(['close']); // Define emits
+const hideElement = () => {
+    emit('close'); // Emit event to parent
+};
+
 const { data: userData, signOut, status } = useAuth();
 
 </script>
@@ -41,8 +56,8 @@ const { data: userData, signOut, status } = useAuth();
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
     z-index: 9998; 
 }
 
@@ -127,6 +142,9 @@ const { data: userData, signOut, status } = useAuth();
 
 .close-btn {
     cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
 }
 
 </style>

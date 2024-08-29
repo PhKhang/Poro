@@ -1,12 +1,11 @@
 <template>
-    <div v-if="!userData" class="noti-wrapper" @click="closeIfOutside">
-        <div id="noti-board" class="noti" @click.stop>
-            <div class="noti-content">
-                <div class="noti-header poppins-bold">Join for free!</div>
-                <div class="noti-header2 poppins-medium">Log in or Sign up to unlock this restricted feature!</div>
+    <div class="logout-wrapper" @click="closeIfOutside">
+        <div id="logout-board" class="logout" @click.stop>
+            <div class="logout-content">
+                <div class="logout-header poppins-semibold">Do you really want to log out?</div>
                 <div class="choice">
-                    <a href="testing" class="noti-header32 poppins-semibold">Go to Main Page</a>
-                    <a href="login" class="noti-header3 poppins-semibold">Log In or Sign up</a>
+                    <div class="logout-header32 poppins-semibold" @click="signOut()">YES</div>
+                    <div class="logout-header3 poppins-semibold" @click="hideElement">NO</div>
                 </div>
             </div>
         </div>
@@ -15,14 +14,18 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-const emit = defineEmits(['close']); 
+const emit = defineEmits(['close']); // Define emits
+const hideElement = () => {
+    emit('close'); // Emit event to parent
+};
+
 const { data: userData, signOut, status } = useAuth();
 
 </script>
 
 <style scoped>
 
-.noti-wrapper {
+.logout-wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -41,25 +44,26 @@ const { data: userData, signOut, status } = useAuth();
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
     z-index: 9998; 
 }
 
-#noti-board {
+#logout-board {
     display: flex;
     flex-direction: column;
-    width: 730px;
-    height: 250px;
+    width: 350px;
+    height: 100px;
     background: #2a2a2a;
-    border-radius: 10px;
-    padding: 10px 20px 25px 20px;
+    border-radius: 13.6px;
+    padding-top: 19px;
+    padding-bottom: 23.85px;
     z-index: 2;
     overflow: hidden;
     z-index: 9999;
 }
 
-.noti-content {
+.logout-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -68,12 +72,13 @@ const { data: userData, signOut, status } = useAuth();
     text-align: center;
 }  
 
-.noti-header {
+.logout-header {
     color: #ededed;
-    font-size: 32px;
+    font-size: 18.4px;
+    margin-bottom: 18px;
 }
 
-.noti-header2 {
+.logout-header2 {
     color: #ededed;
     font-size: 20px;
     margin-bottom: 10px;
@@ -85,39 +90,41 @@ const { data: userData, signOut, status } = useAuth();
     align-items: center;
 }
 
-.noti-header3 {
-    color: #2a2a2a;
-    font-size: 16px;
-    border-radius: 8px;
-    background: #FFD800;
+.logout-header3 {
+    color: #ededed;
+    font-size: 17px;
+    border-radius: 8.662px;
+    border: 0.866px solid #7A7A7A;
+    background: #222;
     display: flex;
-    width: 150px;
-    height: 30px;
-    padding: 0px 15px 0px 15px;
+    width: 82px;
+    height: 34px;
+    padding: 0;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 18px;
     cursor: pointer;
     text-decoration: none;
 }
 
-.noti-header32 {
-    color: rgb(202, 202, 202); 
-    font-size: 16px;
-    border-radius: 8px;
-    background: #3e3e3e;
+.logout-header32 {
+    color: rgba(255, 107, 107, 0.60);
+    font-size: 17px;
+    border-radius: 8.662px;
+    border: 0.866px solid #7A7A7A;
+    background: #222;
     display: flex;
-    width: 150px;
-    height: 30px;
-    padding: 0px 15px 0px 15px;
+    width: 82px;
+    height: 34px;
+    padding: 0px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 18px;
     text-decoration: none;
 }
 
-.noti-header4 {
+.logout-header4 {
     color: #ededed;
     font-size: 16px;
     margin-left: 10px;
@@ -127,6 +134,9 @@ const { data: userData, signOut, status } = useAuth();
 
 .close-btn {
     cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
 }
 
 </style>

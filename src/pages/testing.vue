@@ -8,17 +8,30 @@
     <DraggableSound :isVisible="elementsVisibility.music" @close="toggleVisibility('music')" />
     <DraggableTask :isVisible="elementsVisibility.task" @close="toggleVisibility('task')" @task-selected="handleTaskSelected" />
     <DraggableSettingTask :isVisible="elementsVisibility.tasksetting" v-if="selectedTask" :task="selectedTask" />
-    
+    <NotallowGuestintesting v-if="elementsVisibility.showNotallowGuest" @close="toggleVisibility('showNotallowGuest')" ></NotallowGuestintesting>
+    <Logout v-if="elementsVisibility.logout" @close="toggleVisibility('logout')"></Logout>
+
     <div class="manager-user">
-      <NuxtLink to="/dash" class="btn">
-        <svg width="22" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.999998 21.6001H21" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
-          <path d="M2 21.6001V14.1001C2 13.2717 2.6716 12.6001 3.5 12.6001H6.5C7.3284 12.6001 8 13.2717 8 14.1001V21.6001" stroke="#EDEDED" stroke-width="2"/>
-          <path d="M8 21.6001V9.4001M14 21.6001V4.6001C14 3.18589 14 2.47878 13.5607 2.03944C13.1213 1.6001 12.4142 1.6001 11 1.6001C9.5858 1.6001 8.8787 1.6001 8.4393 2.03944C8 2.47878 8 3.18589 8 4.6001" stroke="#EDEDED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 21.6001V9.1001C14 8.27167 14.6716 7.6001 15.5 7.6001H18.5C19.3284 7.6001 20 8.27167 20 9.1001V14.8001M20 21.6001V19.3501" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span class="tooltip">Stats and Leaderboard</span>
-      </NuxtLink>
+      <div @click="toggleVisibilityDash">
+        <div class="btn" v-if="!userData">
+          <svg width="22" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.999998 21.6001H21" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2 21.6001V14.1001C2 13.2717 2.6716 12.6001 3.5 12.6001H6.5C7.3284 12.6001 8 13.2717 8 14.1001V21.6001" stroke="#EDEDED" stroke-width="2"/>
+            <path d="M8 21.6001V9.4001M14 21.6001V4.6001C14 3.18589 14 2.47878 13.5607 2.03944C13.1213 1.6001 12.4142 1.6001 11 1.6001C9.5858 1.6001 8.8787 1.6001 8.4393 2.03944C8 2.47878 8 3.18589 8 4.6001" stroke="#EDEDED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 21.6001V9.1001C14 8.27167 14.6716 7.6001 15.5 7.6001H18.5C19.3284 7.6001 20 8.27167 20 9.1001V14.8001M20 21.6001V19.3501" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="tooltip">Stats and Leaderboard</span>
+        </div>
+        <NuxtLink to="/dash" class="btn" v-if="userData">
+          <svg width="22" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.999998 21.6001H21" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2 21.6001V14.1001C2 13.2717 2.6716 12.6001 3.5 12.6001H6.5C7.3284 12.6001 8 13.2717 8 14.1001V21.6001" stroke="#EDEDED" stroke-width="2"/>
+            <path d="M8 21.6001V9.4001M14 21.6001V4.6001C14 3.18589 14 2.47878 13.5607 2.03944C13.1213 1.6001 12.4142 1.6001 11 1.6001C9.5858 1.6001 8.8787 1.6001 8.4393 2.03944C8 2.47878 8 3.18589 8 4.6001" stroke="#EDEDED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 21.6001V9.1001C14 8.27167 14.6716 7.6001 15.5 7.6001H18.5C19.3284 7.6001 20 8.27167 20 9.1001V14.8001M20 21.6001V19.3501" stroke="#EDEDED" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="tooltip">Stats and Leaderboard</span>
+        </NuxtLink>
+      </div>
       <div class="btn" @click="toggleFullscreen">
         <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.60981 12.3435L2.13314 17.8201V14.1518C2.13781 13.8965 2.05229 13.6478 1.89163 13.4493C1.73097 13.2508 1.50547 13.1154 1.25481 13.0668C1.10671 13.0443 0.955491 13.0543 0.811635 13.0961C0.66778 13.1378 0.534725 13.2104 0.421688 13.3087C0.308652 13.407 0.218337 13.5287 0.157002 13.6653C0.0956661 13.802 0.0647763 13.9503 0.0664725 14.1001V20.3001C0.0664725 20.5742 0.175341 20.837 0.369129 21.0308C0.562916 21.2246 0.825749 21.3335 1.09981 21.3335H7.24814C7.50343 21.3381 7.75219 21.2526 7.95065 21.092C8.14911 20.9313 8.28455 20.7058 8.33314 20.4551C8.35562 20.307 8.34563 20.1558 8.30386 20.012C8.2621 19.8681 8.18956 19.7351 8.09127 19.622C7.99297 19.509 7.87128 19.4187 7.73462 19.3573C7.59796 19.296 7.44959 19.2651 7.29981 19.2668H3.57981L9.0048 13.8418C9.1917 13.6653 9.30987 13.4282 9.33826 13.1727C9.36664 12.9173 9.3034 12.66 9.15981 12.4468C9.07618 12.3223 8.96512 12.2186 8.83518 12.1437C8.70523 12.0687 8.55984 12.0246 8.41017 12.0146C8.26051 12.0046 8.11055 12.0291 7.9718 12.0861C7.83306 12.1431 7.70922 12.2312 7.60981 12.3435Z" fill="#EDEDED" stroke="#EDEDED" stroke-width="0.000270545"/>
@@ -43,7 +56,7 @@
           </svg>            
           <span>Report</span>
         </NuxtLink>
-        <div class="dropdown-item">
+        <div class="dropdown-item" @click="toggleVisibility('logout')">
           <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M3.8 0.610596C2.79218 0.610596 1.82563 1.01095 1.11299 1.72359C0.400356 2.43623 0 3.40277 0 4.4106V22.1439C0 23.1518 0.400356 24.1183 1.11299 24.8309C1.82563 25.5436 2.79218 25.9439 3.8 25.9439H11.4C12.4078 25.9439 13.3744 25.5436 14.087 24.8309C14.7996 24.1183 15.2 23.1518 15.2 22.1439V4.4106C15.2 3.40277 14.7996 2.43623 14.087 1.72359C13.3744 1.01095 12.4078 0.610596 11.4 0.610596H3.8ZM16.8378 7.31506C17.0753 7.0776 17.3975 6.9442 17.7333 6.9442C18.0692 6.9442 18.3913 7.0776 18.6289 7.31506L23.6955 12.3817C23.933 12.6193 24.0664 12.9414 24.0664 13.2773C24.0664 13.6131 23.933 13.9353 23.6955 14.1728L18.6289 19.2395C18.39 19.4702 18.07 19.5979 17.7379 19.595C17.4058 19.5921 17.0881 19.4589 16.8532 19.224C16.6184 18.9892 16.4852 18.6715 16.4823 18.3394C16.4794 18.0073 16.6071 17.6873 16.8378 17.4484L19.7423 14.5439H8.86667C8.53073 14.5439 8.20854 14.4105 7.971 14.1729C7.73345 13.9354 7.6 13.6132 7.6 13.2773C7.6 12.9413 7.73345 12.6191 7.971 12.3816C8.20854 12.144 8.53073 12.0106 8.86667 12.0106H19.7423L16.8378 9.10613C16.6003 8.86859 16.4669 8.54647 16.4669 8.2106C16.4669 7.87472 16.6003 7.5526 16.8378 7.31506Z" fill="#EDEDED"/>
           </svg>
@@ -121,6 +134,8 @@ import './assets/base.css';
 
 const selectedTask = ref(null);
 
+const { data: userData, signOut, status } = useAuth();
+
 const handleTaskSelected = (task) => {
   selectedTask.value = task;
   toggleVisibility('tasksetting'); // Show task settings when a task is selected
@@ -154,6 +169,10 @@ function toggleFullscreen() {
 const dropdownVisible = ref(false);
 
 const toggleDropdown = () => {
+  if (!userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
   dropdownVisible.value = !dropdownVisible.value;
 };
 
@@ -165,9 +184,27 @@ const elementsVisibility = reactive({
   soundmix: false,
   task: false,
   tasksetting: false, 
+  dash: false,
+  showNotallowGuest: false,
+  logout: false,
 });
 
+const toggleVisibilityDash = () => {
+  if (!userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
+};
+
 const toggleVisibility = (element) => {
+  if (element === 'note' && !userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
+  if (element === 'task' && !userData.value) {
+    elementsVisibility.showNotallowGuest = true;
+    return;
+  }
   elementsVisibility[element] = !elementsVisibility[element];
 };
 
@@ -176,9 +213,6 @@ const notPlay = ref(true);
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet');
-
 #app {
   position: relative;
   height: 100vh;
@@ -354,6 +388,11 @@ const notPlay = ref(true);
   cursor: pointer;
   position: relative;
   overflow: visible;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: pointer;
 }
 
 .profile {
