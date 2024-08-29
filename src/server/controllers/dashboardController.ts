@@ -1,6 +1,5 @@
 import { PipelineStage } from "mongoose";
 import { SessionModel } from "../models/session";
-import { h } from "vue";
 
 const pipeline: PipelineStage[] = [
   {

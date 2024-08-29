@@ -98,10 +98,10 @@ export default NuxtAuthHandler({
       // console.log('New user:', user)
       console.log('User on signin:', user)
       if (user.role == 'Admin' || user.role == 'admin') {
-        return '/admin-user'
+        return true
       }
 
-      return '/testing'
+      return true
     },
 
     async jwt({ token, user, account }) {
