@@ -98,7 +98,7 @@ export default NuxtAuthHandler({
       // console.log('New user:', user)
       console.log('User on signin:', user)
       if (user.role == 'Admin' || user.role == 'admin') {
-        return true
+        // return true
       }
 
       return true
