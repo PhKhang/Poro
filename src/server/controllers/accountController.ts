@@ -1,6 +1,7 @@
 import { SessionModel } from "../models/session";
 import { UserModel } from "../models/user";
 
+
 import bcrypt from "bcrypt"
 
 export default {
@@ -44,5 +45,5 @@ export default {
             console.error('Error in deleteUser:', error);
             return { success: false, error: 'Failed to delete user' };
         }
-    }
+    },
 };

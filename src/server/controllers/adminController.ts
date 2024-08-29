@@ -1,6 +1,7 @@
 import { SessionModel } from "../models/session";
 import { UserModel } from "../models/user";
 import { ThemeModel } from "../models/theme";
+import { ReportModel } from "../models/report";
 
 export default {
     async getTotalUser() {
@@ -165,6 +166,44 @@ export default {
             console.error('Error in deleteTheme:', error);
             return { error: 'Failed to delete theme' };
         }
-    }
+    },
 
+    async getReport() {
+        try {
+            const reports = await ReportModel.aggregate([
+                {
+                    $lookup: {
+                        from: 'User',
+                        localField: 'accountID',
+                        foreignField: 'id',
+                        as: 'userDetails'
+                    }
+                },
+                {
+                    $project: {
+                        name: '$userDetails.name',
+                        reportCategory: 1,
+                        reportSubject: 1,
+                        reportBody: 1,
+                        reportId: 1,
+                        createAt: 1
+                    }
+                }
+            ]);
+            return { reports };
+        } catch(error) {
+            console.error('Error in getReport:', error);
+            return { error: 'Failed to get report data' };
+        }
+    },
+
+    async deleteReport(reportId: string) { 
+        try {   
+            const deletedReport = await ReportModel.findByIdAndDelete(reportId);
+            return { Report: deletedReport };
+        } catch (error) {
+            console.error('Error in delete report:', error);
+            return { error: 'Failed to delete report' };
+        }
+    },
 };

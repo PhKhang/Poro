@@ -1,69 +1,78 @@
 <script lang="ts" setup>
-// import './assets/base.css';
-// const dep = ref("TRhibn rthin thib g");
-
 // const reportList = ref();
-// const data = await $fetch("/api/admin", {
-//   method: "POST",
-//   body: {
-//     action: "getReport",
-//   },
-// }).then(data => {
-//   reportList.value = data.result
-//   console.log('Reports:', data.result)
-// });
-
-// const dropdownVisible = ref(false);
-
-// const toggleDropdown = () => {
-//   dropdownVisible.value = !dropdownVisible.value;
-// };
-
-// const elementsVisibility = reactive({
-//   showNotallowGuest: false,
-//   logout: false,
-// });
-
-// const toggleVisibility = (element) => {
-//   if (element === 'note' && !userData.value) {
-//     elementsVisibility.showNotallowGuest = true;
-//     return;
-//   }
-//   if (element === 'task' && !userData.value) {
-//     elementsVisibility.showNotallowGuest = true;
-//     return;
-//   }
-//   elementsVisibility[element] = !elementsVisibility[element];
-// };
+const reportList = ref<any[]>([]);
+const data = await $fetch("/api/admin", {
+  method: "POST",
+  body: {
+    action: "getReport",
+  },
+}).then((data) => {
+  reportList.value = data.reports;
+  console.log("Reports:", data.reports);
+});
 
 const popupData = ref({
+  // _id: "",
   subject: "",
   category: "",
   from: "",
   description: "",
 });
+
 const popUp = ref(false);
+const selectedRow = ref<HTMLElement | null>(null);
 
 function showPopUp(event: MouseEvent) {
   const target = event.target as HTMLElement;
   const row = target.closest("tr") as HTMLTableRowElement;
   if (!row) return;
 
-  // Lấy các giá trị từ các thẻ td trong hàng
+  if (selectedRow.value) {
+    selectedRow.value.classList.remove("highlighted"); // Gỡ lớp khỏi thẻ trước đó
+  }
+
+  selectedRow.value = target.closest("td"); // Lưu trữ thẻ td hiện tại
+  if (selectedRow.value) {
+    selectedRow.value.classList.add("highlighted"); // Thêm lớp cho thẻ td hiện tại
+  }
+  const checkbox = row.querySelector(
+    "input[type='checkbox']"
+  ) as HTMLInputElement;
+  if (checkbox) {
+    checkbox.checked = true;
+  }
+  
   const subject = row.querySelector(".content_report")?.textContent || "";
   const category = row.querySelector(".category_form")?.textContent || "";
   const from = row.querySelector(".name_form")?.textContent || "";
   const description = row.querySelector(".description_form")?.textContent || "";
 
-  // Cập nhật dữ liệu vào popupData
   popupData.value = { subject, category, from, description };
   console.log(popupData.value);
   popUp.value = true;
 }
 
-// function showPopUp() {
+// async function deleteReport() {
+//   if (!popupData.value.) return;
 
-//   popUp.value = true;
+//   try {
+//     const response = await $fetch("/api/admin", {
+//       method: "POST",
+//       body: {
+//         action: "deleteReport",
+//         reportID: popupData.value.id,
+//       },
+//     });
+
+//     if (response.success) {
+//       reportList.value = reportList.value.filter(report => report.id !== popupData.value.id);
+//       closePopUp();
+//     } else {
+//       console.error("Xóa report thất bại.");
+//     }
+//   } catch (error) {
+//     console.error("Lỗi khi xóa report:", error);
+//   }
 // }
 
 function closePopUp() {
@@ -123,7 +132,7 @@ function closePopUp() {
         <div class="report-table">
           <table id="list_report">
             <thead>
-              <tr>
+              <tr class="title_table">
                 <th class="check_form"></th>
                 <th class="name_form">Username</th>
                 <th class="category_form">Category</th>
@@ -133,131 +142,29 @@ function closePopUp() {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr
+                v-for="(report, index) in reportList"
+                :key="index"
+                class="report-content"
+              >
                 <td class="check_form">
                   <input type="checkbox" class="row-check" />
                 </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="name_form">
+                  {{ report.name[0] }}
+                </td>
+                <td @click="showPopUp" class="category_form">
+                  {{ report.reportCategory }}
+                </td>
                 <td @click="showPopUp" class="content_report">
-                  Music is not playing
+                  {{ report.reportSubject }}
                 </td>
                 <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
+                  {{ report.reportBody }}
                 </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
+                <td @click="showPopUp" class="time_form">
+                  {{ report.reportTime }}
                 </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum blanditiis magnam corrupti placeat laboriosam natus similique, cum sunt repudiandae! Quod culpa assumenda sequi! Voluptas non perspiciatis voluptatum quae aspernatur est..
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
-              </tr>
-              <tr>
-                <td class="check_form">
-                  <input type="checkbox" class="row-check" />
-                </td>
-                <td @click="showPopUp" class="name_form">Quang Huy</td>
-                <td @click="showPopUp" class="category_form">Music</td>
-                <td @click="showPopUp" class="content_report">
-                  Music is not playing
-                </td>
-                <td @click="showPopUp" class="description_form">
-                  I cannot press the play button on the music display, ...
-                </td>
-                <td @click="showPopUp" class="time_form">5:38 PM</td>
               </tr>
             </tbody>
           </table>
@@ -573,15 +480,20 @@ function closePopUp() {
   display: none;
 }
 
-.report-table thead,
+/*.report-table .title_table,
 .report-table tbody tr {
   width: 100%;
   table-layout: fixed;
-}
+} 
 
-.report-content tr {
+
+.title_table {
+  display: flex;
+}
+*/
+
+.report-content {
   cursor: pointer;
-  padding: 10px;
 }
 
 .report-table th,
@@ -592,7 +504,7 @@ function closePopUp() {
   font-weight: bold;
 }
 
-.report-table .check_form {
+.report-content .check_form {
   text-align: center;
   width: 50px;
 }
@@ -602,8 +514,8 @@ function closePopUp() {
 }
 
 .report-table .description_form {
-  width: 600px;
-  max-width: 600px;
+  width: auto;
+  max-width: auto;
   word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;

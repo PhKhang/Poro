@@ -20,6 +20,13 @@ const ReportSchema = new Schema(
         reportBody: {
             type: String,
         },
+        reportCategory: {
+            type: String,
+        },
+        reportSubject: {
+            type: String,
+        },
+       
     },
     // https://mongoosejs.com/docs/timestamps.html
     // Automatically add createdAt and updatedAt
