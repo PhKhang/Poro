@@ -20,6 +20,7 @@ async function submitLogin() {
   try {
     const result = await signIn("credentials", {
       ...form.value,
+      callbackUrl: "/testing",
     });
     useRouter().push({ name: "index" });
 
