@@ -85,6 +85,8 @@ export default NuxtAuthHandler({
         }
         else {
           console.log('Google account already exists')
+          const old_user = await UserModel.findOne({ email: user.email });
+          user.name = old_user?.name
         }
       }
       else if (credentials == null) {
@@ -119,20 +121,20 @@ export default NuxtAuthHandler({
       return token;
     },
 
-    async session({ session, token }) {
-      // console.log('Token:', token)
-      session.user = {
-        ...token,
-        ...session.user
-      }
+    // async session({ session, token }) {
+    //   // console.log('Token:', token)
+    //   session.user = {
+    //     ...token,
+    //     ...session.user
+    //   }
 
-      const user = await UserModel.findOne({ email: session.user.email });
+    //   const user = await UserModel.findOne({ email: session.user.email });
 
-      // const new_session = session
-      // new_session.role = new_session?.role
+    //   // const new_session = session
+    //   // new_session.role = new_session?.role
 
-      return {...session, id: user?.id};
-    }
+    //   return {...session, id: user?.id};
+    // }
 
     // session: async ({ session, token }) => {
     //   const me = await getMe(session)
