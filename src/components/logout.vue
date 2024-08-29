@@ -4,7 +4,7 @@
             <div class="logout-content">
                 <div class="logout-header poppins-semibold">Do you really want to log out?</div>
                 <div class="choice">
-                    <a href="testing" class="logout-header32 poppins-semibold" @click="signOut()">YES</a>
+                    <a href="testing" class="logout-header32 poppins-semibold" @click="confirmLogout()">YES</a>
                     <div class="logout-header3 poppins-semibold" @click="hideElement">NO</div>
                 </div>
             </div>
@@ -20,6 +20,12 @@ const hideElement = () => {
 };
 
 const { data: userData, signOut, status } = useAuth();
+
+
+const confirmLogout = async () => {
+    await signOut(); // Perform sign out
+    router.push('/testing'); // Redirect to the testing page
+};
 
 </script>
 
