@@ -31,7 +31,7 @@
         <h1>SIGN UP</h1>
         <form @submit.prevent="submitForm" class="signup_form">
           <div class="user">
-            <input type="text" placeholder="Username" class="user_form" />
+            <input v-model="form.username" type="text" placeholder="Username" class="user_form" />
             <span class="material-symbols-outlined"> person </span>
           </div>
           <div class="email">
@@ -106,6 +106,7 @@ let svgSource = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 
 const form = ref({
   email: "",
   password: "",
+  username: "",
 });
 
 const showModal_exists = ref(false);
