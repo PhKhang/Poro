@@ -1,20 +1,19 @@
 <script lang="ts" setup>
-const dep = ref("TRhibn rthin thib g");
+// const dep = ref("TRhibn rthin thib g");
 
-const reportList = ref();
-const data = await $fetch("/api/admin", {
-  method: "POST",
-  body: {
-    action: "getReport",
-  },  
-}).then(data => {
-  reportList.value = data.result
-  console.log('Reports:', data.result)
-});
+// const reportList = ref();
+// const data = await $fetch("/api/admin", {
+//   method: "POST",
+//   body: {
+//     action: "getReport",
+//   },
+// }).then(data => {
+//   reportList.value = data.result
+//   console.log('Reports:', data.result)
+// });
 </script>
 
 <template>
-  <h1>{{reportList[0].createAt}}dd</h1>
   <div class="app-container">
     <div class="sidebar">
       <h1 class="logo">Poro</h1>
@@ -149,11 +148,16 @@ const data = await $fetch("/api/admin", {
         </div>
       </div>
     </div>
-    <div class="popup_content">{{ dep }}</div>
+    <div class="popup_content">
+      <div class="top_b">
+        <span class="material-symbols-outlined"> close </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
 
 * {
@@ -360,13 +364,17 @@ const data = await $fetch("/api/admin", {
   word-break: normal;
 }
 .popup_content {
-  display: none;
   position: absolute;
-  height: 100px;
-  width: 100px;
-  background-color: red;
+  height: 500px;
+  width: 500px;
+  background-color: #2e2e2e;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.top_b .material-symbols-outlined {
+  background-color: red;
+  color: red;
 }
 </style>
