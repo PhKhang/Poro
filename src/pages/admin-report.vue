@@ -7,7 +7,7 @@
 //   method: "POST",
 //   body: {
 //     action: "getReport",
-//   },  
+//   },
 // }).then(data => {
 //   reportList.value = data.result
 //   console.log('Reports:', data.result)
@@ -35,9 +35,41 @@
 //   }
 //   elementsVisibility[element] = !elementsVisibility[element];
 // };
+
+const popupData = ref({
+  subject: "",
+  category: "",
+  from: "",
+  description: "",
+});
+const popUp = ref(false);
+
+function showPopUp(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  const row = target.closest("tr") as HTMLTableRowElement;
+  if (!row) return;
+
+  // Lấy các giá trị từ các thẻ td trong hàng
+  const subject = row.querySelector(".content_report")?.textContent || "";
+  const category = row.querySelector(".category_form")?.textContent || "";
+  const from = row.querySelector(".name_form")?.textContent || "";
+  const description = row.querySelector(".description_form")?.textContent || "";
+
+  // Cập nhật dữ liệu vào popupData
+  popupData.value = { subject, category, from, description };
+  console.log(popupData.value);
+  popUp.value = true;
+}
+
+// function showPopUp() {
+
+//   popUp.value = true;
+// }
+
+function closePopUp() {
+  popUp.value = false;
+}
 </script>
-
-
 <template>
   <div class="app-container">
     <div class="sidebar">
@@ -87,100 +119,183 @@
           />
         </div>
 
-          <!-- Table -->
-          <div class="report-table">
-            <table id="list_report">
-              <thead>
-                <tr>
-                  <th class="check_form"></th>
-                  <th class="name_form">Username</th>
-                  <th class="category_form">Category</th>
-                  <th class="content_report">Subject</th>
-                  <th class="description_form">Description</th>
-                  <th class="time-form">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="check_form">
-                    <input type="checkbox" class="row-check" />
-                  </td>
-                  <td class="name_form">Quang Huy</td>
-                  <td class="category_form">Music</td>
-                  <td class="content_report">Music is not playing</td>
-                  <td class="description_form">
-                    I cannot press the play button on the music display, ...
-                  </td>
-                  <td class="time_form">5:38 PM</td>
-                </tr>
-                <tr>
-                  <td class="check_form">
-                    <input type="checkbox" class="row-check" />
-                  </td>
-                  <td class="name_form">Quang Huy</td>
-                  <td class="category_form">Music</td>
-                  <td class="content_report">Music is not playing</td>
-                  <td class="description_form">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Recusandae culpa sit quasi adipisci sed repellendus
-                    voluptatibus non labore ratione repudiandae praesentium
-                    mollitia consequuntur, error ducimus delectus. Reiciendis
-                    dolorem sapiente ea.
-                  </td>
-                  <td class="time_form">5:38 PM</td>
-                </tr>
-                <tr>
-                  <td class="check_form">
-                    <input type="checkbox" class="row-check" />
-                  </td>
-                  <td class="name_form">Quang Huy</td>
-                  <td class="category_form">Music</td>
-                  <td class="content_report">Music is not playing</td>
-                  <td class="description_form">
-                    I cannot press the play button on the music display, ...
-                  </td>
-                  <td class="time_form">5:38 PM</td>
-                </tr>
-
-                <tr>
-                  <td class="check_form">
-                    <input type="checkbox" class="row-check" />
-                  </td>
-                  <td class="name_form">Quang Huy</td>
-                  <td class="category_form">Music</td>
-                  <td class="content_report">Music is not playing</td>
-                  <td class="description_form">
-                    I cannot press the play button on the music display, ...
-                  </td>
-                  <td class="time_form">5:38 PM</td>
-                </tr>
-                <tr>
-                  <td class="check_form">
-                    <input type="checkbox" class="row-check" />
-                  </td>
-                  <td class="name_form">Quang Huy</td>
-                  <td class="category_form">Music</td>
-                  <td class="content_report">Music is not playing</td>
-                  <td class="description_form">
-                    I cannot press the play button on the music display, ...
-                  </td>
-                  <td class="time_form">5:38 PM</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- Table -->
+        <div class="report-table">
+          <table id="list_report">
+            <thead>
+              <tr>
+                <th class="check_form"></th>
+                <th class="name_form">Username</th>
+                <th class="category_form">Category</th>
+                <th class="content_report">Subject</th>
+                <th class="description_form">Description</th>
+                <th class="time-form">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum blanditiis magnam corrupti placeat laboriosam natus similique, cum sunt repudiandae! Quod culpa assumenda sequi! Voluptas non perspiciatis voluptatum quae aspernatur est..
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+              <tr>
+                <td class="check_form">
+                  <input type="checkbox" class="row-check" />
+                </td>
+                <td @click="showPopUp" class="name_form">Quang Huy</td>
+                <td @click="showPopUp" class="category_form">Music</td>
+                <td @click="showPopUp" class="content_report">
+                  Music is not playing
+                </td>
+                <td @click="showPopUp" class="description_form">
+                  I cannot press the play button on the music display, ...
+                </td>
+                <td @click="showPopUp" class="time_form">5:38 PM</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <div class="popup_content">
-      <div class="top_b">
-        <span class="material-symbols-outlined"> close </span>
+  </div>
+  <div v-if="popUp" class="popup_content">
+    <div class="top_b">
+      <span class="material-symbols-outlined" @click="closePopUp"> close </span>
+    </div>
+    <div class="content_on_popup">
+      <div class="subject_popup">
+        <p>Subject:</p>
+        <div class="subject_popup_content">{{ popupData.subject }}</div>
+      </div>
+      <div class="category_popup">
+        <p>Category:</p>
+        <div class="category_popup_content">{{ popupData.category }}</div>
+      </div>
+      <div class="from_popup">
+        <p>From:</p>
+        <div class="from_popup_content">{{ popupData.from }}</div>
+      </div>
+      <div class="description_popup">
+        <p>Report Description:</p>
+        <div class="description_popup_content">{{ popupData.description }}</div>
+      </div>
+      <div class="clear_btn">
+        <span class="material-symbols-outlined"> delete </span>
       </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
 
 * {
   margin: 0;
@@ -336,7 +451,7 @@
 
 .button-container::after,
 .btn::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -450,11 +565,12 @@
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
+  overflow-y: scroll;
+  top: 0;
 }
 
-.report-table tbody {
-  overflow-y: scroll;
-  overflow-x: hidden;
+.report-table::-webkit-scrollbar {
+  display: none;
 }
 
 .report-table thead,
@@ -496,17 +612,99 @@
   word-break: normal;
 }
 .popup_content {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  height: 100px;
-  width: 100px;
-  background-color: red;
+  height: 500px;
+  width: 500px;
+  background-color: #2a2a2a;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+.top_b {
+  flex: 0.5;
+  padding: 10px;
+  border-bottom: 2px solid #ffffff;
+  text-align: right;
 }
 
 .top_b .material-symbols-outlined {
-  background-color: red;
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  cursor: pointer;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.top_b .material-symbols-outlined:hover {
   color: red;
+}
+
+.content_on_popup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  flex: 9.5;
+  color: #ffffff;
+}
+
+.subject_popup,
+.category_popup,
+.from_popup {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.subject_popup p,
+.category_popup p,
+.from_popup p {
+  width: 50%;
+}
+
+.subject_popup_content {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.description_popup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.description_popup_content {
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  max-height: 250px;
+  height: 250px;
+  width: auto;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.description_popup_content::-webkit-scrollbar {
+  display: none;
+}
+
+.clear_btn {
+  text-align: right;
+  margin-top: -5px;
+  margin-right: 5px;
+}
+
+.clear_btn .material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  cursor: pointer;
+  font-weight: 800;
+  color: #ffffff;
 }
 </style>
