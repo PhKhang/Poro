@@ -227,7 +227,7 @@ function formatTime(minutes) {
             <p>Are you sure you want to delete the user {{ userToDelete?.name }}?</p>
             <p>This action cannot be undone.</p>
             <div class="modal-actions">
-              <button @click="deleteUser" class="confirm-btn">Confirm Delete</button>
+              <button @click="deleteUser" class="confirm-btn">Delete</button>
               <button @click="cancelDelete" class="cancel-btn">Cancel</button>
             </div>
           </div>
@@ -474,6 +474,9 @@ th {
     'GRAD' 0,
     'opsz' 24;
 }
+.delete-btn:hover {
+  color: #f44336;
+}
 
 .table-footer {
   display: flex;
@@ -542,23 +545,35 @@ th {
 .modal-actions {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
-.confirm-btn,
-.cancel-btn {
-  padding: 8px 15px;
+.modal-actions button {
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .confirm-btn {
-  background-color: #f44336;
-  color: white;
+  background-color: #d32f2f;  /* A shade of red */
+  color: #ffffff;
+}
+
+.confirm-btn:hover {
+  background-color: #b71c1c;  /* A darker shade of red */
+  transform: scale(1.05);
 }
 
 .cancel-btn {
-  background-color: #3a3a3a;
-  color: white;
+  background-color: #7d7d7d;  /* A shade of grey */
+  color: #ffffff;
+}
+
+.cancel-btn:hover {
+  background-color: #616161;  /* A darker shade of grey */
+  transform: scale(1.05);
 }
 </style>

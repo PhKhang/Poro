@@ -27,6 +27,87 @@ const newTheme = ref({
 });
 const formError = ref(''); // Add this line
 
+const themeToDelete = ref(null);
+const showDeleteModal = ref(false);
+
+const deleteBackground = async (theme, index) => {
+  if (theme.videos.length <= 1) {
+    alert('Cannot delete the only background of a theme.');
+    return;
+  }
+
+  theme.videos.splice(index, 1);
+
+  const themeId = theme._id || theme.id;
+  try {
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: {
+        action: 'updateTheme',
+        themeId: themeId,
+        themeData: theme
+      }
+    });
+
+    if (response.error) {
+      console.error('Error updating theme:', response.error);
+      return;
+    }
+
+    const themeIndex = themeData.value.findIndex(t => t._id === themeId || t.id === themeId);
+    if (themeIndex !== -1) {
+      themeData.value[themeIndex] = { ...theme };
+    }
+
+    console.log('Background deleted and theme updated successfully:', response);
+
+  } catch (error) {
+    console.error('Error updating theme:', error);
+  }
+};
+const openDeleteModal = (theme) => {
+  themeToDelete.value = theme;
+  showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+  themeToDelete.value = null;
+  showDeleteModal.value = false;
+};
+
+
+const deleteTheme = async () => {
+  if (!themeToDelete.value) {
+    console.error('No theme selected for deletion');
+    return;
+  }
+  const themeId = themeToDelete.value._id || themeToDelete.value.id;
+
+  try {
+    const response = await $fetch('/api/admin', {
+      method: 'POST',
+      body: {
+        action: 'deleteTheme',
+        themeId: themeId
+      }
+    });
+
+    if (response.error) {
+      console.error('Error deleting theme:', response.error);
+      return;
+    }
+
+    themeData.value = themeData.value.filter(t => t._id !== themeId && t.id !== themeId);
+
+    console.log('Theme deleted successfully:', response);
+    closeDeleteModal();
+  } catch (error) {
+    console.error('Error deleting theme:', error);
+  }
+};
+
+
+
 const resetNewTheme = () => {
   newTheme.value = {
     name: '',
@@ -398,7 +479,7 @@ onMounted(() => {
                     <span class="material-symbols-outlined">edit</span>
                   </button>
                   <!-- Delete Button -->
-                  <button class="delete-button" @click.stop="confirmDelete(theme)">
+                  <button class="delete-button" @click.stop="openDeleteModal(theme)">
                     <span class="material-symbols-outlined">delete</span>
                   </button>
                   <!-- Save Button -->
@@ -420,7 +501,7 @@ onMounted(() => {
                         <button class="edit-bg-button" @click="editBackground(theme, index)">
                           <span class="material-symbols-outlined">edit</span>
                         </button>
-                        <button class="delete-bg-button" @click="confirmDelete(theme)">
+                        <button class="delete-bg-button" @click="deleteBackground(theme)">
                           <span class="material-symbols-outlined">delete</span>
                         </button>
                       </div>
@@ -511,6 +592,23 @@ onMounted(() => {
     <div class="modal-footer">
       <button class="button save-button" @click="addTheme">Add</button>
       <button class="button cancel-button" @click="showAddThemeModal = false">Cancel</button>
+    </div>
+  </div>
+</div>
+<div v-if="showDeleteModal" class="delete-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Delete Theme</h3>
+      <button class="close-button" @click="closeDeleteModal">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete the theme: {{ themeToDelete.name }}?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="button delete-button" @click="deleteTheme(themeToDelete)">Delete</button>
+      <button class="button cancel-button" @click="closeDeleteModal">Cancel</button>
     </div>
   </div>
 </div>
@@ -869,7 +967,7 @@ button {
   border-radius: 8px;
   z-index: 1000;
   width: 300px;
-  color: white;
+  color: #ededed;
 }
 
 .edit-modal-header {
@@ -916,12 +1014,12 @@ button {
 
 .edit-modal-footer .save-button {
   background-color: #4CAF50;
-  color: white;
+  color: #ededed;
 }
 
 .edit-modal-footer .cancel-button {
   background-color: #f44336;
-  color: white;
+  color: #ededed;
 }
 
 .add-theme-modal {
@@ -934,7 +1032,7 @@ button {
   border-radius: 8px;
   z-index: 1000;
   width: 300px;
-  color: white;
+  color: #ededed;
 }
 
 .modal-content {
@@ -978,11 +1076,59 @@ button {
 }
 .modal-footer .save-button {
   background-color: #4caf50;
-  color: white;
+  color: #ededed;
 }
+
+
 
 .modal-footer .cancel-button {
   background-color: #f44336;
-  color: white;
+  color: #ededed;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-footer .cancel-button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+.modal-footer .delete-button {
+  background-color: #7d7d7d;
+  color: #ededed;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-footer .delete-button:hover {
+  background-color: #616161;
+  transform: scale(1.05);
+}
+
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 300px;
+  color: #ededed;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  cursor: pointer;
 }
 </style>
