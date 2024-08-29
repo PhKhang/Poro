@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <a href="testing">
+        <NuxtLink to="/testing">
             <svg class="right-arrow-next" alt="Right arrow next" width="61" height="17" viewBox="0 0 61 17"
                 fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -10,7 +10,7 @@
                     d="M5.44684 8.84758L10.8577 14.2585C11.0501 14.4508 11.3609 14.4508 11.5533 14.2585C11.7456 14.0661 11.7456 13.7553 11.5533 13.5629L6.49016 8.49982L11.5533 3.43672C11.7456 3.24439 11.7456 2.93351 11.5533 2.74118C11.4573 2.64526 11.3314 2.59705 11.2055 2.59705C11.0796 2.59705 10.9536 2.64526 10.8577 2.74118L5.44682 8.15207C5.25452 8.34437 5.25452 8.65526 5.44684 8.84758Z"
                     stroke="#EDEDED" stroke-width="1.41873" />
             </svg>
-        </a>
+        </NuxtLink>
     </header>
     <div class="container">
         <notallowGuest></notallowGuest>
@@ -251,9 +251,9 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     padding-right: 10px;
     background-color: #222222;
     color: #ededed;
-    margin-left: 60px;
-    margin-right: 60px;
-    margin-top: 10px;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 15px;
 }
 
 .header {
@@ -381,14 +381,17 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
 }
 
 .medium-activity {
+    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 0.5);
 }
 
 .medium-high-activity {
+    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 0.75);
 }
 
 .high-activity {
+    color: #2A2A2A;
     background-color: rgba(255, 216, 0, 1);
 }
 

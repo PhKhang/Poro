@@ -1,7 +1,7 @@
 <template>
     <div class="issue-report-screen">
         <header class="header">
-            <NuxtLink to="/testing">
+            <NuxtLink href="/testing">
                 <svg class="right-arrow-next" alt="Right arrow next" width="61" height="17" viewBox="0 0 61 17"
                     fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -136,6 +136,7 @@ body {
     color: #ededed;
     font: 400 20px 'Source Sans 3', sans-serif;
     padding-left: 15px;
+    padding-top:15px;
 }
 
 .back-icon {
@@ -171,7 +172,6 @@ body {
 .issue-report-screen {
     display: flex;
     flex-direction: column;
-    padding: 15px 0px 0px 0px;
     height: 100%;
 }
 
