@@ -53,7 +53,10 @@
                     <label for="email" class="form-label">Email (not editable):</label>
                     <input type="text" id="email" class="form-input" v-model="email" readonly />
                 </div>
-                <p class="success-message" v-if="isSaved">Your profile has been saved successfully!</p>
+                <p class="success-message" v-if="isSaved">Your profile has been saved successfully. We will redirected to the Login page for you!</p>
+                <p class="success-message" v-if="!isSaved" >
+                    Notice that you will be logged out after clicking save.
+                </p>
                 <button type="submit" class="submit-button">Save</button>
             </form>
         </main>
@@ -99,9 +102,9 @@ const handleSave = () => {
         setTimeout(() => {
             isSaved.value = false
             
-        }, 3000);
+        }, 4500);
         signOut({ callbackUrl: '/login' })
-    }, 3000); // Đợi 3 giây trước khi ẩn form
+    }, 4500);
 };
 
 const handleAvatarChange = (event: Event) => {
@@ -278,6 +281,17 @@ body {
     max-width: 549px;
 }
 
+.form-description {
+    margin: 0;
+    color: #ededed;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 400 14px 'Poppins', sans-serif;
+    width: 400px;
+}
+
 .form-label {
     padding-left: 15px;
     color: #ededed;
@@ -333,7 +347,7 @@ body {
 }
 
 .success-message {
-    color: #fff;
+    color: #ededed;
     margin-top: 22px;
     font: 500 16px 'Poppins', sans-serif;
     text-align: center;
