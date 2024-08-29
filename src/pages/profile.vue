@@ -61,6 +61,8 @@
 </template>
 
 <script setup lang="ts">
+// import { getServerSession } from '#auth'
+// const {} = getServerSession()
 
 const showForm = ref(false);
 
@@ -71,9 +73,9 @@ const user = await useFetch('/api/account', {
     }
 });
 console.log('User profile:', user.data.value);
-const name = ref(user.data.value?.name || 'John Doe');
-const email = ref(user.data.value?.email || 'bqTJF@example.com');
-const avatarUrl = ref(user.data.value?.image || '../assets/img/avatar.jpg');
+const name = ref(user.data.value?.name);
+const email = ref(user.data.value?.email);
+const avatarUrl = ref(user.data.value?.image);
 const isSaved = ref(false);
 
 const handleSave = () => {
@@ -85,13 +87,20 @@ const handleSave = () => {
             newName: name.value,
         }
     })
+    // update({ thing: 'new value' });}
     isSaved.value = true; // Hiển thị thông báo thành công
+    const { signOut } = useAuth()
+
 
     // Đợi một khoảng thời gian trước khi ẩn form và hiển thị lại profile
     setTimeout(() => {
         showForm.value = false; // Ẩn form
         // Ẩn thông báo thành công sau một khoảng thời gian
-        setTimeout(() => isSaved.value = false, 3000);
+        setTimeout(() => {
+            isSaved.value = false
+            
+        }, 3000);
+        signOut({ callbackUrl: '/login' })
     }, 3000); // Đợi 3 giây trước khi ẩn form
 };
 

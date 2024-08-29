@@ -5,7 +5,6 @@ import { UserModel } from '~/server/models/user';
 // import { PrismaAdapter } from '@next-auth/prisma-adapter';
 // import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
-import { useModel } from 'vue';
 
 // const prisma = new PrismaClient()
 
@@ -122,18 +121,21 @@ export default NuxtAuthHandler({
     },
 
     // async session({ session, token }) {
-    //   // console.log('Token:', token)
+    //   console.log('Session update')
     //   session.user = {
     //     ...token,
     //     ...session.user
     //   }
 
     //   const user = await UserModel.findOne({ email: session.user.email });
+    //   // await new Promise(resolve => setTimeout(resolve, 1000));
 
     //   // const new_session = session
     //   // new_session.role = new_session?.role
+    //   // const time = new Date();
+    //   token.name = user?.name
 
-    //   return {...session, id: user?.id};
+    //   return {...session};
     // }
 
     // session: async ({ session, token }) => {
