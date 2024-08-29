@@ -147,7 +147,7 @@ export default {
     // Hàm tạo danh sách tất cả các ngày trong một tháng bất kỳ
     function generateMonthDays(year : any, month : any) {
         let startDate = new Date(year, month - 1, 1);
-        let endDate = new Date(year, month, 0); // Lấy ngày cuối cùng của tháng
+        let endDate = new Date(year, month, 1); // Lấy ngày cuối cùng của tháng
         return generateDateRange(startDate, endDate);
     }
     

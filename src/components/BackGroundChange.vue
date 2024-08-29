@@ -424,8 +424,8 @@ const sliderStyle = computed(() => ({
 }
 
 .navigation-buttons button:hover {
-  background-color: #0056b3; 
-  border-color: #004494;
+  background-color: rgba(122, 122, 122, 0.7); 
+  border-color: #7a7a7a;
 }
 
 .theme-icons {
