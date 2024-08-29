@@ -136,6 +136,13 @@ const selectedTask = ref(null);
 
 const { data: userData, signOut, status } = useAuth();
 
+const { data: token } = await useFetch('/api/token')
+if (token.value) {
+  if (token.value.role == 'Admin' || token.value.role == 'admin') {
+    await navigateTo('/admin-user')
+  }
+}
+
 const handleTaskSelected = (task) => {
   selectedTask.value = task;
   toggleVisibility('tasksetting'); // Show task settings when a task is selected
