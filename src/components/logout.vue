@@ -4,7 +4,7 @@
             <div class="logout-content">
                 <div class="logout-header poppins-semibold">Do you really want to log out?</div>
                 <div class="choice">
-                    <div class="logout-header32 poppins-semibold" @click="signOut()">YES</div>
+                    <a href="testing" class="logout-header32 poppins-semibold" @click="signOut()">YES</a>
                     <div class="logout-header3 poppins-semibold" @click="hideElement">NO</div>
                 </div>
             </div>
