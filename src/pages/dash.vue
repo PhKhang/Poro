@@ -255,9 +255,9 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     padding-right: 10px;
     background-color: #222222;
     color: #ededed;
-    margin-left: 80px;
-    margin-right: 80px;
-    margin-top: 15px;
+    margin-left: 60px;
+    margin-right: 60px;
+    height: 100vh;
 }
 
 .header {
