@@ -252,11 +252,11 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-right: 10px;
+    padding-right: 60px;
+    padding-left: 60px;
+    padding-top: 10px;
     background-color: #222222;
     color: #ededed;
-    margin-left: 60px;
-    margin-right: 60px;
     height: 100vh;
 }
 
@@ -268,7 +268,7 @@ timeAnalysis.value = await $fetch('/api/dashboard', {
     background-color: #222222;
     font: 400 20px 'Source Sans 3', sans-serif;
     padding-left: 15px;
-    padding-top:15px;
+    padding-top: 15px;
 }
 
 .summary-section,
