@@ -186,6 +186,7 @@ export default {
                         reportSubject: 1,
                         reportBody: 1,
                         reportId: 1,
+                        reportTime: 1,
                         createAt: 1
                     }
                 }

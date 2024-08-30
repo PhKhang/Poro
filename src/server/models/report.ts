@@ -4,7 +4,9 @@ import { randomUUID } from 'crypto';
 export interface ReportDocument extends Document {
     reportBody: string,
     accountID: string,
-    resolve: boolean
+    resolve: boolean,
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const ReportSchema = new Schema(
@@ -24,6 +26,9 @@ const ReportSchema = new Schema(
             type: String,
         },
         reportSubject: {
+            type: String,
+        },
+        reportTime: {
             type: String,
         },
        
