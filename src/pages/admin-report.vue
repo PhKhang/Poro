@@ -24,7 +24,8 @@ const toggleVisibility = (element) => {
   elementsVisibility[element] = !elementsVisibility[element];
 };
 
-
+const userName = ref('');
+const userType = ref('Admin');
 const reportList = ref([]);
 const data = await $fetch("/api/admin", {
   method: "POST",
@@ -106,8 +107,8 @@ function closePopUp() {
         <h1>Report Message</h1>
         <div class="account-section">
           <div class="account-info">
-            <span class="account-name">Quang Huy</span>
-            <span class="account-type">Admin</span>
+            <span class="account-name">{{ userName }}</span>
+            <span class="account-type">{{ userType }}</span>
           </div>
           <button class="account-toggle" @click="toggleDropdown">
             <svg

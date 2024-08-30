@@ -33,6 +33,9 @@ const totalSessions = ref(0);
 const perPage = ref(5);
 const currentPage = ref(1);
 
+const userName = ref('');
+const userType = ref('Admin');
+
 const searchTerm = ref('');
 
 const showDeleteModal = ref(false);
@@ -162,8 +165,8 @@ function formatTime(minutes) {
         <h1>User Management</h1>
         <div class="account-section">
           <div class="account-info">
-            <span class="account-name">Quang Huy</span>
-            <span class="account-type">Admin</span>
+            <span class="account-name">{{ userName }}</span>
+            <span class="account-type">{{ userType }}</span>
           </div>
           <button class="account-toggle" @click="toggleDropdown">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

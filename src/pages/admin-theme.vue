@@ -35,7 +35,7 @@ const themeData = ref([]);
 const perPage = ref(5);
 const currentPage = ref(1);
 
-const userName = ref('Quang Huy');
+const userName = ref('');
 const userType = ref('Admin');
 
 const showEditModal = ref(false);
