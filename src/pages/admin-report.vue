@@ -236,9 +236,6 @@ function closePopUp() {
         <p>Report Description:</p>
         <div class="description_popup_content">{{ popupData.description }}</div>
       </div>
-      <div class="clear_btn"  @click="deleteReport">
-        <span class="material-symbols-outlined"> delete </span>
-      </div>
     </div>
   </div>
 </template>
@@ -478,7 +475,6 @@ function closePopUp() {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #ffffff;
 }
 
 .search-container {
@@ -636,19 +632,5 @@ function closePopUp() {
 
 .description_popup_content::-webkit-scrollbar {
   display: none;
-}
-
-.clear_btn {
-  text-align: right;
-  margin-top: -5px;
-  margin-right: 5px;
-}
-
-.clear_btn .material-symbols-outlined {
-  font-family: "Material Symbols Outlined", sans-serif;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-  cursor: pointer;
-  font-weight: 800;
-  color: #ffffff;
 }
 </style>
